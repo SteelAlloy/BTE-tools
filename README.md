@@ -77,7 +77,13 @@ npm install
 
 ## Usage
 
-The only functionality at the moment is the railways.
+The only functionality is currently the railway tracks outline generation.
+
+**[NOTE] The current way of doing things is a bit messy, to convert latitude and longitude to Minecraft coordinates a script
+is run to enter commands very quickly in the game chat. We should find a way to get these coordinates with a function.
+I already tried to translate the [java function](https://github.com/orangeadam3/terra121/blob/68ff27735ba447d6c9c017463e890eb90422569c/src/main/java/io/github/terra121/projection/ModifiedAirocean.java)
+into javascript [here](./draw/tpll/tpll-node.js). It doesn't work,
+if someone finds the problem I would be very grateful to him !**
 
 ### Installing the script
 
