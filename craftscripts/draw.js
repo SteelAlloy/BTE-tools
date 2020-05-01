@@ -65,9 +65,12 @@ const blocks = context.remember()
 const usage = '/cs draw <file> [block] [options] \n' +
 ' '
 
+context.checkArgs(1, 3, usage)
+
 var changedBlocks = 0
 
-context.checkArgs(1, 3, usage)
+const options = argv[3].split('')
+const upOption = options.includes('u')
 
 readFile()
 
@@ -135,6 +138,9 @@ function drawLine (x1, y1, z1, x2, y2, z2, block) {
     }
 
     if (allowedBlocks.includes(blocks.getBlock(pos).id)) {
+      if (upOption) {
+        pos = pos.add(new Vector(0, 1, 0))
+      }
       blocks.setBlock(pos, context.getBlock(block))
       changedBlocks++
     }
