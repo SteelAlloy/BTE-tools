@@ -1,0 +1,22 @@
+{
+  "name": "bte-tools",
+  "version": "1.0.0",
+  "description": "Awesome tools and scripts to enhance your experience on the Build The Earth project!",
+  "scripts": {
+    "lint": "standard draw/**/*.js craftscripts/*.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oganexon/BTE-tools.git"
+  },
+  "author": "Oganexon",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oganexon/BTE-tools/issues"
+  },
+  "homepage": "https://github.com/oganexon/BTE-tools#readme",
+  "dependencies": {
+    "query-overpass": "^1.5.5"
+  }
+}

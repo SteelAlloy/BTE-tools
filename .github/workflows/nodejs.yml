@@ -1,0 +1,23 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  test:
+    name: Test on node 12 and Windows
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    
+    - name: Installing
+      run: npm install
+      env:
+        CI: true
+    
+    - name: Linting
+      run: npm run lint
