@@ -146,6 +146,42 @@ class UprightOrientation extends ProjectionTransform {
   }
 }
 
+class ScaleProjection extends ProjectionTransform {
+  constructor (input, scaleX, scaleY) {
+    super(input)
+    this.scaleX = scaleX
+    this.scaleY = scaleY || scaleX
+  }
+
+  toGeo (x, y) {
+    return this.input.toGeo(x / this.scaleX, y / this.scaleY)
+  }
+
+  fromGeo (lon, lat) {
+    const p = this.input.fromGeo(lon, lat)
+    p[0] *= this.scaleX
+    p[1] *= this.scaleY
+    return p
+  }
+
+  upright () {
+    return !!((this.scaleY < 0) ^ this.input.upright())
+  }
+
+  bounds () {
+    const b = this.input.bounds()
+    b[0] *= this.scaleX
+    b[1] *= this.scaleY
+    b[2] *= this.scaleX
+    b[3] *= this.scaleY
+    return b
+  }
+
+  metersPerUnit () {
+    return this.input.metersPerUnit() / Math.sqrt((this.scaleX * this.scaleX + this.scaleY * this.scaleY) / 2) // TODO: better transform
+  }
+}
+
 class InvertedOrientation extends ProjectionTransform {
   toGeo (x, y) {
     return this.input.toGeo(y, x)
@@ -996,3 +1032,11 @@ console.log('Script compiled')
 // player.print(new ModifiedAirocean().toGeo(argv[1], argv[2]))
 
 console.log(new ModifiedAirocean().fromGeo(47.58562, 6.89743))
+
+const SCALE = 7318261.522857145
+
+const BTEAIROCEAN = new ModifiedAirocean()
+const uprightProj = new GeographicProjection().orientProjection(BTEAIROCEAN, new GeographicProjection().Orientation.upright)
+const scaledProj = new ScaleProjection(uprightProj, SCALE, SCALE)
+
+console.log(scaledProj.fromGeo(47.58562, 6.89743))
