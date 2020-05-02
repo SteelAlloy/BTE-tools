@@ -3,7 +3,6 @@
 
 class GeographicProjection {
   constructor () {
-    console.log('GeographicProjection')
     this.EARTH_CIRCUMFERENCE = 40075017
     this.EARTH_POLAR_CIRCUMFERENCE = 40008000
 
@@ -13,7 +12,6 @@ class GeographicProjection {
   }
 
   orientProjection (base, o) {
-    console.log('orientProjection GeographicProjection')
     if (base.upright()) {
       if (o === this.Orientation.upright) { return base }
       base = new UprightOrientation(base)
@@ -29,22 +27,18 @@ class GeographicProjection {
   }
 
   toGeo (x, y) {
-    console.log('toGeo GeographicProjection')
     return [x, y]
   }
 
   fromGeo (lon, lat) {
-    console.log('fromGeo GeographicProjection')
     return [lon, lat]
   }
 
   metersPerUnit () {
-    console.log('metersPerUnit GeographicProjection')
     return 100000
   }
 
   bounds () {
-    console.log('bounds GeographicProjection')
     // get max in by using extreme coordinates
     const b = [
       this.fromGeo(-180, 0)[0],
@@ -69,12 +63,10 @@ class GeographicProjection {
   }
 
   upright () {
-    console.log('upright GeographicProjection')
     return this.fromGeo(0, 90)[1] <= this.fromGeo(0, -90)[1]
   }
 
   vector (x, y, north, east) {
-    console.log('vector GeographicProjection')
     const geo = this.toGeo(x, y)
 
     // TODO: east may be slightly off because earth not a sphere
@@ -85,7 +77,6 @@ class GeographicProjection {
   }
 
   tissot (lon, lat, d) {
-    console.log('tissot GeographicProjection')
     const R = this.EARTH_CIRCUMFERENCE / (2 * Math.PI)
 
     const ddeg = d * 180.0 / Math.PI
@@ -118,46 +109,38 @@ class GeographicProjection {
 class ProjectionTransform extends GeographicProjection {
   constructor (input) {
     super()
-    console.log('ProjectionTransform')
     this.input = input
   }
 
   upright () {
-    console.log('upright ProjectionTransform')
     return this.input.upright()
   }
 
   bounds () {
-    console.log('bounds ProjectionTransform')
     return this.input.bounds()
   }
 
   metersPerUnit () {
-    console.log('metersPerUnit ProjectionTransform')
     return this.input.metersPerUnit()
   }
 }
 
 class UprightOrientation extends ProjectionTransform {
   toGeo (x, y) {
-    console.log('toGeo UprightOrientation')
     return this.input.toGeo(x, -y)
   }
 
   fromGeo (lon, lat) {
-    console.log('fromGeo UprightOrientation')
     const p = this.input.fromGeo(lon, lat)
     p[1] = -p[1]
     return p
   }
 
   upright () {
-    console.log('upright UprightOrientation')
     return !this.input.upright()
   }
 
   bounds () {
-    console.log('bounds UprightOrientation')
     const b = this.input.bounds()
     return new [b[0], -b[3], b[2], -b[1]]()
   }
@@ -165,12 +148,10 @@ class UprightOrientation extends ProjectionTransform {
 
 class InvertedOrientation extends ProjectionTransform {
   toGeo (x, y) {
-    console.log('toGeo InvertedOrientation')
     return this.input.toGeo(y, x)
   }
 
   fromGeo (lon, lat) {
-    console.log('fromGeo InvertedOrientation')
     const p = this.input.fromGeo(lon, lat)
     const t = p[0]
     p[0] = p[1]
@@ -179,7 +160,6 @@ class InvertedOrientation extends ProjectionTransform {
   }
 
   bounds () {
-    console.log('bounds InvertedOrientation')
     const b = this.input.bounds()
     return [b[1], b[0], b[3], b[2]]
   }
@@ -188,7 +168,6 @@ class InvertedOrientation extends ProjectionTransform {
 class Airocean extends GeographicProjection {
   constructor () {
     super()
-    console.log('Airocean')
 
     this.ARC = 2 * Math.asin(Math.sqrt(5 - Math.sqrt(5)) / Math.sqrt(10))
 
@@ -326,7 +305,6 @@ class Airocean extends GeographicProjection {
   }
 
   produceZYZRotationMatrix (out, offset, a, b, c) {
-    console.log('produceZYZRotationMatrix Airocean')
     const sina = Math.sin(a); const cosa = Math.cos(a); const sinb = Math.sin(b); const cosb = Math.cos(b); const sinc = Math.sin(c); const cosc = Math.cos(c)
 
     out[offset + 0] = cosa * cosb * cosc - sinc * sina
@@ -343,13 +321,11 @@ class Airocean extends GeographicProjection {
   }
 
   cart (lambda, phi) {
-    console.log('cart Airocean')
     const sinphi = Math.sin(phi)
     return [sinphi * Math.cos(lambda), sinphi * Math.sin(lambda), Math.cos(phi)]
   }
 
   findTriangle (x, y, z) {
-    console.log('findTriangle Airocean')
     let min = Number.MAX_VALUE
     let face = 0
 
@@ -372,7 +348,6 @@ class Airocean extends GeographicProjection {
   }
 
   findMapTriangle (x, y) {
-    console.log('findMapTriangle Airocean')
     let min = Number.MAX_VALUE
     let face = 0
 
@@ -391,7 +366,6 @@ class Airocean extends GeographicProjection {
   }
 
   findTriangleGrid (x, y) {
-    console.log('findTriangleGrid  Airocean')
     // cast equiladeral triangles to 45 degreee right triangles (side length of root2)
     const xp = x / this.ARC
     let yp = y / (this.ARC * this.ROOT3)
@@ -428,7 +402,6 @@ class Airocean extends GeographicProjection {
   }
 
   triangleTransform (x, y, z) {
-    console.log('triangleTransform Airocean')
     const S = this.Z / z
 
     const xp = S * x
@@ -442,7 +415,6 @@ class Airocean extends GeographicProjection {
   }
 
   inverseTriangleTransformNewton (xpp, ypp) {
-    console.log('inverseTriangleTransformNewton Airocean')
     // a & b are linearly related to c, so using the tan of sum formula we know: tan(c+off) = (tanc + tanoff)/(1-tanc*tanoff)
     const tanaoff = Math.tan(this.ROOT3 * ypp + xpp) // a = c + root3*y'' + x''
     const tanboff = Math.tan(2 * xpp) // b = c + 2x''
@@ -490,7 +462,6 @@ class Airocean extends GeographicProjection {
   }
 
   inverseTriangleTransformCbrt (xpp, ypp) {
-    console.log('inverseTriangleTransformCbrt Airocean')
     // a & b are linearly related to c, so using the tan of sum formula we know: tan(c+off) = (tanc + tanoff)/(1-tanc*tanoff)
     const tanaoff = Math.tan(this.ROOT3 * ypp + xpp) // a = c + root3*y'' + x''
     const tanboff = Math.tan(2 * xpp) // b = c + 2x''
@@ -530,7 +501,6 @@ class Airocean extends GeographicProjection {
   }
 
   inverseTriangleTransformCbrtNewton (xpp, ypp) {
-    console.log('inverseTriangleTransformCbrtNewton Airocean')
     // a & b are linearly related to c, so using the tan of sum formula we know: tan(c+off) = (tanc + tanoff)/(1-tanc*tanoff)
     const tanaoff = Math.tan(this.ROOT3 * ypp + xpp) // a = c + root3*y'' + x''
     const tanboff = Math.tan(2 * xpp) // b = c + 2x''
@@ -573,12 +543,10 @@ class Airocean extends GeographicProjection {
   }
 
   inverseTriangleTransform (x, y) {
-    console.log('inverseTriangleTransform Airocean')
     return this.inverseTriangleTransformNewton(x, y)
   }
 
   yRot (lambda, phi, rot) {
-    console.log('yRot Airocean')
     const c = this.cart(lambda, phi)
 
     const x = c[0]
@@ -595,7 +563,6 @@ class Airocean extends GeographicProjection {
   }
 
   fromGeo (lon, lat) {
-    console.log('fromGeo Airocean')
     lat = 90 - lat
     lon *= this.TO_RADIANS
     lat *= this.TO_RADIANS
@@ -637,7 +604,6 @@ class Airocean extends GeographicProjection {
   }
 
   toGeo (x, y) {
-    console.log('toGeo Airocean')
     const face = this.findTriangleGrid(x, y)
 
     if (face === -1) {
@@ -697,17 +663,14 @@ class Airocean extends GeographicProjection {
   }
 
   bounds () {
-    console.log('bounds Airocean')
     return [-3 * this.ARC, -0.75 * this.ARC * this.ROOT3, 2.5 * this.ARC, 0.75 * this.ARC * this.ROOT3]
   }
 
   upright () {
-    console.log('upright  Airocean')
     return false
   }
 
   metersPerUnit () {
-    console.log('metersPerUnit Airocean')
     return Math.sqrt(510100000000000.0 / (20 * this.ROOT3 * this.ARC * this.ARC / 4))
   }
 }
@@ -715,7 +678,7 @@ class Airocean extends GeographicProjection {
 class ConformalEstimate extends Airocean {
   constructor () {
     super()
-    console.log('ConformalEstimate')
+
     this.VECTOR_SCALE_FACTOR = 1 / 1.1473979730192934
 
     // let is = null
@@ -739,7 +702,7 @@ class ConformalEstimate extends Airocean {
       // player.printError("Conformal.txt doesn't exist.")
       // } else {
       // var sc = new BufferedReader(new FileReader(is))
-      const sc = require('fs').readFileSync('data/conformal.txt', 'utf-8').split(/\r?\n/)
+      const sc = require('fs').readFileSync(require('path').resolve(__dirname, './data/conformal.txt'), 'utf-8').split(/\r?\n/)
       let i = 0
 
       for (let u = 0; u < xs.length; u++) {
@@ -772,7 +735,6 @@ class ConformalEstimate extends Airocean {
   }
 
   triangleTransform (x, y, z) {
-    console.log('triangleTransform ConformalEstimate')
     let c = super.triangleTransform(x, y, z)
 
     x = c[0]
@@ -808,7 +770,6 @@ class ConformalEstimate extends Airocean {
   }
 
   inverseTriangleTransform (x, y) {
-    console.log('inverseTriangleTransform ConformalEstimate')
     // System.out.println(x+" "+y);
 
     x /= this.ARC
@@ -831,7 +792,6 @@ class ConformalEstimate extends Airocean {
   }
 
   metersPerUnit () {
-    console.log('metersPerUnit ConformalEstimate')
     return (40075017 / (2 * Math.PI)) / this.VECTOR_SCALE_FACTOR
   }
 }
@@ -839,7 +799,6 @@ class ConformalEstimate extends Airocean {
 class ModifiedAirocean extends ConformalEstimate {
   constructor () {
     super()
-    console.log('ModifiedAirocean')
 
     this.THETA = -150 * this.TO_RADIANS
     this.SIN_THETA = Math.sin(this.THETA)
@@ -862,7 +821,6 @@ class ModifiedAirocean extends ConformalEstimate {
 
   fromGeo (lon, lat) {
     const c = super.fromGeo(lon, lat)
-    console.log('fromGeo ModifiedAirocean')
     let x = c[0]
     let y = c[1]
 
@@ -885,7 +843,6 @@ class ModifiedAirocean extends ConformalEstimate {
   }
 
   toGeo (x, y) {
-    console.log('toGeo ModifiedAirocean')
     let easia
     if (y < 0) easia = x > 0
     else if (y > this.ARC / 2) easia = x > -this.ROOT3 * this.ARC / 2
@@ -915,7 +872,6 @@ class ModifiedAirocean extends ConformalEstimate {
   }
 
   isEurasianPart (x, y) {
-    console.log('isEurasianPart ModifiedAirocean')
     // catch vast majority of cases in not near boundary
     if (x > 0) return false
     if (x < -0.5 * this.ARC) return true
@@ -944,7 +900,6 @@ class ModifiedAirocean extends ConformalEstimate {
 
 class InvertableVectorField {
   constructor (vx, vy) {
-    console.log('InvertableVectorField')
     this.ROOT3 = Math.sqrt(3)
 
     this.sideLength = vx.length - 1
@@ -953,7 +908,6 @@ class InvertableVectorField {
   }
 
   getInterpolatedVector (x, y) {
-    console.log('getInterpolatedVector InvertableVectorField')
     // scale up triangle to be triangleSize across
     x *= this.sideLength
     y *= this.sideLength
@@ -1012,7 +966,6 @@ class InvertableVectorField {
   }
 
   applyNewtonsMethod (expectedf, expectedg, xest, yest, iter) {
-    console.log('applyNewtonsMethod InvertableVectorField')
     for (let i = 0; i < iter; i++) {
       const c = this.getInterpolatedVector(xest, yest)
 
