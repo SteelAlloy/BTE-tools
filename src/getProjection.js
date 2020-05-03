@@ -1,108 +1,24 @@
-// importPackage(Packages.java.io)
-// importPackage(Packages.java.awt)
+/* global importPackage Packages BufferedReader FileReader player context */
+
+importPackage(Packages.java.io)
+importPackage(Packages.java.awt)
 
 class GeographicProjection {
   constructor () {
-    this.EARTH_CIRCUMFERENCE = 40075017
-    this.EARTH_POLAR_CIRCUMFERENCE = 40008000
-
     this.Orientation = {
       none: 1, upright: 2, swapped: 3
     }
   }
 
-  orientProjection (base, o) {
+  orientProjection (base) {
     if (base.upright()) {
-      if (o === this.Orientation.upright) { return base }
-      base = new UprightOrientation(base)
+      return base
     }
-
-    if (o === this.Orientation.swapped) {
-      return new InvertedOrientation(base)
-    } else if (o === this.Orientation.upright) {
-      base = new UprightOrientation(base)
-    }
-
-    return base
-  }
-
-  toGeo (x, y) {
-    return [x, y]
-  }
-
-  fromGeo (lon, lat) {
-    return [lon, lat]
-  }
-
-  metersPerUnit () {
-    return 100000
-  }
-
-  bounds () {
-    // get max in by using extreme coordinates
-    const b = [
-      this.fromGeo(-180, 0)[0],
-      this.fromGeo(0, -90)[1],
-      this.fromGeo(180, 0)[0],
-      this.fromGeo(0, 90)[1]
-    ]
-
-    if (b[0] > b[2]) {
-      const t = b[0]
-      b[0] = b[2]
-      b[2] = t
-    }
-
-    if (b[1] > b[3]) {
-      const t = b[1]
-      b[1] = b[3]
-      b[3] = t
-    }
-
-    return b
+    return new UprightOrientation(base)
   }
 
   upright () {
     return this.fromGeo(0, 90)[1] <= this.fromGeo(0, -90)[1]
-  }
-
-  vector (x, y, north, east) {
-    const geo = this.toGeo(x, y)
-
-    // TODO: east may be slightly off because earth not a sphere
-    const off = this.fromGeo(geo[0] + east * 360.0 / (Math.cos(geo[1] * Math.PI / 180.0) * this.EARTH_CIRCUMFERENCE),
-      geo[1] + north * 360.0 / this.EARTH_POLAR_CIRCUMFERENCE)
-
-    return [off[0] - x, off[1] - y]
-  }
-
-  tissot (lon, lat, d) {
-    const R = this.EARTH_CIRCUMFERENCE / (2 * Math.PI)
-
-    const ddeg = d * 180.0 / Math.PI
-
-    const base = this.fromGeo(lon, lat)
-    const lonoff = this.fromGeo(lon + ddeg, lat)
-    const latoff = this.fromGeo(lon, lat + ddeg)
-
-    const dxdl = (lonoff[0] - base[0]) / d
-    const dxdp = (latoff[0] - base[0]) / d
-    const dydl = (lonoff[1] - base[1]) / d
-    const dydp = (latoff[1] - base[1]) / d
-
-    const cosp = Math.cos(lat * Math.PI / 180.0)
-
-    const h = Math.sqrt(dxdp * dxdp + dydp * dydp) / R
-    const k = Math.sqrt(dxdl * dxdl + dydl * dydl) / (cosp * R)
-
-    const sint = Math.abs(dydp * dxdl - dxdp * dydl) / (R * R * cosp * h * k)
-    const ap = Math.sqrt(h * h + k * k + 2 * h * k * sint)
-    const bp = Math.sqrt(h * h + k * k - 2 * h * k * sint)
-
-    const a = (ap + bp) / 2
-    const b = (ap - bp) / 2
-
-    return [h * k * sint, 2 * Math.asin(bp / ap), a, b]
   }
 }
 
@@ -179,25 +95,6 @@ class ScaleProjection extends ProjectionTransform {
 
   metersPerUnit () {
     return this.input.metersPerUnit() / Math.sqrt((this.scaleX * this.scaleX + this.scaleY * this.scaleY) / 2) // TODO: better transform
-  }
-}
-
-class InvertedOrientation extends ProjectionTransform {
-  toGeo (x, y) {
-    return this.input.toGeo(y, x)
-  }
-
-  fromGeo (lon, lat) {
-    const p = this.input.fromGeo(lon, lat)
-    const t = p[0]
-    p[0] = p[1]
-    p[1] = t
-    return p
-  }
-
-  bounds () {
-    const b = this.input.bounds()
-    return [b[1], b[0], b[3], b[2]]
   }
 }
 
@@ -717,7 +614,7 @@ class ConformalEstimate extends Airocean {
 
     this.VECTOR_SCALE_FACTOR = 1 / 1.1473979730192934
 
-    // let is = null
+    let is = null
 
     const sideLength = 256
 
@@ -733,38 +630,38 @@ class ConformalEstimate extends Airocean {
 
     try {
       // is = new FileInputStream("../resources/assets/terra121/data/conformal.txt");
-      // is = context.getSafeOpenFile('data', 'conformal', 'txt')
-      // if (!is.exists()) {
-      // player.printError("Conformal.txt doesn't exist.")
-      // } else {
-      // var sc = new BufferedReader(new FileReader(is))
-      const sc = require('fs').readFileSync(require('path').resolve(__dirname, './data/conformal.txt'), 'utf-8').split(/\r?\n/)
-      let i = 0
+      is = context.getSafeOpenFile('data', 'conformal', 'txt')
+      if (!is.exists()) {
+        player.printError("Conformal.txt doesn't exist.")
+      } else {
+        var sc = new BufferedReader(new FileReader(is))
+        // const sc = require('fs').readFileSync(require('path').resolve(__dirname, './data/conformal.txt'), 'utf-8').split(/\r?\n/)
+        // let i = 0
 
-      for (let u = 0; u < xs.length; u++) {
-        const px = new Array(xs.length - u)
-        const py = new Array(xs.length - u)
-        xs[u] = px
-        ys[u] = py
-      }
+        for (let u = 0; u < xs.length; u++) {
+          const px = new Array(xs.length - u)
+          const py = new Array(xs.length - u)
+          xs[u] = px
+          ys[u] = py
+        }
 
-      for (let v = 0; v < xs.length; v++) {
-        for (let u = 0; u < xs.length - v; u++) {
-          // let line = sc.readLine()
-          let line = sc[i]
-          line = line.substring(1, line.length - 3)
-          const split = line.split(', ')
-          xs[u][v] = Number.parseFloat(split[0]) * this.VECTOR_SCALE_FACTOR
-          ys[u][v] = Number.parseFloat(split[1]) * this.VECTOR_SCALE_FACTOR
-          i++
+        for (let v = 0; v < xs.length; v++) {
+          for (let u = 0; u < xs.length - v; u++) {
+            let line = sc.readLine()
+            // let line = sc[i]
+            line = line.substring(1, line.length() - 3)
+            const split = line.split(', ')
+            xs[u][v] = Number.parseFloat(split[0]) * this.VECTOR_SCALE_FACTOR
+            ys[u][v] = Number.parseFloat(split[1]) * this.VECTOR_SCALE_FACTOR
+            // i++
+          }
         }
       }
-      // }
 
-      // sc.close()
+      sc.close()
     } catch (e) {
-      // player.printError("Can't load conformal: " + e)
-      console.error("Can't load conformal: " + e)
+      player.printError("Can't load conformal: " + e)
+      // console.error("Can't load conformal: " + e)
     }
 
     this.inverse = new InvertableVectorField(xs, ys)
@@ -1020,23 +917,11 @@ class InvertableVectorField {
   }
 }
 
-console.log('Script compiled')
+function getProjection () { // eslint-disable-line no-unused-vars
+  const scale = 7318261.522857145
+  const bteAirOcean = new ModifiedAirocean()
+  const uprightProj = new GeographicProjection().orientProjection(bteAirOcean)
+  return new ScaleProjection(uprightProj, scale, scale)
+}
 
-// player.print('Script compiled')
-
-// context.checkArgs(2, 4, '<latitude> <longitude> [altitude]')
-
-// player.print(new ModifiedAirocean().fromGeo(argv[1], argv[2]))
-// player.print(new ModifiedAirocean().fromGeo(argv[3], argv[4]))
-// player.print(new ModifiedAirocean().toGeo(argv[3], argv[4]))
-// player.print(new ModifiedAirocean().toGeo(argv[1], argv[2]))
-
-console.log(new ModifiedAirocean().fromGeo(47.58562, 6.89743))
-
-const SCALE = 7318261.522857145
-
-const BTEAIROCEAN = new ModifiedAirocean()
-const uprightProj = new GeographicProjection().orientProjection(BTEAIROCEAN, new GeographicProjection().Orientation.upright)
-const scaledProj = new ScaleProjection(uprightProj, SCALE, SCALE)
-
-console.log(scaledProj.fromGeo(47.58562, 6.89743))
+module.exports = getProjection
