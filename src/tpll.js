@@ -4,9 +4,9 @@ const getProjection = require('./getProjection')
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 
-const usage = '<latitude> <longitude> [altitude]\n' +
-' • §o/cs tpll 47.58523 6.89725\n' +
-' • §o/cs tpll 47.58523, 6.89725 370'
+const usage = `<latitude> <longitude> [altitude]
+ • §o/cs tpll 47.58523 6.89725
+ • §o/cs tpll 47.58523, 6.89725 370`
 
 context.checkArgs(2, 3, usage)
 
