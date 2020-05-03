@@ -1,17 +1,14 @@
-const { src, dest, parallel } = require('gulp')
+const { src, dest } = require('gulp')
 const babel = require('gulp-babel')
 const uglify = require('gulp-uglify')
-var concat = require('gulp-concat')
+const bro = require('gulp-bro')
 
-exports.default = parallel(requireProjection('tpll.js'), requireProjection('tpdms.js'))
+const files = ['tpll', 'tpdms', 'draw']
 
-function requireProjection (file) {
-  return function requireProjection () {
-    return src('src/projection.js')
-      .pipe(src('src/' + file))
-      .pipe(babel())
-      .pipe(uglify())
-      .pipe(concat(file))
-      .pipe(dest('craftscripts/'))
-  }
+exports.default = function () {
+  return src(`src/+(${files.join('|')}).js`)
+    .pipe(bro())
+    .pipe(babel())
+    .pipe(uglify())
+    .pipe(dest('craftscripts/'))
 }

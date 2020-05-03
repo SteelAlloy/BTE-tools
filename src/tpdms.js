@@ -1,4 +1,5 @@
-/* global importPackage Packages player context argv Vector getProjection */
+/* global importPackage Packages player context argv Vector */
+const getProjection = require('./projections/projection')
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
