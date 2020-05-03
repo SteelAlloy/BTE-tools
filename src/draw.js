@@ -1,5 +1,5 @@
 /* global importPackage Packages context player argv BufferedReader FileReader Vector */
-const getProjection = require('./projections/projection')
+const getProjection = require('./getProjection')
 
 importPackage(Packages.java.io)
 importPackage(Packages.java.awt)

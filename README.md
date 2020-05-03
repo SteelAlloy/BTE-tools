@@ -21,22 +21,17 @@
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [About The Project](#about-the-project)
-  - [Built With](#built-with)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-  - [Installing the script](#installing-the-script)
-  - [Generating data using Overpass Turbo](#generating-data-using-overpass-turbo)
-  - [Generating data just with coordinates](#generating-data-just-with-coordinates)
-  - [Converting data](#converting-data)
-  - [Run the script in game](#run-the-script-in-game)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+- [Installation](#installation)
+  - [Usage](#usage)
+    - [list](#list)
+    - [tpll](#tpll)
+    - [tpdms](#tpdms)
+    - [draw](#draw)
+  - [Find a railroad name](#find-a-railroad-name)
+  - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Contact](#contact)
 
 
 
@@ -46,138 +41,140 @@
 
 The BTE generation is not perfect and some structures such as railway lines are missing.
 Doing it by hand is unthinkable given the curves and the number of measurements that would have to be taken. 
-- It is a WorldEdit script: 
-  - in case of problem the command `//undo` is always available. 
-  - no loading of chunks by the players, and it's very fast. 
-- You generate the data on your computer, the script on the server only plots, so there is a minimum of operations and lag. 
-- You have control over the data, whether the rails in a defined area or an entire line.
-- You can also trace any missing structure
+This set of tools will allow you to enjoy a better experience on BTE and build to your full potential.
 
 ### Built With
 
 * [Node](https://nodejs.org/)
-* [AutoHotkey](https://www.autohotkey.com/)
 
 ## Getting Started
 
+
+
 ### Prerequisites
 
-You must have [Node](https://nodejs.org/) and npm installed on your system. (Comes with it)
+You must have WorldEdit as a minimum but install the BTE modpack, it's preferable.
 
-### Installation
+##
 
-1. Clone the repo
-```sh
-git clone https://github.com/oganexon/BTE-tools.git
-```
-2. Install NPM packages
-```sh
-npm install
-```
+# Installation
+
+1. Download the [Rhino Javacsript interpreter](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino) for Java,
+which you can get from [here](https://github.com/mozilla/rhino/releases/download/Rhino1_7_12_Release/rhino-1.7.12.zip).
+Open the zip file, go to `/lib` and move `rhino-1.7.12.jar` (or newer) to your `mods` Minecraft folder.
+(Usually `C:\Users\[USERNAME]\Twitch\Minecraft\Instances\Build The Earth modpack\mods` on Windows)
+
+2. Download the latest version of BTE-scripts [here](https://github.com/oganexon/BTE-tools/releases) and place the `craftscripts` folder in `/config/worldedit`.
+
+3. (Recommended) Change the value of `scripting-timeout` to `30000` or higher in `/config/worldedit`. (`3000` ms by default)
+
+
 
 ## Usage
 
-The only functionality is currently the railway tracks outline generation.
+```bash
+/cs <COMMAND> [ARGS]
+```
 
-**[NOTE] The current way of doing things is a bit messy, to convert latitude and longitude to Minecraft coordinates a script
-is run to enter commands very quickly in the game chat. We should find a way to get these coordinates with a function.
-I already tried to translate the [java function](https://github.com/orangeadam3/terra121/blob/68ff27735ba447d6c9c017463e890eb90422569c/src/main/java/io/github/terra121/projection/ModifiedAirocean.java)
-into javascript [here](./draw/tpll/tpll-node.js). It doesn't work,
-if someone finds the problem I would be very grateful to him !**
+These are WorldEdit scripts, if blocks are modified you have access to `//undo`.
 
-### Installing the script
+- **list** : Lists all available commands.
+- **tpll** : Replaces the tpll command since permissions can be a problem.
+- **tpdms** : Same as tpll but takes `degrees minutes seconds` (such as `47°35'6.32"N 6°53'50.06"E` ).
+- **draw** : Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 
-Before you start using CraftScripts, you’ll have to install the [Rhino JavaScript engine](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino).
-A direct link to the download is [here](https://github.com/mozilla/rhino/releases/download/Rhino1_7_12_Release/rhino-1.7.12.zip).
-Open the zip file, and extract `rhino-1.7.12.jar` (or newer).
-Move `rhino-1.7.12.jar` to the plugins/ or plugins/WorldEdit folder (on Bukkit) or the mods folder (other platforms).
+Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
-Once you have the JS engine installed, drop `draw.js` in the craftscripts folder (in the WorldEdit config folder - either plugins/WorldEdit or
-config/WorldEdit depending on platform).
 
-### Generating data using Overpass Turbo
 
-By using turbo overpass, you can view the selection directly. This is the recommended method.
+### list
 
-Use the [region request](http://overpass-turbo.eu/s/TwW) or the [name request](http://overpass-turbo.eu/s/TwY)
+```bash
+/cs list
+```
+Lists all available commands.
 
-The region request is used to select every rail in the bounding box.
 
-The name request is used to select every rail of a defined line.
+
+### tpll
+
+```bash
+/cs tpll <latitude> <longitude> [altitude]
+```
+Replaces the tpll command since permissions can be a problem.
+This modified version will take you to the highest block even if you've build already.
+You don't need to remove the comma if there is one when you copy the coordinates.
+
+Examples :
+
+```bash
+/cs tpll 47.58523 6.89725
+/cs tpll 47.58523, 6.89725, 370
+```
+
+
+
+### tpdms
+
+```bash
+/cs tpdms <latitude> <longitude> [altitude]
+```
+Same as tpll but takes `degrees minutes seconds`
+This modified version will take you to the highest block even if you've build already.
+You don't need to remove the comma if there is one when you copy the coordinates.
+
+Examples :
+
+```bash
+/cs tpdms 47°35\'6.32"N 6°53\'50.06"E
+/cs tpdms 47°35\'6.32"N, 6°53\'50.06"E, 370
+```
+
+
+
+### draw
+
+```bash
+/cs draw <file> <block> [options]
+```
+Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
+
+Options :
+ - **u** (up): Draw a block above
+
+Setup :
+ - Create a `drawings` folder inside `/config/worldedit`.
+ - Get a geoJSON file of valid tracings / OR
+ - Choose one of the following links:
+   - [Rails - bounding box](http://overpass-turbo.eu/s/TwW) (Select the desired region using the map)
+   - [Rails - name](http://overpass-turbo.eu/s/TwY) (Replace with a specific railroad name) [(find a railroad name)](#find-a-railroad-name)
+ - Click `Run` > `Export` > `download/copy as GeoJSON`
+ - Place the file in the `drawings` folder.
+
+Examples :
+
+```bash
+/cs draw rails1 iron_block
+/cs draw file3 stone u
+```
+
+
+
+## Find a railroad name
 
 To find a railway name, right click near the rails and click on `Query features`
 
-![](images/name1.png)
+![](images/rails1.png)
 
 Then, click on the desired rail
 
-![](images/name2.png)
+![](images/rails2.png)
 
 And finally, get the name.
 
-![](images/name3.png)
+![](images/rails3.png)
 
-To get the correct data, click on `export` then `download/copy as GeoJSON`.
 
-### Generating data just with coordinates
-
-Go on [OpenStreetMap](https://www.openstreetmap.org/) and select the region of interest.
-
-Take the coordinates of the lowest point on the right and the highest point on the left.
-
-Put them in the config file (read the next paragraph).
-
-### Converting data
-
-Go to `./draw/src`
-
-```sh
-cd ./draw/src
-```
-
-Configure `config.json`: 
-
-```json
-{
-  "block": "iron_block",
-  "logFile": "C:\\Users\\[USERNAME]\\Twitch\\Minecraft\\Instances\\Build The Earth modpack\\logs\\latest.log",
-  "output": "output.json",
-  "input": "input.json",
-  "overpass": false, // if true, will request data to the API with the following parameters
-  "requestType": "region",
-  "region": "47.6008,6.9398,47.6131,6.9569", // Coordinates retrieved with OpenStreetMap
-  "name": "LGV Rhin-Rhône",
-  "feature": "rails" // More to come
-}
-```
-
-If you used Overpass Turbo, put the geoJSON data in `draw/input.json`
-
-You're all set. Open Minecraft, it will be used to convert coordinates.
-
-```sh
-node init.js
-```
-
-Then, run convert.exe and select `temp.json`. You're asked to put a delay, if your computer is quite slow you should increase it.
-After the warning, you have 2 seconds to click on Minecraft, then it will enter commands automatically.
-
-When finished, run:
-
-```sh
-node generate.js
-```
-
-The process is over, copy `output.json` to `/drawings` in the `/worldedit` folder.
-
-### Run the script in game
-
-```sh
-/cs draw output [block] [options]
-```
-
-It should take a few seconds depending on data size. You should put `scripting-timeout` to a higher value like `30000` 
-in `worldedit.properties` to avoid timeout since it takes longer to compute the first time.
 
 ## Roadmap
 
@@ -185,7 +182,6 @@ See the [open issues](https://github.com/oganexon/BTE-tools/issues) for a list o
 
 
 
-<!-- CONTRIBUTING -->
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -198,14 +194,12 @@ Contributions are what make the open source community such an amazing place to b
 
 
 
-<!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 
 
-<!-- CONTACT -->
 ## Contact
 
 Oganexon#2001 - Discord
