@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   test:
-    name: Test on node 12 and Windows
+    name: Build on node 12 and Windows
     runs-on: windows-latest
 
     steps:
@@ -21,6 +21,9 @@ jobs:
     
     - name: Linting
       run: yarn lint
+
+    - name: Building
+      run: yarn build
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1
