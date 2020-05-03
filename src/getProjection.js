@@ -630,7 +630,7 @@ class ConformalEstimate extends Airocean {
 
     try {
       // is = new FileInputStream("../resources/assets/terra121/data/conformal.txt");
-      is = context.getSafeOpenFile('data', 'conformal', 'txt')
+      is = context.getSafeOpenFile('craftscripts/data', 'conformal', 'txt')
       if (!is.exists()) {
         player.printError("Conformal.txt doesn't exist.")
       } else {
