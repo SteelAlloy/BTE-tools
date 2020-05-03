@@ -15,9 +15,15 @@ jobs:
         node-version: 12
     
     - name: Installing
-      run: npm install
+      run: yarn install
       env:
         CI: true
     
     - name: Linting
-      run: npm run lint
+      run: yarn lint
+
+    - name: Archive production artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: craftscripts
+          path: craftscripts

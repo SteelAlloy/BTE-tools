@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Awesome tools and scripts to enhance your experience on the Build The Earth project!",
   "scripts": {
-    "lint": "standard draw/**/*.js craftscripts/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "standard src/**/* --fix",
+    "build": "gulp"
   },
   "repository": {
     "type": "git",
@@ -16,7 +16,14 @@
     "url": "https://github.com/oganexon/BTE-tools/issues"
   },
   "homepage": "https://github.com/oganexon/BTE-tools#readme",
-  "dependencies": {
-    "query-overpass": "^1.5.5"
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/register": "^7.9.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-uglify": "^3.0.2",
+    "standard": "^14.3.3"
   }
 }
