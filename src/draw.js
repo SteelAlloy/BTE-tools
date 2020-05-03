@@ -7,11 +7,11 @@ importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
 
-const usage = '/cs draw <file> <block> [options] \n' +
-  ' • §o/cs draw rails1 iron_block\n' +
-  ' • §o/cs draw file3 stone u\n' +
-  'Options:\n' +
-  ' • §lu§r§c Draw a block above'
+const usage = `/cs draw <file> <block> [options]
+ • §o/cs draw rails1 iron_block
+ • §o/cs draw file3 stone u
+Options:
+ • §lu§r§c Draw a block above`
 
 context.checkArgs(2, 3, usage)
 
