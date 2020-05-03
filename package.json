@@ -3,7 +3,7 @@
   "version": "1.0.2",
   "description": "Awesome tools and scripts to enhance your experience on the Build The Earth project!",
   "scripts": {
-    "lint": "standard src/**/* --fix",
+    "lint": "standard src/**/*.js --fix",
     "build": "gulp"
   },
   "repository": {
