@@ -208,3 +208,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 ## Contact
 
 Oganexon#2001 - Discord
+oganexon@protonmail.com

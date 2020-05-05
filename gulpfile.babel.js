@@ -17,7 +17,7 @@ function bundle () {
 
 function copyData (cb) {
   fs.mkdir(path.resolve(__dirname, './craftscripts/data'), (err) => {
-    if (err.code !== 'EEXIST') throw err
+    if (err && err.code !== 'EEXIST') throw err
     fs.copyFile(path.resolve(__dirname, './src/data/conformal.txt'), path.resolve(__dirname, './craftscripts/data/conformal.txt'), (err) => {
       if (err) throw err
       cb()

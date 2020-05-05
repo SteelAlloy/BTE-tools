@@ -7,10 +7,10 @@ importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
 
-const usage = `/cs draw <file> <block> [options]
+const usage = `/cs draw <file> <block> [flags]
  • §o/cs draw rails1 iron_block
  • §o/cs draw file3 stone u
-Options:
+Flags:
  • §lu§r§c Draw a block above`
 
 context.checkArgs(2, 3, usage)
@@ -21,6 +21,7 @@ if (argv[3]) {
   options.up = argv[3].includes('u')
 }
 
+player.print('§7Please wait...')
 draw(readFile(), argv[2], options)
 
 function readFile () {

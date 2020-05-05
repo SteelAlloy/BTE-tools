@@ -7,11 +7,31 @@ importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
 
-const usage = `<mode> [args]
- • §o/cs tpll 47.58523 6.89725
- • §o/cs tpll 47.58523, 6.89725 370`
+const usage = `<mode> [...args] [flags]
+Modes:
+ • §lradius§r§c Select rails in a radius
+ • §lregion§r§c Select rails in a region
+ • §lregionEdge§r§c Select rails in a region and draw only in the defined region
+Flags:
+ • §lu§r§c Draw a block above`
 
-context.checkArgs(1, 2, usage)
+const radiusUsage = `<radius> [flags]
+ • §o/cs rails radius 7
+ • §o/cs rails radius 50 u
+Flags:
+ • §lu§r§c Draw a block above`
+
+const regionUsage = `[flags]
+ • §o/cs rails region
+ • §o/cs rails region u
+Flags:
+ • §lu§r§c Draw a block above`
+
+const regionEdgeUsage = `[flags]
+ • §o/cs rails regionEdge
+ • §o/cs rails regionEdge u
+Flags:
+ • §lu§r§c Draw a block above`
 
 const session = context.getSession()
 
@@ -19,31 +39,38 @@ let radius, center, region
 
 switch ('' + argv[1]) {
   case 'radius':
+    context.checkArgs(2, 3, radiusUsage)
     radius = Number.parseFloat(argv[2])
     center = { x: player.getPosition().x, z: player.getPosition().z }
-    request(radius, center)
+    request(radius, center, { u: argv[3] && argv[3].includes('u') })
     break
 
   case 'region':
+    context.checkArgs(1, 2, regionUsage)
     region = session.getRegionSelector(player.getWorld()).getRegion()
     radius = getRadius()
     center = region.center
-    request(radius, center)
+    request(radius, center, { u: argv[2] && argv[2].includes('u') })
     break
 
   case 'regionEdge':
+    context.checkArgs(1, 2, regionEdgeUsage)
     region = session.getRegionSelector(player.getWorld()).getRegion()
     radius = getRadius()
     center = region.center
-    request(radius, center, { region })
+    request(radius, center, { region, u: argv[2] && argv[2].includes('u') })
     break
 
   default:
-    player.printError(argv[1] + ' is not a valid mode.')
+    if (argv[1]) {
+      player.printError(argv[1] + ' is not a valid mode.')
+    }
+    context.checkArgs(1, 3, usage)
     break
 }
 
 function request (radius, center, options) {
+  player.print('§7Please wait...')
   const points = transformPoints(getPoints(radius, center))
   const s = findS(points)
   const n = findN(points)
