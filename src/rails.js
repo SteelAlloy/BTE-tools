@@ -1,32 +1,60 @@
-/* global importPackage Packages player context */
+/* global importPackage Packages player context argv */
 const overpass = require('./modules/overpass')
 const getProjection = require('./modules/getProjection')
 const draw = require('./modules/drawGeoJSON')
-
-const projection = getProjection()
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
 
+const usage = `<mode> [args]
+ • §o/cs tpll 47.58523 6.89725
+ • §o/cs tpll 47.58523, 6.89725 370`
+
+context.checkArgs(1, 2, usage)
+
 const session = context.getSession()
-const region = session.getRegionSelector(player.getWorld()).getRegion()
 
-// player.printDebug(region.contains(new Vector(3145759, 367, -4796541)))
+let radius, center, region
 
-const radius = getRadius()
-const points = transformPoints(getPoints(radius))
-const s = findS(points)
-const n = findN(points)
+switch ('' + argv[1]) {
+  case 'radius':
+    radius = Number.parseFloat(argv[2])
+    center = { x: player.getPosition().x, z: player.getPosition().z }
+    request(radius, center)
+    break
 
-const query = `(way[railway~"^(rail|subway|tram)$"](${s.join(',')},${n.join(',')});>;);out;`
-player.printDebug(query)
+  case 'region':
+    region = session.getRegionSelector(player.getWorld()).getRegion()
+    radius = getRadius()
+    center = region.center
+    request(radius, center)
+    break
 
-overpass(query, (err, data) => {
-  if (err) throw err
-  // player.printDebug(JSON.stringify(data, null, 4))
-  draw(data, 'iron_block')
-})
+  case 'regionEdge':
+    region = session.getRegionSelector(player.getWorld()).getRegion()
+    radius = getRadius()
+    center = region.center
+    request(radius, center, { region })
+    break
+
+  default:
+    player.printError(argv[1] + ' is not a valid mode.')
+    break
+}
+
+function request (radius, center, options) {
+  const points = transformPoints(getPoints(radius, center))
+  const s = findS(points)
+  const n = findN(points)
+
+  const query = `(way[railway~"^(rail|subway|tram)$"](${s.join(',')},${n.join(',')});>;);out;`
+
+  overpass(query, (err, data) => {
+    if (err) throw err
+    draw(data, 'iron_block', options)
+  })
+}
 
 function getRadius () {
   const x = Math.abs(region.pos1.x - region.pos2.x)
@@ -34,8 +62,7 @@ function getRadius () {
   return Math.sqrt(x * x + z * z) / 2
 }
 
-function getPoints (radius) {
-  const center = region.center
+function getPoints (radius, center) {
   const diag = Math.sqrt(2) / 2 * radius
   return [
     [center.x + radius, center.z],
@@ -50,6 +77,7 @@ function getPoints (radius) {
 }
 
 function transformPoints (points) {
+  const projection = getProjection()
   for (let i = 0; i < points.length; i++) {
     points[i] = projection.toGeo(...points[i])
   }

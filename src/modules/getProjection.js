@@ -918,6 +918,7 @@ class InvertableVectorField {
 }
 
 function getProjection () { // eslint-disable-line no-unused-vars
+  player.print('§7Please wait...')
   const scale = 7318261.522857145
   const bteAirOcean = new ModifiedAirocean()
   const uprightProj = new GeographicProjection().orientProjection(bteAirOcean)

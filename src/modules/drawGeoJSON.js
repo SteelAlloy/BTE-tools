@@ -38,7 +38,6 @@ function draw (geometry, block, options) {
   const y = player.getPosition().y
   block = context.getBlock(block)
 
-  player.print('§7Please wait...')
   const projection = getProjection()
 
   for (let i = 0; i < geometry.length; i++) {
@@ -68,22 +67,32 @@ function drawLine (x1, y1, z1, x2, y2, z2, block, options) {
 
   for (var i = 0; i < max; i += incrMax) {
     var pos = new Vector(Math.floor(x1 + incrX * i), Math.floor(y1 + incrY * i), Math.floor(z1 + incrZ * i))
-
-    while (!ignoreBlocks.includes(blocks.getBlock(pos.add(new Vector(0, 1, 0))).id)) {
-      pos = pos.add(new Vector(0, 1, 0))
-    }
-    while (ignoreBlocks.includes(blocks.getBlock(pos).id)) {
-      pos = pos.add(new Vector(0, -1, 0))
-    }
-
-    if (allowedBlocks.includes(blocks.getBlock(pos).id)) {
-      if (options.up) {
+    if (insideRegion(pos, options)) {
+      while (!ignoreBlocks.includes(blocks.getBlock(pos.add(new Vector(0, 1, 0))).id)) {
         pos = pos.add(new Vector(0, 1, 0))
       }
-      blocks.setBlock(pos, block)
-      changedBlocks++
+      while (ignoreBlocks.includes(blocks.getBlock(pos).id)) {
+        pos = pos.add(new Vector(0, -1, 0))
+      }
+
+      if (allowedBlocks.includes(blocks.getBlock(pos).id)) {
+        if (options.up) {
+          pos = pos.add(new Vector(0, 1, 0))
+        }
+        blocks.setBlock(pos, block)
+        changedBlocks++
+      }
     }
   }
+}
+
+function insideRegion (pos, options) {
+  if (options.region) {
+    return options.region.contains(
+      new Vector(pos.x, options.region.center.y, pos.z)
+    )
+  }
+  return true
 }
 
 function getIgnoredBlocks () {
