@@ -32,6 +32,7 @@
   - [tpll](#tpll)
   - [tpdms](#tpdms)
   - [draw](#draw)
+  - [rails](#rails)
 - [🔍 Find a railroad name](#%f0%9f%94%8d-find-a-railroad-name)
 - [📜 Roadmap](#%f0%9f%93%9c-roadmap)
 - [🏗️ Contributing](#%f0%9f%8f%97%ef%b8%8f-contributing)
@@ -84,6 +85,7 @@ These are WorldEdit scripts, if blocks are modified you have access to `//undo`.
 - **tpll** : Replaces the tpll command since permissions can be a problem.
 - **tpdms** : Same as tpll but takes `degrees minutes seconds` (such as `47°35'6.32"N 6°53'50.06"E` ).
 - **draw** : Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
+- **rails** : Traces all railroads in an area
 
 Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
@@ -143,7 +145,7 @@ Examples :
 ```
 Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 
-Options :
+Flags :
  - **u** (up): Draw a block above
 
 Setup :
@@ -160,6 +162,32 @@ Examples :
 ```bash
 /cs draw rails1 iron_block
 /cs draw file3 stone u
+```
+
+### rails
+
+```bash
+/cs <mode> [...args] [flags]
+```
+Traces all railroads in an area
+
+Modes:
+ - **radius** Select rails in a radius `<radius> [flags]`
+ - **region** Select rails in a region `[flags]`
+ - **regionEdge** Select rails in a region and draw only in the defined region `[flags]`
+
+Flags :
+ - **u** (up): Draw a block above
+
+Examples :
+
+```bash
+/cs rails radius 7
+/cs rails radius 50 u
+/cs rails region
+/cs rails region u
+/cs rails regionEdge
+/cs rails regionEdge u
 ```
 
 
