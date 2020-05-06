@@ -75,7 +75,7 @@ function request (radius, center, options) {
   const s = findS(points)
   const n = findN(points)
 
-  const query = `(way[railway~"^(rail|subway|tram)$"](${s.join(',')},${n.join(',')});>;);out;`
+  const query = `(way[railway~"^.*$"](${s.join(',')},${n.join(',')});>;);out;`
 
   overpass(query, (err, data) => {
     if (err) throw err
