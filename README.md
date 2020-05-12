@@ -34,6 +34,7 @@
   - [draw](#draw)
   - [rails](#rails)
   - [address](#address)
+  - [ign](#ign)
 - [🔍 Find a railroad name](#%f0%9f%94%8d-find-a-railroad-name)
 - [📜 Roadmap](#%f0%9f%93%9c-roadmap)
 - [🏗️ Contributing](#%f0%9f%8f%97%ef%b8%8f-contributing)
@@ -88,6 +89,7 @@ These are WorldEdit scripts, if blocks are modified you have access to `//undo`.
 - **draw** : Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 - **rails** : Traces all railroads in an area
 - **address** : Get the closest address
+- **ign** : Get better elevation data (only works in France)
 
 Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
@@ -109,7 +111,7 @@ Lists all available commands.
 ```bash
 /cs tpll <latitude> <longitude> [altitude]
 ```
-Replaces the tpll command since permissions can be a problem.
+Classic tpll command that also accepts `degrees minutes seconds`
 This modified version will take you to the highest block even if you've build already.
 You don't need to remove the comma if there is one when you copy the coordinates.
 
@@ -118,6 +120,8 @@ Examples :
 ```bash
 /cs tpll 47.58523 6.89725
 /cs tpll 47.58523, 6.89725, 370
+/cs tpdms 47°35\'6.32"N 6°53\'50.06"E
+/cs tpdms 47°35\'6.32"N, 6°53\'50.06"E, 370
 ```
 
 
@@ -127,15 +131,14 @@ Examples :
 ```bash
 /cs tpdms <latitude> <longitude> [altitude]
 ```
-Same as tpll but takes `degrees minutes seconds`
+
 This modified version will take you to the highest block even if you've build already.
 You don't need to remove the comma if there is one when you copy the coordinates.
 
 Examples :
 
 ```bash
-/cs tpdms 47°35\'6.32"N 6°53\'50.06"E
-/cs tpdms 47°35\'6.32"N, 6°53\'50.06"E, 370
+
 ```
 
 
@@ -199,6 +202,14 @@ Examples :
 ```
 
 Get the closest address
+
+### ign
+
+```bash
+/cs ign
+```
+
+Get better elevation data (only works in France)
 
 
 

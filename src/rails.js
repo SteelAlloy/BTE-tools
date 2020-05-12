@@ -42,7 +42,7 @@ switch ('' + argv[1]) {
     context.checkArgs(2, 3, radiusUsage)
     radius = Number.parseFloat(argv[2])
     center = { x: player.getPosition().x, z: player.getPosition().z }
-    request(radius, center, { u: argv[3] && ('' + argv[3]).includes('u') })
+    request(radius, center, { up: argv[3] && ('' + argv[3]).includes('u') })
     break
 
   case 'region':
@@ -50,7 +50,7 @@ switch ('' + argv[1]) {
     region = session.getRegionSelector(player.getWorld()).getRegion()
     radius = getRadius()
     center = region.center
-    request(radius, center, { u: argv[2] && ('' + argv[2]).includes('u') })
+    request(radius, center, { up: argv[2] && ('' + argv[2]).includes('u') })
     break
 
   case 'regionEdge':
@@ -58,7 +58,7 @@ switch ('' + argv[1]) {
     region = session.getRegionSelector(player.getWorld()).getRegion()
     radius = getRadius()
     center = region.center
-    request(radius, center, { region, u: argv[2] && ('' + argv[2]).includes('u') })
+    request(radius, center, { region, up: argv[2] && ('' + argv[2]).includes('u') })
     break
 
   default:

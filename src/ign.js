@@ -13,6 +13,13 @@ importPackage(Packages.javax.net.ssl)
 importPackage(Packages.java.security)
 importPackage(Packages.java.security.cert)
 
+const usage = 'Select a region'
+
+context.checkArgs(0, 0, usage)
+
+const areaError = `An error has occurred in one area.
+Please select a slightly different region.`
+
 const session = context.getSession()
 const blocks = context.remember()
 const region = session.getRegionSelector(player.getWorld()).getRegion()
@@ -60,7 +67,7 @@ function ign () {
     const query = `http://wxs.ign.fr/choisirgeoportail/alti/rest/elevation.json?lon=${geoCoords[i].map((block) => block[0]).join('|')}&lat=${geoCoords[i].map((block) => block[1]).join('|')}&zonly=true`
     const elevations = JSON.parse(request(query)).elevations
     if (elevationError(elevations)) {
-      player.printError('Error')
+      player.printError(areaError)
     } else {
       for (let j = 0; j < elevations.length; j++) {
         const [x, z] = coords[i][j]
