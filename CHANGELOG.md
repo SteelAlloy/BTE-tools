@@ -13,11 +13,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
+## [1.1.1] - 2020-05-07
+
+### Added
+
+- `address` command.
+  
+
 ## [1.1.1] - 2020-05-06
 
 ### Fixed
 
 - `rails` command now scan for all rails instead of a small subset.
+
 
 ## [1.1.0] - 2020-05-05
 

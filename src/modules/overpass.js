@@ -16,7 +16,7 @@ module.exports = function (query, cb, options) {
     player.print('§7§oDatabase query...')
     const url = new URL(urltext)
     const c = url.openConnection()
-    c.addRequestProperty('User-Agent', 'BTE-tools/1.0.2')
+    c.addRequestProperty('User-Agent', 'BTE-tools')
 
     const is = c.getInputStream()
 

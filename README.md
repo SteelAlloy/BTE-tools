@@ -33,6 +33,7 @@
   - [tpdms](#tpdms)
   - [draw](#draw)
   - [rails](#rails)
+  - [address](#address)
 - [🔍 Find a railroad name](#%f0%9f%94%8d-find-a-railroad-name)
 - [📜 Roadmap](#%f0%9f%93%9c-roadmap)
 - [🏗️ Contributing](#%f0%9f%8f%97%ef%b8%8f-contributing)
@@ -86,6 +87,7 @@ These are WorldEdit scripts, if blocks are modified you have access to `//undo`.
 - **tpdms** : Same as tpll but takes `degrees minutes seconds` (such as `47°35'6.32"N 6°53'50.06"E` ).
 - **draw** : Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 - **rails** : Traces all railroads in an area
+- **address** : Get the closest address
 
 Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
@@ -167,7 +169,7 @@ Examples :
 ### rails
 
 ```bash
-/cs <mode> [...args] [flags]
+/cs rails <mode> [...args] [flags]
 ```
 Traces all railroads in an area
 
@@ -189,6 +191,14 @@ Examples :
 /cs rails regionEdge
 /cs rails regionEdge u
 ```
+
+### address
+
+```bash
+/cs address
+```
+
+Get the closest address
 
 
 
