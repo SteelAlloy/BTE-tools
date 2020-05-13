@@ -42,12 +42,15 @@ if (!options.water) {
   ])
 }
 
-const { coords, geoCoords } = getRegion()
-
-try {
-  ign()
-} catch (err) {
-  player.printError((err.message + '').split('http')[0])
+if (region.getWidth() * region.getLength() > 1500) {
+  player.printError('Please select an area of less than 1500 surface blocks')
+} else {
+  const { coords, geoCoords } = getRegion()
+  try {
+    ign(coords, geoCoords)
+  } catch (err) {
+    player.printError((err.message + '').split('http')[0])
+  }
 }
 
 function getRegion () {
@@ -78,7 +81,7 @@ function getRegion () {
   return { coords, geoCoords }
 }
 
-function ign () {
+function ign (coords, geoCoords) {
   for (let i = 0; i < geoCoords.length; i++) {
     const query = `http://wxs.ign.fr/choisirgeoportail/alti/rest/elevation.json?lon=${geoCoords[i].map((block) => block[0]).join('|')}&lat=${geoCoords[i].map((block) => block[1]).join('|')}&zonly=true`
     const elevations = JSON.parse(request(query)).elevations
