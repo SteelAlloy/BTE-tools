@@ -1,5 +1,6 @@
 /* global importPackage Packages context player Vector */
 const getProjection = require('./getProjection')
+const { ignoredBlocks, allowedBlocks } = require('./blocks')
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
@@ -8,8 +9,6 @@ importPackage(Packages.com.sk89q.worldedit.blocks)
 const blocks = context.remember()
 let changedBlocks = 0
 const DataError = new Error('Incorrect data format')
-const ignoreBlocks = getIgnoredBlocks()
-const allowedBlocks = getAllowedBlocks()
 
 module.exports = function (data, block, options) {
   options = options || {}
@@ -68,12 +67,7 @@ function drawLine (x1, y1, z1, x2, y2, z2, block, options) {
   for (var i = 0; i < max; i += incrMax) {
     var pos = new Vector(Math.floor(x1 + incrX * i), Math.floor(y1 + incrY * i), Math.floor(z1 + incrZ * i))
     if (insideRegion(pos, options)) {
-      while (!ignoreBlocks.includes(blocks.getBlock(pos.add(new Vector(0, 1, 0))).id)) {
-        pos = pos.add(new Vector(0, 1, 0))
-      }
-      while (ignoreBlocks.includes(blocks.getBlock(pos).id)) {
-        pos = pos.add(new Vector(0, -1, 0))
-      }
+      pos = findGround(pos)
 
       if (allowedBlocks.includes(blocks.getBlock(pos).id)) {
         if (options.up) {
@@ -86,6 +80,16 @@ function drawLine (x1, y1, z1, x2, y2, z2, block, options) {
   }
 }
 
+function findGround (pos) {
+  while (!ignoredBlocks.includes(blocks.getBlock(pos.add(new Vector(0, 1, 0))).id)) {
+    pos = pos.add(new Vector(0, 1, 0))
+  }
+  while (ignoredBlocks.includes(blocks.getBlock(pos).id)) {
+    pos = pos.add(new Vector(0, -1, 0))
+  }
+  return pos
+}
+
 function insideRegion (pos, options) {
   if (options.region) {
     return options.region.contains(
@@ -93,43 +97,4 @@ function insideRegion (pos, options) {
     )
   }
   return true
-}
-
-function getIgnoredBlocks () {
-  return [
-    context.getBlock('air').id,
-    context.getBlock('tallgrass').id,
-    context.getBlock('sapling').id,
-    context.getBlock('log').id,
-    context.getBlock('log2').id,
-    context.getBlock('leaves').id,
-    context.getBlock('leaves2').id,
-    context.getBlock('deadbush').id,
-    context.getBlock('red_flower').id,
-    context.getBlock('yellow_flower').id,
-    context.getBlock('red_mushroom').id,
-    context.getBlock('brown_mushroom').id,
-    context.getBlock('vine').id,
-    context.getBlock('waterlily').id,
-    context.getBlock('cactus').id,
-    context.getBlock('reeds').id,
-    context.getBlock('pumpkin').id,
-    context.getBlock('melon_block').id,
-    context.getBlock('snow_layer').id,
-    context.getBlock('double_plant').id
-  ]
-}
-
-function getAllowedBlocks () {
-  return [
-    context.getBlock('grass').id,
-    context.getBlock('dirt').id,
-    context.getBlock('stone').id,
-    context.getBlock('sand').id,
-    context.getBlock('grass_path').id,
-    context.getBlock('concrete').id,
-    context.getBlock('gravel').id,
-    context.getBlock('water').id,
-    context.getBlock('lava').id
-  ]
 }

@@ -22,30 +22,29 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [✨ About The Project](#%e2%9c%a8-about-the-project)
+- [About The Project](#about-the-project)
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-- [📦 Installation](#%f0%9f%93%a6-installation)
-- [🚀 Usage](#%f0%9f%9a%80-usage)
+- [Installation](#installation)
+- [Usage](#usage)
   - [list](#list)
   - [tpll](#tpll)
-  - [tpdms](#tpdms)
   - [draw](#draw)
   - [rails](#rails)
-- [🔍 Find a railroad name](#%f0%9f%94%8d-find-a-railroad-name)
-- [📜 Roadmap](#%f0%9f%93%9c-roadmap)
-- [🏗️ Contributing](#%f0%9f%8f%97%ef%b8%8f-contributing)
+  - [address](#address)
+  - [ign](#ign)
+- [Find a railroad name](#find-a-railroad-name)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 
 
 
-## ✨ About The Project
+## About The Project
 
-![Product Name Screen Shot](images/rails.png)
-
-The BTE generation is not perfect and some structures such as railway lines are missing.
+✨ The BTE generation is not perfect and some structures such as railway lines are missing.
 Doing it by hand is unthinkable given the curves and the number of measurements that would have to be taken. 
 This set of tools will allow you to enjoy a better experience on BTE and build to your full potential.
 
@@ -60,7 +59,7 @@ This set of tools will allow you to enjoy a better experience on BTE and build t
 
 You must have WorldEdit as a minimum but install the BTE modpack, it's preferable.
 
-## 📦 Installation
+## Installation
 
 1. Download the [Rhino Javacsript interpreter](https://developer.mozilla.org/en-US/docs/Mozilla/Projects/Rhino) for Java,
 which you can get from [here](https://github.com/mozilla/rhino/releases/download/Rhino1_7_12_Release/rhino-1.7.12.zip).
@@ -73,19 +72,20 @@ Open the zip file, go to `/lib` and move `rhino-1.7.12.jar` (or newer) to your `
 
 
 
-## 🚀 Usage
+## Usage
 
 ```bash
 /cs <COMMAND> [ARGS]
 ```
 
-These are WorldEdit scripts, if blocks are modified you have access to `//undo`.
+🚀 These are WorldEdit scripts, if blocks are modified you have access to `//undo`.
 
 - **list** : Lists all available commands.
-- **tpll** : Replaces the tpll command since permissions can be a problem.
-- **tpdms** : Same as tpll but takes `degrees minutes seconds` (such as `47°35'6.32"N 6°53'50.06"E` ).
+- **tpll** : Classic tpll command that also accepts `degrees minutes seconds`
 - **draw** : Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 - **rails** : Traces all railroads in an area
+- **address** : Get the closest address
+- **ign** : Get better elevation data (only works in France)
 
 Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
@@ -98,6 +98,9 @@ The first execution of a command will take longer than the others because the sc
 ```bash
 /cs list
 ```
+
+![](images/list.png)
+
 Lists all available commands.
 
 
@@ -107,7 +110,10 @@ Lists all available commands.
 ```bash
 /cs tpll <latitude> <longitude> [altitude]
 ```
-Replaces the tpll command since permissions can be a problem.
+
+![](images/tpll.png)
+
+Classic tpll command that also accepts `degrees minutes seconds`
 This modified version will take you to the highest block even if you've build already.
 You don't need to remove the comma if there is one when you copy the coordinates.
 
@@ -116,22 +122,6 @@ Examples :
 ```bash
 /cs tpll 47.58523 6.89725
 /cs tpll 47.58523, 6.89725, 370
-```
-
-
-
-### tpdms
-
-```bash
-/cs tpdms <latitude> <longitude> [altitude]
-```
-Same as tpll but takes `degrees minutes seconds`
-This modified version will take you to the highest block even if you've build already.
-You don't need to remove the comma if there is one when you copy the coordinates.
-
-Examples :
-
-```bash
 /cs tpdms 47°35\'6.32"N 6°53\'50.06"E
 /cs tpdms 47°35\'6.32"N, 6°53\'50.06"E, 370
 ```
@@ -146,7 +136,7 @@ Examples :
 Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 
 Flags :
- - **u** (up): Draw a block above
+ - **u** (up): Draws a block above
 
 Setup :
  - Create a `drawings` folder inside `/config/worldedit`.
@@ -167,8 +157,11 @@ Examples :
 ### rails
 
 ```bash
-/cs <mode> [...args] [flags]
+/cs rails <mode> [...args] [flags]
 ```
+
+![](images/rails.png)
+
 Traces all railroads in an area
 
 Modes:
@@ -177,7 +170,7 @@ Modes:
  - **regionEdge** Select rails in a region and draw only in the defined region `[flags]`
 
 Flags :
- - **u** (up): Draw a block above
+ - **u** (up): Draws a block above
 
 Examples :
 
@@ -190,11 +183,42 @@ Examples :
 /cs rails regionEdge u
 ```
 
+![](images/rails-.png)
 
 
-## 🔍 Find a railroad name
+### address
 
-To find a railway name, right click near the rails and click on `Query features`
+```bash
+/cs address
+```
+
+![](images/address.png)
+
+Get the closest address
+
+
+
+### ign
+
+```bash
+/cs ign
+```
+
+![](images/ign.png)
+
+Get better elevation data (only works in France)
+If you get weird lines, just select a slightly different area.
+
+Flags :
+ - **w** (water): Keeps water
+
+![](images/ign-.png)
+
+
+
+## Find a railroad name
+
+🔍 To find a railway name, right click near the rails and click on `Query features`
 
 ![](images/rails1.png)
 
@@ -208,15 +232,15 @@ And finally, get the name.
 
 
 
-## 📜 Roadmap
+## Roadmap
 
-See the [open issues](https://github.com/oganexon/BTE-tools/issues) for a list of proposed features (and known issues).
+📜 See the [open issues](https://github.com/oganexon/BTE-tools/issues) for a list of proposed features (and known issues).
 
 
 
-## 🏗️ Contributing
+## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+🏗️ Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -230,6 +254,8 @@ Contributions are what make the open source community such an amazing place to b
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
+
+Icon library by [Icons8](https://icons8.com/).
 
 
 
