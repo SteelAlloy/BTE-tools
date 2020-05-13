@@ -31,7 +31,7 @@ const regionEdgeUsage = `[flags]
  • §o/cs rails regionEdge
  • §o/cs rails regionEdge u
 Flags:
- • §lu§r§c Draw a block above`
+ • §lu§r§c Draws a block above`
 
 const session = context.getSession()
 

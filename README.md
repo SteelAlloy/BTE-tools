@@ -136,7 +136,7 @@ Examples :
 Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 
 Flags :
- - **u** (up): Draw a block above
+ - **u** (up): Draws a block above
 
 Setup :
  - Create a `drawings` folder inside `/config/worldedit`.
@@ -170,7 +170,7 @@ Modes:
  - **regionEdge** Select rails in a region and draw only in the defined region `[flags]`
 
 Flags :
- - **u** (up): Draw a block above
+ - **u** (up): Draws a block above
 
 Examples :
 
@@ -208,6 +208,9 @@ Get the closest address
 
 Get better elevation data (only works in France)
 If you get weird lines, just select a slightly different area.
+
+Flags :
+ - **w** (water): Keeps water
 
 ![](images/ign-.png)
 

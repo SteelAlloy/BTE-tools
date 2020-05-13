@@ -1,6 +1,6 @@
-/* global importPackage Packages context player StringWriter IOUtils StandardCharsets Vector */
+/* global importPackage Packages context player StringWriter IOUtils StandardCharsets Vector argv */
 const getProjection = require('./modules/getProjection')
-const { ignoredBlocks } = require('./modules/blocks')
+let { ignoredBlocks } = require('./modules/blocks')
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
@@ -13,9 +13,17 @@ importPackage(Packages.javax.net.ssl)
 importPackage(Packages.java.security)
 importPackage(Packages.java.security.cert)
 
-const usage = 'Select a region'
+const usage = `[flags]
+Flags:
+ • §lw§r§c Keeps water`
 
-context.checkArgs(0, 0, usage)
+context.checkArgs(0, 1, usage)
+
+const options = {}
+if (argv[1]) {
+  argv[1] = '' + argv[1]
+  options.water = argv[1].includes('w')
+}
 
 const areaError = `An error has occurred in one area.
 Please select a slightly different region.`
@@ -25,6 +33,14 @@ const blocks = context.remember()
 const region = session.getRegionSelector(player.getWorld()).getRegion()
 
 const air = context.getBlock('air')
+const water = context.getBlock('water')
+
+if (!options.water) {
+  ignoredBlocks = ignoredBlocks.concat([
+    context.getBlock('water').id,
+    context.getBlock('lava').id
+  ])
+}
 
 const { coords, geoCoords } = getRegion()
 
@@ -94,8 +110,9 @@ function elevateGround (pos) {
     }
     blocks.setBlock(pos, block0)
   } else {
+    const replace = blocks.getBlock(pos) === water ? water : air
     for (let y = ground.y + 1; y > pos.y; y--) {
-      blocks.setBlock(ground, air)
+      blocks.setBlock(ground, replace)
       ground = ground.add(new Vector(0, -1, 0))
     }
     blocks.setBlock(pos, block0)

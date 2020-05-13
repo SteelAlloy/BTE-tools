@@ -11,7 +11,7 @@ const usage = `/cs draw <file> <block> [flags]
  • §o/cs draw rails1 iron_block
  • §o/cs draw file3 stone u
 Flags:
- • §lu§r§c Draw a block above`
+ • §lu§r§c Draws a block above`
 
 context.checkArgs(2, 3, usage)
 
