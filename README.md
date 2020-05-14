@@ -234,7 +234,8 @@ And finally, get the name.
 
 ## Roadmap
 
-📜 See the [open issues](https://github.com/oganexon/BTE-tools/issues) for a list of proposed features (and known issues).
+📜 See the [open issues](https://github.com/oganexon/BTE-tools/issues) and
+[project boards](https://github.com/oganexon/BTE-tools/projects/) for a list of proposed features (and known issues). 
 
 
 

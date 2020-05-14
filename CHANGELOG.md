@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
+## [Unreleased]
+
+### Changed
+
+- `1500` blocks limit for the `ign` command.
+
+
 ## [1.3.0] - 2020-05-13
 
 ### Added
