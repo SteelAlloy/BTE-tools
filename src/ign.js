@@ -1,5 +1,8 @@
 /* global importPackage Packages context player StringWriter IOUtils StandardCharsets Vector argv */
 const getProjection = require('./modules/getProjection')
+const HeightMap = require('./modules/HeightMap')
+const HeightMapFilter = require('./modules/HeightMapFilter')
+const GaussianKernel = require('./modules/GaussianKernel')
 let { ignoredBlocks } = require('./modules/blocks')
 
 importPackage(Packages.com.sk89q.worldedit)
@@ -46,11 +49,22 @@ if (region.getWidth() * region.getLength() > 1500) {
   player.printError('Please select an area of less than 1500 surface blocks')
 } else {
   const { coords, geoCoords } = getRegion()
+
   try {
     ign(coords, geoCoords)
   } catch (err) {
     player.printError((err.message + '').split('http')[0])
   }
+
+  blocks.flushQueue()
+  // region.expand(new Vector(0, 10, 0), new Vector(0, -10, 0))
+
+  const iterations = 1
+  const heightMap = new HeightMap(context.remember(), region)
+  const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
+  const affected = heightMap.applyFilter(filter, iterations)
+  player.print('done ' + affected)
+  // TranslatableComponent.of("worldedit.smooth.changed", TextComponent.of(affected))
 }
 
 function getRegion () {
