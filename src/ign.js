@@ -1,6 +1,6 @@
 /* global importPackage Packages context player StringWriter IOUtils StandardCharsets Vector argv */
 const getProjection = require('./modules/getProjection')
-let { ignoredBlocks } = require('./modules/blocks')
+const { ignoredBlocks } = require('./modules/blocks')
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
@@ -25,9 +25,6 @@ if (argv[1]) {
   argv[1] = '' + argv[1]
   options.water = argv[1].includes('w')
 }
-
-const areaError = `An error has occurred in one area.
-Please select a slightly different region.`
 
 const session = context.getSession()
 const blocks = context.remember()
@@ -88,7 +85,6 @@ function getLat(coord) {
 function ign() {
   let retries = [] // stock coords that failed once, to retry fetching them once after
 
-  let pendingRequests = 0
   let onRetryNeeded = () => {
     player.print(`${retries.length} blocs have failed to elevate. Retrying...`)
 
@@ -96,7 +92,7 @@ function ign() {
     const retrying = retries
 
     // empty retires list
-    retires = []
+    retries = []
 
     // do not retry once more, show error message instead infinite loop
     onRetryNeeded = () => {
@@ -106,12 +102,8 @@ function ign() {
     // retry once with smaller groups
     runReqs(retrying, 50)
   }
-  const onReqError = (error) => {
-    player.print('reqError')
-    retries = retries.concat(group)
-  }
 
-  const elevationMap = [];
+  const elevationMap = []
 
   const runReqs = (allCoords, maxSimultaneous) => {
     const allThreads = []
@@ -125,12 +117,15 @@ function ign() {
         const elevations = data.elevations
         for (let j = 0; j < group.length; j++) {
           if (elevations[j] > -99999) {
-            elevationMap.push({ x: group[j].x, y: (elevations[j] + .5) | 0, z: group[j].z })
+            elevationMap.push({ x: group[j].x, y: (elevations[j] + 0.5) | 0, z: group[j].z })
           } else {
-            retries.push(group[j]);
+            retries.push(group[j])
           }
         }
-      }, onReqError))
+      }, (/* error */) => {
+        player.print('reqError')
+        retries = retries.concat(group)
+      }))
     }
     player.print(`Requesting information (${allCoords.length} blocs divided into ${allThreads.length} requests)...`)
 
@@ -139,7 +134,7 @@ function ign() {
     }
 
     if (retries.length > 0) {
-      onRetryNeeded();
+      onRetryNeeded()
     }
   }
 
@@ -150,7 +145,7 @@ function ign() {
     if (elevationMap[j]) {
       elevateGround(new Vector(elevationMap[j].x, elevationMap[j].y, elevationMap[j].z))
     } else {
-      failed++;
+      failed++
     }
   }
   player.print(`Elevated ${elevationMap.length - failed}/${selectedCoords.length} blocs successfully.`)
@@ -159,27 +154,27 @@ function ign() {
 function elevateGround(pos) {
   // look for current ground location
   let ground = pos
-  while (!ignoredBlocks.includes(blocks.getBlock(ground.add(new Vector(0, 1, 0))).id)) {
-    ground = ground.add(new Vector(0, 1, 0))
+  while (!ignoredBlocks.includes(blocks.getBlock(ground.add(vectorUp)).id)) {
+    ground = ground.add(vectorUp)
   }
   while (ignoredBlocks.includes(blocks.getBlock(ground).id)) {
-    ground = ground.add(new Vector(0, -1, 0))
+    ground = ground.add(vectorDown)
   }
 
   // update ground height
   const block0 = blocks.getBlock(ground)
-  const block1 = blocks.getBlock(ground.add(new Vector(0, -1, 0)))
+  const block1 = blocks.getBlock(ground.add(vectorDown))
   if (ground.y < pos.y) {
     for (let y = ground.y; y < pos.y; y++) {
       blocks.setBlock(ground, block1)
-      ground = ground.add(new Vector(0, 1, 0))
+      ground = ground.add(vectorUp)
     }
     blocks.setBlock(pos, block0)
   } else if (ground.y > pos.y) {
     const replace = blocks.getBlock(pos) === water ? water : air
     for (let y = ground.y + 1; y > pos.y; y--) {
       blocks.setBlock(ground, replace)
-      ground = ground.add(new Vector(0, -1, 0))
+      ground = ground.add(vectorDown)
     }
     blocks.setBlock(pos, block0)
   }
