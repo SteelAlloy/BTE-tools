@@ -2,6 +2,10 @@
 const getProjection = require('./modules/getProjection')
 const { ignoredBlocks } = require('./modules/blocks')
 
+const HeightMap = require('./modules/HeightMap')
+const HeightMapFilter = require('./modules/HeightMapFilter')
+const GaussianKernel = require('./modules/GaussianKernel')
+
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
@@ -51,10 +55,24 @@ const selectedCoords = getRegion()
 
 try {
   ign()
+  smooth()
 } catch (err) {
   player.printError((err.message + '').split('http')[0])
 }
 
+// smooth function
+function smooth () {
+  // TODO : get function from WorldEdit
+  blocks.flushQueue()
+  // region.expand(new Vector(0, 10, 0), new Vector(0, -10, 0))
+
+  const iterations = 1
+  const heightMap = new HeightMap(context.remember(), region)
+  const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
+  const affected = heightMap.applyFilter(filter, iterations)
+  player.print('done ' + affected)
+  // TranslatableComponent.of("worldedit.smooth.changed", TextComponent.of(affected))
+}
 // functions
 
 function getRegion () {
