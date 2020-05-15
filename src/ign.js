@@ -1,4 +1,4 @@
-/* global importPackage Packages context player StringWriter IOUtils StandardCharsets Vector argv */
+/* global importPackage Packages context player StringWriter IOUtils StandardCharsets Vector argv Thread */
 const getProjection = require('./modules/getProjection')
 const { ignoredBlocks } = require('./modules/blocks')
 
@@ -14,9 +14,6 @@ importPackage(Packages.java.net)
 importPackage(Packages.java.lang)
 importPackage(Packages.java.nio.charset)
 importPackage(Packages.org.apache.commons.io)
-importPackage(Packages.javax.net.ssl)
-importPackage(Packages.java.security)
-importPackage(Packages.java.security.cert)
 
 const usage = `[flags]
 Flags:
@@ -53,26 +50,25 @@ if (!options.water) {
 // Run
 const selectedCoords = getRegion()
 
-try {
-  ign()
-  smooth()
-} catch (err) {
-  player.printError((err.message + '').split('http')[0])
-}
+ign()
+smooth()
 
-// smooth function
+// transform 2.5 blocks chunks into smooth surface
 function smooth () {
   // TODO : get function from WorldEdit
-  blocks.flushQueue()
+
+  // TODO : get correct region after elevation
   // region.expand(new Vector(0, 10, 0), new Vector(0, -10, 0))
+
+  blocks.flushQueue()
 
   const iterations = 1
   const heightMap = new HeightMap(context.remember(), region)
   const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
   const affected = heightMap.applyFilter(filter, iterations)
-  player.print('done ' + affected)
-  // TranslatableComponent.of("worldedit.smooth.changed", TextComponent.of(affected))
+  player.print(`${affected} blocks have been smoothed`)
 }
+
 // functions
 
 function getRegion () {
@@ -101,20 +97,20 @@ function getLat (coord) {
 }
 
 function ign () {
-  let retries = [] // stock coords that failed once, to retry fetching them once after
+  let retries = [] // store coords that failed once, to retry fetching them once after
 
   let onRetryNeeded = () => {
-    player.print(`${retries.length} blocs have failed to elevate. Retrying...`)
+    player.print(`${retries.length} blocks have failed to elevate. Retrying...`)
 
     // extract retries list
     const retrying = retries
 
-    // empty retires list
+    // empty retries list
     retries = []
 
-    // do not retry once more, show error message instead infinite loop
+    // do not retry once more, show error message instead of an infinite loop
     onRetryNeeded = () => {
-      player.printError(`${retries.length} blocs failed to elevate.\nPlease select a slightly different region.`)
+      player.printError(`${retries.length} blocks failed to elevate.\nPlease select a slightly different region.`)
     }
 
     // retry once with smaller groups
@@ -141,8 +137,8 @@ function ign () {
             retries.push(group[j])
           }
         }
-      }, (/* error */) => {
-        player.print('reqError')
+      }, (err) => {
+        player.printError(`Request Error \n${(err.message + '').split('http')[0]}`)
         retries = retries.concat(group)
       }))
     }
@@ -206,10 +202,14 @@ function requestAsync (url, onSuccess, onError) {
    *    error: null if data returned; error description in case of problem
    */
   const t = new Thread(() => {
-    const c = new URL(url).openConnection()
-    const writer = new StringWriter()
-    IOUtils.copy(c.getInputStream(), writer, StandardCharsets.UTF_8)
-    onSuccess(JSON.parse(writer.toString()))
+    try {
+      const c = new URL(url).openConnection()
+      const writer = new StringWriter()
+      IOUtils.copy(c.getInputStream(), writer, StandardCharsets.UTF_8)
+      onSuccess(JSON.parse(writer.toString()))
+    } catch (err) {
+      onError(err)
+    }
   })
   t.start()
   return t
