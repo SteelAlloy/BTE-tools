@@ -123,7 +123,7 @@ function ign() {
 
       allThreads.push(requestAsync(query, (data) => {
         const elevations = data.elevations
-        for (let j = 0; j < elevations.length; j++) {
+        for (let j = 0; j < group.length; j++) {
           if (elevations[j] > -99999) {
             elevationMap.push({ x: group[j].x, y: (elevations[j] + .5) | 0, z: group[j].z })
           } else {
@@ -145,11 +145,15 @@ function ign() {
 
   runReqs(selectedCoords, 150)
 
-  player.print('Elevating...')
+  let failed = 0
   for (let j = 0; j < elevationMap.length; j++) {
-    elevateGround(new Vector(elevationMap[j].x, elevationMap[j].y, elevationMap[j].z))
+    if (elevationMap[j]) {
+      elevateGround(new Vector(elevationMap[j].x, elevationMap[j].y, elevationMap[j].z))
+    } else {
+      failed++;
+    }
   }
-  player.print('End of IGN: ' + elevationMap.length + '/' + selectedCoords.length)
+  player.print(`Elevated ${elevationMap.length - failed}/${selectedCoords.length} blocs successfully.`)
 }
 
 function elevateGround(pos) {
@@ -171,7 +175,7 @@ function elevateGround(pos) {
       ground = ground.add(new Vector(0, 1, 0))
     }
     blocks.setBlock(pos, block0)
-  } else {
+  } else if (ground.y > pos.y) {
     const replace = blocks.getBlock(pos) === water ? water : air
     for (let y = ground.y + 1; y > pos.y; y--) {
       blocks.setBlock(ground, replace)
