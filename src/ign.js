@@ -57,7 +57,7 @@ try {
 
 // functions
 
-function getRegion() {
+function getRegion () {
   player.print('§7Please wait...')
   const projection = getProjection()
 
@@ -75,14 +75,14 @@ function getRegion() {
   return coords
 }
 
-function getLon(coord) {
+function getLon (coord) {
   return coord.geo[0]
 }
-function getLat(coord) {
+function getLat (coord) {
   return coord.geo[1]
 }
 
-function ign() {
+function ign () {
   let retries = [] // stock coords that failed once, to retry fetching them once after
 
   let onRetryNeeded = () => {
@@ -104,6 +104,7 @@ function ign() {
   }
 
   const elevationMap = []
+  let success = 0
 
   const runReqs = (allCoords, maxSimultaneous) => {
     const allThreads = []
@@ -131,6 +132,13 @@ function ign() {
 
     for (let i = 0; i < allThreads.length; i++) {
       allThreads[i].join()
+      while (elevationMap.length > 0) {
+        const elevationNode = elevationMap.shift()
+        if (elevationNode) {
+          elevateGround(new Vector(elevationNode.x, elevationNode.y, elevationNode.z))
+          success++
+        }
+      }
     }
 
     if (retries.length > 0) {
@@ -140,18 +148,10 @@ function ign() {
 
   runReqs(selectedCoords, 150)
 
-  let failed = 0
-  for (let j = 0; j < elevationMap.length; j++) {
-    if (elevationMap[j]) {
-      elevateGround(new Vector(elevationMap[j].x, elevationMap[j].y, elevationMap[j].z))
-    } else {
-      failed++
-    }
-  }
-  player.print(`Elevated ${elevationMap.length - failed}/${selectedCoords.length} blocs successfully.`)
+  player.print(`Elevated ${success}/${selectedCoords.length} blocs successfully.`)
 }
 
-function elevateGround(pos) {
+function elevateGround (pos) {
   // look for current ground location
   let ground = pos
   while (!ignoredBlocks.includes(blocks.getBlock(ground.add(vectorUp)).id)) {
@@ -180,7 +180,7 @@ function elevateGround(pos) {
   }
 }
 
-function requestAsync(url, onSuccess, onError) {
+function requestAsync (url, onSuccess, onError) {
   /**
    * url: string like "http://xxx.com/..."
    * cb: function like cb(data, error)
