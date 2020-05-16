@@ -12,6 +12,7 @@ importPackage(Packages.com.sk89q.worldedit.blocks)
 importPackage(Packages.java.io)
 importPackage(Packages.java.net)
 importPackage(Packages.java.lang)
+// importPackage(Packages.java.util) // ! Using java.util interfere with WorldEdit Vector Class
 importPackage(Packages.java.nio.charset)
 importPackage(Packages.org.apache.commons.io)
 
@@ -53,23 +54,35 @@ const selectedCoords = getRegion()
 ign()
 smooth()
 
-// transform 2.5 blocks chunks into smooth surface
-function smooth () {
-  // TODO : get function from WorldEdit
-
-  // TODO : get correct region after elevation
-  // region.expand(new Vector(0, 10, 0), new Vector(0, -10, 0))
-
-  blocks.flushQueue()
-
-  const iterations = 1
-  const heightMap = new HeightMap(context.remember(), region)
-  const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
-  const affected = heightMap.applyFilter(filter, iterations)
-  player.print(`${affected} blocks have been smoothed`)
-}
-
 // functions
+
+/* function getRegion () {
+  player.print('§7Please wait...')
+
+  const iterator = region.iterator()
+
+  // ! JavaAdapter is necessary but doesn't work
+  // ! native Set doesn't exist, use java.util.Set instead
+
+  // remove duplicates
+  const uniqueCoords = new Set()
+  const uniqueCoords = new JavaAdapter(Set, {})
+  while (iterator.hasNext()) {
+    const { x, z } = iterator.next()
+    uniqueCoords.add({ x, z })
+  }
+
+  const projection = getProjection()
+
+  // project coordinates
+  const coords = Array.from(uniqueCoords)
+  player.print(coords)
+  const selectedCoords = coords.map(({ x, z }) => {
+    return { x, z, geo: projection.toGeo(x, z) }
+  })
+
+  return selectedCoords
+} */
 
 function getRegion () {
   player.print('§7Please wait...')
@@ -213,4 +226,20 @@ function requestAsync (url, onSuccess, onError) {
   })
   t.start()
   return t
+}
+
+// transform 2.5 blocks chunks into smooth surface
+function smooth () {
+  // TODO : get function from WorldEdit
+
+  // TODO : get correct region after elevation
+  // region.expand(new Vector(0, 10, 0), new Vector(0, -10, 0))
+
+  blocks.flushQueue()
+
+  const iterations = 1
+  const heightMap = new HeightMap(context.remember(), region)
+  const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
+  const affected = heightMap.applyFilter(filter, iterations)
+  player.print(`${affected} blocks have been smoothed`)
 }
