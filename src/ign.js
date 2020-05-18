@@ -69,10 +69,12 @@ function getSelection () {
   // Get as list
   const projection = getProjection()
   const coordsList = []
-  for (const x in uniqueCoords) {
-    for (const z in uniqueCoords) {
+  for (const posX in uniqueCoords) {
+    for (const posZ in uniqueCoords[posX]) {
+      const x = Number.parseFloat(posX)
+      const z = Number.parseFloat(posZ)
       const geo = projection.toGeo(x, z)
-      coordsList.push({ x: x, z: z, lon: geo[0].toFixed(5), lat: geo[1].toFixed(5) })
+      coordsList.push({ x, z, lon: geo[0].toFixed(5), lat: geo[1].toFixed(5) })
     }
   }
 
@@ -176,7 +178,7 @@ function elevateGround (pos) {
 
   // update ground height
   if (ground.y < pos.y) {
-    const replace = blocks.getBlock(ground.add(vectorDown))
+    const replace = blocks.getBlock(ground)
     for (let y = ground.y; y < pos.y; y++) {
       blocks.setBlock(ground, replace)
       ground = ground.add(vectorUp)
@@ -223,16 +225,21 @@ function requestAsync (url, onSuccess, onError) {
 
 // transform 2.5 blocks chunks into smooth surface
 function smooth ({ maxY, minY }) {
+  // apply block changes
+  blocks.flushQueue()
+
   const up = Math.max(maxY - region.getMaximumPoint().y, 0)
   const down = Math.min(minY - region.getMinimumPoint().y, 0)
 
   // expansion & smooth sides
-  region.expand(new Vector(2, up, 2), new Vector(-2, down, -2))
+  region.expand(new Vector(0, up, 0), new Vector(0, down, 0))
+  try {
+    region.expand(new Vector(2, 0, 2), new Vector(-2, 0, -2))
+  } catch {}
 
-  // update region & apply block changes
+  // update region
   world.learnChanges()
   world.explainRegionAdjust(player, session)
-  blocks.flushQueue()
 
   const commands = new RegionCommands(WorldEdit.getInstance())
   commands.smooth(context.getPlayer(), context.remember(), region, 2, false)
