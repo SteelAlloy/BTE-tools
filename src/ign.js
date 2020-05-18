@@ -56,57 +56,38 @@ smooth()
 
 // functions
 
-/* function getRegion () {
-  player.print('§7Please wait...')
-
-  const iterator = region.iterator()
-
-  // ! JavaAdapter is necessary but doesn't work
-  // ! native Set doesn't exist, use java.util.Set instead
-
-  // remove duplicates
-  const uniqueCoords = new Set()
-  const uniqueCoords = new JavaAdapter(Set, {})
-  while (iterator.hasNext()) {
-    const { x, z } = iterator.next()
-    uniqueCoords.add({ x, z })
-  }
-
-  const projection = getProjection()
-
-  // project coordinates
-  const coords = Array.from(uniqueCoords)
-  player.print(coords)
-  const selectedCoords = coords.map(({ x, z }) => {
-    return { x, z, geo: projection.toGeo(x, z) }
-  })
-
-  return selectedCoords
-} */
-
 function getRegion () {
   player.print('§7Please wait...')
-  const projection = getProjection()
 
-  const coords = []
-  const minX = region.getMinimumPoint().getX()
-  const minZ = region.getMinimumPoint().getZ()
-  const maxX = region.getWidth() + minX
-  const maxZ = region.getLength() + minZ
-  for (let x = minX; x < maxX; x++) {
-    for (let z = minZ; z < maxZ; z++) {
-      coords.push({ x: x, z: z, geo: projection.toGeo(x, z) })
+  // Get coords (without duplicates)
+  const iterator = region.iterator()
+  const uniqueCoords = {} // {x: {z: true}}
+  while (iterator.hasNext()) {
+    const { x, z } = iterator.next()
+    if (!uniqueCoords[x]) {
+      uniqueCoords[x] = {}
+    }
+    uniqueCoords[x][z] = true
+  }
+
+  // Get as list
+  const projection = getProjection()
+  const coordsList = []
+  for (const x in uniqueCoords) {
+    for (const z in uniqueCoords) {
+      const geo = projection.toGeo(x, z)
+      coordsList.push({ x: x, z: z, lon: geo[0].toFixed(5), lat: geo[1].toFixed(5) })
     }
   }
 
-  return coords
+  return coordsList
 }
 
 function getLon (coord) {
-  return coord.geo[0]
+  return coord.lon
 }
 function getLat (coord) {
-  return coord.geo[1]
+  return coord.lat
 }
 
 function ign () {
@@ -136,7 +117,7 @@ function ign () {
   const runReqs = (allCoords, maxSimultaneous) => {
     const allThreads = []
     for (let i = 0; i < allCoords.length; i += maxSimultaneous) {
-      const group = allCoords.slice(i, i + maxSimultaneous)
+      const group = allCoords.slice(i, i + maxSimultaneous).filter(a => a)
       const lons = group.map(getLon).join('|')
       const lats = group.map(getLat).join('|')
       const query = `http://wxs.ign.fr/choisirgeoportail/alti/rest/elevation.json?lon=${lons}&lat=${lats}&zonly=true`
@@ -145,13 +126,14 @@ function ign () {
         const elevations = data.elevations
         for (let j = 0; j < group.length; j++) {
           if (elevations[j] > -99999) {
-            elevationMap.push({ x: group[j].x, y: (elevations[j] + 0.5) | 0, z: group[j].z })
+            group[j].y = (elevations[j] + 0.5) | 0
+            elevationMap.push(group[j])
           } else {
             retries.push(group[j])
           }
         }
       }, (err) => {
-        player.printError(`Request Error \n${(err.message + '').split('http')[0]}`)
+        player.printError(err)
         retries = retries.concat(group)
       }))
     }
@@ -161,10 +143,8 @@ function ign () {
       allThreads[i].join()
       while (elevationMap.length > 0) {
         const elevationNode = elevationMap.shift()
-        if (elevationNode) {
-          elevateGround(new Vector(elevationNode.x, elevationNode.y, elevationNode.z))
-          success++
-        }
+        elevateGround(new Vector(elevationNode.x, elevationNode.y, elevationNode.z))
+        success++
       }
     }
 
@@ -189,21 +169,20 @@ function elevateGround (pos) {
   }
 
   // update ground height
-  const block0 = blocks.getBlock(ground)
-  const block1 = blocks.getBlock(ground.add(vectorDown))
   if (ground.y < pos.y) {
+    const replace = blocks.getBlock(ground.add(vectorDown))
     for (let y = ground.y; y < pos.y; y++) {
-      blocks.setBlock(ground, block1)
+      blocks.setBlock(ground, replace)
       ground = ground.add(vectorUp)
     }
-    blocks.setBlock(pos, block0)
+    blocks.setBlock(pos, blocks.getBlock(ground))
   } else if (ground.y > pos.y) {
     const replace = blocks.getBlock(pos) === water ? water : air
     for (let y = ground.y + 1; y > pos.y; y--) {
       blocks.setBlock(ground, replace)
       ground = ground.add(vectorDown)
     }
-    blocks.setBlock(pos, block0)
+    blocks.setBlock(pos, blocks.getBlock(ground))
   }
 }
 
@@ -215,15 +194,23 @@ function requestAsync (url, onSuccess, onError) {
    *    error: null if data returned; error description in case of problem
    */
   const t = new Thread(() => {
+    let out = null
     try {
       const c = new URL(url).openConnection()
       const writer = new StringWriter()
       IOUtils.copy(c.getInputStream(), writer, StandardCharsets.UTF_8)
-      onSuccess(JSON.parse(writer.toString()))
+      out = JSON.parse(writer.toString())
     } catch (err) {
-      onError(err)
+      onError('Request Error:\n' + (err.message || url))
+      return
+    }
+    try {
+      onSuccess(out)
+    } catch (err) {
+      onError('onSuccess Error:\n' + (err.message || url))
     }
   })
+
   t.start()
   return t
 }
