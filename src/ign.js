@@ -30,7 +30,8 @@ if (argv[1]) {
 
 const session = context.getSession()
 const blocks = context.remember()
-const region = session.getRegionSelector(player.getWorld()).getRegion()
+const world = session.getRegionSelector(player.getWorld())
+const region = world.getRegion()
 
 const air = context.getBlock('air')
 const water = context.getBlock('water')
@@ -51,8 +52,7 @@ if (!options.water) {
 // Run
 const selectedCoords = getRegion()
 
-ign()
-smooth()
+smooth(ign())
 
 // functions
 
@@ -132,6 +132,8 @@ function ign () {
 
   const elevationMap = []
   let success = 0
+  let maxY = Number.MIN_VALUE
+  let minY = Number.MAX_VALUE
 
   const runReqs = (allCoords, maxSimultaneous) => {
     const allThreads = []
@@ -146,6 +148,8 @@ function ign () {
         for (let j = 0; j < group.length; j++) {
           if (elevations[j] > -99999) {
             elevationMap.push({ x: group[j].x, y: (elevations[j] + 0.5) | 0, z: group[j].z })
+            maxY = Math.max(maxY, elevations[j])
+            minY = Math.min(minY, elevations[j])
           } else {
             retries.push(group[j])
           }
@@ -176,6 +180,8 @@ function ign () {
   runReqs(selectedCoords, 150)
 
   player.print(`Elevated ${success}/${selectedCoords.length} blocs successfully.`)
+
+  return { maxY, minY }
 }
 
 function elevateGround (pos) {
@@ -229,15 +235,21 @@ function requestAsync (url, onSuccess, onError) {
 }
 
 // transform 2.5 blocks chunks into smooth surface
-function smooth () {
-  // TODO : get function from WorldEdit
+function smooth ({ maxY, minY }) {
+  const up = Math.max(maxY - region.getMaximumPoint().y, 0)
+  const down = Math.min(minY - region.getMinimumPoint().y, 0)
 
-  // TODO : get correct region after elevation
-  // region.expand(new Vector(0, 10, 0), new Vector(0, -10, 0))
+  region.expand(new Vector(0, up, 0), new Vector(0, down, 0))
+  // smooth sides
+  region.expand(new Vector(2, 0, 0), new Vector(-2, 0, 0), new Vector(0, 0, 2), new Vector(0, 0, -2))
 
+  // update region & apply block changes
+  world.learnChanges()
+  world.explainRegionAdjust(player, session)
   blocks.flushQueue()
 
-  const iterations = 1
+  // TODO : get function from WorldEdit
+  const iterations = 2
   const heightMap = new HeightMap(context.remember(), region)
   const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
   const affected = heightMap.applyFilter(filter, iterations)
