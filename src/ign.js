@@ -12,7 +12,6 @@ importPackage(Packages.com.sk89q.worldedit.blocks)
 importPackage(Packages.java.io)
 importPackage(Packages.java.net)
 importPackage(Packages.java.lang)
-// importPackage(Packages.java.util) // ! Using java.util interfere with WorldEdit Vector Class
 importPackage(Packages.java.nio.charset)
 importPackage(Packages.org.apache.commons.io)
 
@@ -55,34 +54,6 @@ const selectedCoords = getRegion()
 smooth(ign())
 
 // functions
-
-/* function getRegion () {
-  player.print('§7Please wait...')
-
-  const iterator = region.iterator()
-
-  // ! JavaAdapter is necessary but doesn't work
-  // ! native Set doesn't exist, use java.util.Set instead
-
-  // remove duplicates
-  const uniqueCoords = new Set()
-  const uniqueCoords = new JavaAdapter(Set, {})
-  while (iterator.hasNext()) {
-    const { x, z } = iterator.next()
-    uniqueCoords.add({ x, z })
-  }
-
-  const projection = getProjection()
-
-  // project coordinates
-  const coords = Array.from(uniqueCoords)
-  player.print(coords)
-  const selectedCoords = coords.map(({ x, z }) => {
-    return { x, z, geo: projection.toGeo(x, z) }
-  })
-
-  return selectedCoords
-} */
 
 function getRegion () {
   player.print('§7Please wait...')
@@ -155,7 +126,11 @@ function ign () {
           }
         }
       }, (err) => {
-        player.printError(`Request Error \n${(err.message + '').split('http')[0]}`)
+        if ((err.message + '').match('Empty JSON string')) {
+          player.print('§7Too many requests, please reduce region size next time.')
+        } else {
+          player.printError(`Request Error \n${(err.message + '').split('http')[0]}`)
+        }
         retries = retries.concat(group)
       }))
     }
@@ -239,9 +214,8 @@ function smooth ({ maxY, minY }) {
   const up = Math.max(maxY - region.getMaximumPoint().y, 0)
   const down = Math.min(minY - region.getMinimumPoint().y, 0)
 
-  region.expand(new Vector(0, up, 0), new Vector(0, down, 0))
-  // smooth sides
-  region.expand(new Vector(2, 0, 0), new Vector(-2, 0, 0), new Vector(0, 0, 2), new Vector(0, 0, -2))
+  // expansion & smooth sides
+  region.expand(new Vector(2, up, 2), new Vector(-2, down, -2))
 
   // update region & apply block changes
   world.learnChanges()
