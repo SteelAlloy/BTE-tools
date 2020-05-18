@@ -12,7 +12,6 @@ importPackage(Packages.com.sk89q.worldedit.blocks)
 importPackage(Packages.java.io)
 importPackage(Packages.java.net)
 importPackage(Packages.java.lang)
-// importPackage(Packages.java.util) // ! Using java.util interfere with WorldEdit Vector Class
 importPackage(Packages.java.nio.charset)
 importPackage(Packages.org.apache.commons.io)
 
@@ -30,7 +29,8 @@ if (argv[1]) {
 
 const session = context.getSession()
 const blocks = context.remember()
-const region = session.getRegionSelector(player.getWorld()).getRegion()
+const world = session.getRegionSelector(player.getWorld())
+const region = world.getRegion()
 
 const air = context.getBlock('air')
 const water = context.getBlock('water')
@@ -51,8 +51,7 @@ if (!options.water) {
 // Run
 const selectedCoords = getRegion()
 
-ign()
-smooth()
+smooth(ign())
 
 // functions
 
@@ -113,6 +112,8 @@ function ign () {
 
   const elevationMap = []
   let success = 0
+  let maxY = Number.MIN_VALUE
+  let minY = Number.MAX_VALUE
 
   const runReqs = (allCoords, maxSimultaneous) => {
     const allThreads = []
@@ -128,12 +129,18 @@ function ign () {
           if (elevations[j] > -99999) {
             group[j].y = (elevations[j] + 0.5) | 0
             elevationMap.push(group[j])
+            maxY = Math.max(maxY, elevations[j])
+            minY = Math.min(minY, elevations[j])
           } else {
             retries.push(group[j])
           }
         }
       }, (err) => {
-        player.printError(err)
+        if (err.match('Request Error:\nEmpty JSON string')) {
+          player.print('§7Too many requests, please reduce region size next time.')
+        } else {
+          player.printError(err)
+        }
         retries = retries.concat(group)
       }))
     }
@@ -156,6 +163,8 @@ function ign () {
   runReqs(selectedCoords, 150)
 
   player.print(`Elevated ${success}/${selectedCoords.length} blocs successfully.`)
+
+  return { maxY, minY }
 }
 
 function elevateGround (pos) {
@@ -207,7 +216,7 @@ function requestAsync (url, onSuccess, onError) {
     try {
       onSuccess(out)
     } catch (err) {
-      onError('onSuccess Error:\n' + (err.message || url))
+      onError('Callback Error:\n' + (err.message || url))
     }
   })
 
@@ -216,15 +225,20 @@ function requestAsync (url, onSuccess, onError) {
 }
 
 // transform 2.5 blocks chunks into smooth surface
-function smooth () {
-  // TODO : get function from WorldEdit
+function smooth ({ maxY, minY }) {
+  const up = Math.max(maxY - region.getMaximumPoint().y, 0)
+  const down = Math.min(minY - region.getMinimumPoint().y, 0)
 
-  // TODO : get correct region after elevation
-  // region.expand(new Vector(0, 10, 0), new Vector(0, -10, 0))
+  // expansion & smooth sides
+  region.expand(new Vector(2, up, 2), new Vector(-2, down, -2))
 
+  // update region & apply block changes
+  world.learnChanges()
+  world.explainRegionAdjust(player, session)
   blocks.flushQueue()
 
-  const iterations = 1
+  // TODO : get function from WorldEdit
+  const iterations = 2
   const heightMap = new HeightMap(context.remember(), region)
   const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
   const affected = heightMap.applyFilter(filter, iterations)
