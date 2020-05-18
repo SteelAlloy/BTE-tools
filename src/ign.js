@@ -1,19 +1,15 @@
-/* global importPackage Packages context player StringWriter IOUtils StandardCharsets Vector argv Thread */
+/* global WorldEdit Vector RegionCommands StringWriter URL Thread StandardCharsets IOUtils */
 const getProjection = require('./modules/getProjection')
 const { ignoredBlocks } = require('./modules/blocks')
 
-const HeightMap = require('./modules/HeightMap')
-const HeightMapFilter = require('./modules/HeightMapFilter')
-const GaussianKernel = require('./modules/GaussianKernel')
-
-importPackage(Packages.com.sk89q.worldedit)
-importPackage(Packages.com.sk89q.worldedit.math)
-importPackage(Packages.com.sk89q.worldedit.blocks)
-importPackage(Packages.java.io)
-importPackage(Packages.java.net)
-importPackage(Packages.java.lang)
-importPackage(Packages.java.nio.charset)
-importPackage(Packages.org.apache.commons.io)
+importClass(Packages.com.sk89q.worldedit.WorldEdit)
+importClass(Packages.com.sk89q.worldedit.Vector)
+importClass(Packages.com.sk89q.worldedit.command.RegionCommands)
+importClass(Packages.java.io.StringWriter)
+importClass(Packages.java.net.URL)
+importClass(Packages.java.lang.Thread)
+importClass(Packages.java.nio.charset.StandardCharsets)
+importClass(Packages.org.apache.commons.io.IOUtils)
 
 const usage = `[flags]
 Flags:
@@ -36,8 +32,8 @@ const air = context.getBlock('air')
 const water = context.getBlock('water')
 const lava = context.getBlock('lava')
 
-const vectorUp = new Vector(0, 1, 0)
-const vectorDown = new Vector(0, -1, 0)
+const vectorUp = Vector.UNIT_Y
+const vectorDown = Vector.UNIT_Y.multiply(-1)
 
 if (!options.water) {
   if (ignoredBlocks.indexOf(water.id) < 0) {
@@ -49,13 +45,14 @@ if (!options.water) {
 }
 
 // Run
-const selectedCoords = getRegion()
 
-smooth(ign())
+const selection = getSelection()
+const terrain = ign(selection)
+smooth(terrain)
 
 // functions
 
-function getRegion () {
+function getSelection () {
   player.print('§7Please wait...')
   const projection = getProjection()
 
@@ -80,7 +77,7 @@ function getLat (coord) {
   return coord.geo[1]
 }
 
-function ign () {
+function ign (selectedCoords) {
   let retries = [] // store coords that failed once, to retry fetching them once after
 
   let onRetryNeeded = () => {
@@ -222,10 +219,6 @@ function smooth ({ maxY, minY }) {
   world.explainRegionAdjust(player, session)
   blocks.flushQueue()
 
-  // TODO : get function from WorldEdit
-  const iterations = 2
-  const heightMap = new HeightMap(context.remember(), region)
-  const filter = new HeightMapFilter(new GaussianKernel(5, 1.0))
-  const affected = heightMap.applyFilter(filter, iterations)
-  player.print(`${affected} blocks have been smoothed`)
+  const commands = new RegionCommands(WorldEdit.getInstance())
+  commands.smooth(context.getPlayer(), context.remember(), region, 2, false)
 }
