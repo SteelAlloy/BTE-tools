@@ -74,7 +74,7 @@ function getSelection () {
       const x = Number.parseFloat(posX)
       const z = Number.parseFloat(posZ)
       const geo = projection.toGeo(x, z)
-      coordsList.push({ x, z, lon: geo[0].toFixed(5), lat: geo[1].toFixed(5) })
+      coordsList.push({ x: x, z: z, lon: geo[0].toFixed(5), lat: geo[1].toFixed(5) })
     }
   }
 
@@ -149,8 +149,12 @@ function ign (selectedCoords) {
       allThreads[i].join()
       while (elevationMap.length > 0) {
         const elevationNode = elevationMap.shift()
-        elevateGround(new Vector(elevationNode.x, elevationNode.y, elevationNode.z))
-        success++
+        if (elevationNode) {
+          const previousY = elevateGround(new Vector(elevationNode.x, elevationNode.y, elevationNode.z))
+          maxY = Math.max(maxY, previousY)
+          minY = Math.min(minY, previousY)
+          success++
+        }
       }
     }
 
@@ -168,30 +172,36 @@ function ign (selectedCoords) {
 
 function elevateGround (pos) {
   // look for current ground location
-  let ground = pos
-  while (!ignoredBlocks.includes(blocks.getBlock(ground.add(vectorUp)).id)) {
-    ground = ground.add(vectorUp)
+  let groundPos = pos
+  while (!ignoredBlocks.includes(blocks.getBlock(groundPos.add(vectorUp)).id)) {
+    groundPos = groundPos.add(vectorUp)
   }
-  while (ignoredBlocks.includes(blocks.getBlock(ground).id)) {
-    ground = ground.add(vectorDown)
+  while (ignoredBlocks.includes(blocks.getBlock(groundPos).id)) {
+    groundPos = groundPos.add(vectorDown)
   }
+  const previousY = groundPos.y
 
   // update ground height
-  if (ground.y < pos.y) {
-    const replace = blocks.getBlock(ground)
-    for (let y = ground.y; y < pos.y; y++) {
-      blocks.setBlock(ground, replace)
-      ground = ground.add(vectorUp)
+  const surface = blocks.getBlock(groundPos)
+  if (groundPos.y < pos.y) {
+    const underground = blocks.getBlock(groundPos.add(vectorDown))
+
+    for (let y = groundPos.y; y < pos.y; y++) {
+      blocks.setBlock(groundPos, underground)
+      groundPos = groundPos.add(vectorUp)
     }
-    blocks.setBlock(pos, blocks.getBlock(ground))
-  } else if (ground.y > pos.y) {
+    blocks.setBlock(pos, surface)
+  } else if (groundPos.y > pos.y) {
     const replace = blocks.getBlock(pos) === water ? water : air
-    for (let y = ground.y + 1; y > pos.y; y--) {
-      blocks.setBlock(ground, replace)
-      ground = ground.add(vectorDown)
+
+    for (let y = groundPos.y + 1; y > pos.y; y--) {
+      blocks.setBlock(groundPos, replace)
+      groundPos = groundPos.add(vectorDown)
     }
-    blocks.setBlock(pos, blocks.getBlock(ground))
+    blocks.setBlock(pos, surface)
   }
+
+  return previousY
 }
 
 function requestAsync (url, onSuccess, onError) {
@@ -209,13 +219,13 @@ function requestAsync (url, onSuccess, onError) {
       IOUtils.copy(c.getInputStream(), writer, StandardCharsets.UTF_8)
       out = JSON.parse(writer.toString())
     } catch (err) {
-      onError('Request Error:\n' + (err.message || url))
+      onError(('Request Error:\n' + (err.message || url)).split('http')[0])
       return
     }
     try {
       onSuccess(out)
     } catch (err) {
-      onError('Callback Error:\n' + (err.message || url))
+      onError(('Callback Error:\n' + (err.message || url)).split('http')[0])
     }
   })
 
@@ -233,14 +243,19 @@ function smooth ({ maxY, minY }) {
 
   // expansion & smooth sides
   region.expand(new Vector(0, up, 0), new Vector(0, down, 0))
+
   try {
     region.expand(new Vector(2, 0, 2), new Vector(-2, 0, -2))
+  } catch {}
+
+  const commands = new RegionCommands(WorldEdit.getInstance())
+  commands.smooth(context.getPlayer(), context.remember(), region, 2, false)
+
+  try {
+    region.contract(new Vector(2, 0, 2), new Vector(-2, 0, -2))
   } catch {}
 
   // update region
   world.learnChanges()
   world.explainRegionAdjust(player, session)
-
-  const commands = new RegionCommands(WorldEdit.getInstance())
-  commands.smooth(context.getPlayer(), context.remember(), region, 2, false)
 }
