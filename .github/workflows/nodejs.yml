@@ -24,6 +24,8 @@ jobs:
 
     - name: Building
       run: yarn build
+      env:
+        IGN_API_KEY: ${{ secrets.IGN_API_KEY }}
 
     - name: Archive production artifacts
       uses: actions/upload-artifact@v1

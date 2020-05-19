@@ -13,14 +13,18 @@ importClass(Packages.org.apache.commons.io.IOUtils)
 
 const usage = `[flags]
 Flags:
- • §lw§r§c Keeps water`
+ • §lw§r§c Keeps water
+ • §ls§r§c Removes smoothing step`
 
 context.checkArgs(0, 1, usage)
 
-const options = {}
+const options = {
+  smooth: true
+}
 if (argv[1]) {
   argv[1] = '' + argv[1]
   options.water = argv[1].includes('w')
+  options.smooth = !argv[1].includes('s')
 }
 
 const session = context.getSession()
@@ -48,7 +52,9 @@ if (!options.water) {
 
 const selection = getSelection()
 const terrain = ign(selection)
-smooth(terrain)
+if (options.smooth) {
+  smooth(terrain)
+}
 
 // functions
 
