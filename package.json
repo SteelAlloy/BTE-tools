@@ -21,10 +21,12 @@
     "@babel/preset-env": "^7.9.6",
     "@babel/register": "^7.9.0",
     "babelify": "^10.0.0",
+    "dotenv": "^8.2.0",
     "glob": "^7.1.6",
     "gulp": "^4.0.2",
     "gulp-bro": "^2.0.0",
     "standard": "^14.3.3",
+    "tinyify": "^2.5.2",
     "uglifyify": "^5.0.2"
   },
   "dependencies": {

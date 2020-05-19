@@ -120,7 +120,7 @@ function ign (selectedCoords) {
       const group = allCoords.slice(i, i + maxSimultaneous).filter(a => a)
       const lons = group.map(getLon).join('|')
       const lats = group.map(getLat).join('|')
-      const query = `http://wxs.ign.fr/choisirgeoportail/alti/rest/elevation.json?lon=${lons}&lat=${lats}&zonly=true`
+      const query = `http://wxs.ign.fr/${process.env.IGN_API_KEY}/alti/rest/elevation.json?lon=${lons}&lat=${lats}&zonly=true`
 
       allThreads.push(requestAsync(query, (data) => {
         const elevations = data.elevations
@@ -215,6 +215,7 @@ function requestAsync (url, onSuccess, onError) {
     let out = null
     try {
       const c = new URL(url).openConnection()
+      c.addRequestProperty('User-Agent', 'BTE-tools')
       const writer = new StringWriter()
       IOUtils.copy(c.getInputStream(), writer, StandardCharsets.UTF_8)
       out = JSON.parse(writer.toString())
