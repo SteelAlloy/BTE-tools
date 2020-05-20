@@ -15,9 +15,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `ign` command
+  - Smoothing step.
+
 ### Changed
 
-- `1500` blocks limit for the `ign` command.
+- `ign` command
+  - Support for regions of all shapes.
+  - Faster calculations (request parallelization).
 
 
 ## [1.3.0] - 2020-05-13

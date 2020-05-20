@@ -43,7 +43,10 @@ task('copyData', (cb) => {
       if (err && err.code !== 'EEXIST') throw err
       fs.copyFile(path.resolve(__dirname, './src/data/conformal.txt'), path.resolve(__dirname, './craftscripts/data/conformal.txt'), (err) => {
         if (err) throw err
-        cb()
+        fs.copyFile(path.resolve(__dirname, './src/config.json'), path.resolve(__dirname, './craftscripts/config.json'), (err) => {
+          if (err) throw err
+          cb()
+        })
       })
     })
   })

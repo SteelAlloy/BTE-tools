@@ -1,5 +1,6 @@
-/* global importPackage Packages player StringWriter IOUtils StandardCharsets context BufferedReader FileReader */
+/* global StringWriter IOUtils StandardCharsets */
 const osmtogeojson = require('osmtogeojson')
+const { readFile } = require('./readFile')
 
 importPackage(Packages.java.io)
 importPackage(Packages.java.net)
@@ -9,7 +10,7 @@ importPackage(Packages.org.apache.commons.io)
 module.exports = function (query, cb, options) {
   options = options || {}
 
-  const cfg = readCFG('terra121')
+  const cfg = readFile('../', 'terra121', 'cfg', [])
 
   const serverOverpass = cfg
     ? cfg.match(new RegExp('overpass_interpreter=(.*)\\n'))[1]
@@ -37,27 +38,5 @@ module.exports = function (query, cb, options) {
     cb(undefined, geojson)
   } catch (err) {
     player.printError('Osm region download failed, no osm features will spawn, ' + err)
-  }
-}
-
-function readCFG (name) {
-  const file = context.getSafeOpenFile('../', name, 'cfg')
-
-  if (!file.exists()) {
-    return undefined
-  } else {
-    var buffer = new BufferedReader(new FileReader(file))
-    var bufStr = ''
-    var line = ''
-
-    do {
-      bufStr = bufStr + line
-      bufStr = bufStr + '\n'
-      line = buffer.readLine()
-    } while (line)
-
-    buffer.close()
-
-    return bufStr
   }
 }

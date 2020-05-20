@@ -1,5 +1,6 @@
 /* global WorldEdit Vector RegionCommands StringWriter URL Thread StandardCharsets IOUtils */
 const getProjection = require('./modules/getProjection')
+const { getConfig } = require('./modules/readFile')
 const { ignoredBlocks } = require('./modules/blocks')
 
 importClass(Packages.com.sk89q.worldedit.WorldEdit)
@@ -27,6 +28,8 @@ if (argv[1]) {
   options.smooth = !argv[1].includes('s')
 }
 
+const config = getConfig()
+
 const session = context.getSession()
 const blocks = context.remember()
 const world = session.getRegionSelector(player.getWorld())
@@ -49,11 +52,19 @@ if (!options.water) {
 }
 
 // Run
+run()
 
-const selection = getSelection()
-const terrain = ign(selection)
-if (options.smooth) {
-  smooth(terrain)
+function run () {
+  const selection = getSelection()
+  const blockLimit = config.ignBlockLimit
+  if (blockLimit && blockLimit > 0 && selection.length > blockLimit) {
+    player.printError(`Please select an area of less than ${blockLimit} blocks`)
+    return
+  }
+  const terrain = ign(selection)
+  if (options.smooth) {
+    smooth(terrain)
+  }
 }
 
 // functions
