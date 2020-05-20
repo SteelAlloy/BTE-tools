@@ -1,5 +1,6 @@
-/* global importPackage Packages player StringWriter IOUtils StandardCharsets */
+/* global StringWriter IOUtils StandardCharsets */
 const osmtogeojson = require('osmtogeojson')
+const { readFile } = require('./readFile')
 
 importPackage(Packages.java.io)
 importPackage(Packages.java.net)
@@ -9,7 +10,12 @@ importPackage(Packages.org.apache.commons.io)
 module.exports = function (query, cb, options) {
   options = options || {}
 
-  const serverOverpass = 'https://overpass.kumi.systems/api/interpreter'
+  const cfg = readFile('../', 'terra121', 'cfg', [])
+
+  const serverOverpass = cfg
+    ? cfg.match(new RegExp('overpass_interpreter=(.*)\\n'))[1]
+    : 'https://overpass.kumi.systems/api/interpreter'
+
   const urltext = serverOverpass + '/api/interpreter?data=[out:json];' + query
 
   try {
