@@ -16,8 +16,6 @@ module.exports = function (query, cb, options) {
     ? cfg.match(new RegExp('overpass_interpreter=(.*)\\n'))[1]
     : 'https://overpass.kumi.systems/api/interpreter'
 
-  player.printDebug(serverOverpass)
-
   const urltext = serverOverpass + '/api/interpreter?data=[out:json];' + query
 
   try {

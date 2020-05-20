@@ -28,7 +28,7 @@
   - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [list](#list)
+  - [list / help](#list--help)
   - [tpll](#tpll)
   - [draw](#draw)
   - [rails](#rails)
@@ -74,7 +74,7 @@ Open the zip file, go to `/lib` and move `rhino-1.7.12.jar` (or newer) to your `
 
 ## Usage
 
-```bash
+```fix
 /cs <COMMAND> [ARGS]
 ```
 
@@ -93,10 +93,11 @@ The first execution of a command will take longer than the others because the sc
 
 
 
-### list
+### list / help
 
-```bash
+```fix
 /cs list
+/cs help
 ```
 
 ![](images/list.png)
@@ -107,7 +108,7 @@ Lists all available commands.
 
 ### tpll
 
-```bash
+```fix
 /cs tpll <latitude> <longitude> [altitude]
 ```
 
@@ -119,18 +120,18 @@ You don't need to remove the comma if there is one when you copy the coordinates
 
 Examples :
 
-```bash
+```fix
 /cs tpll 47.58523 6.89725
 /cs tpll 47.58523, 6.89725, 370
-/cs tpdms 47°35\'6.32"N 6°53\'50.06"E
-/cs tpdms 47°35\'6.32"N, 6°53\'50.06"E, 370
+/cs tpll 47°35'6.32"N 6°53'50.06"E
+/cs tpll 47°35'6.32"N, 6°53'50.06"E, 370
 ```
 
 
 
 ### draw
 
-```bash
+```
 /cs draw <file> <block> [options]
 ```
 Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
@@ -149,14 +150,14 @@ Setup :
 
 Examples :
 
-```bash
+```fix
 /cs draw rails1 iron_block
 /cs draw file3 stone u
 ```
 
 ### rails
 
-```bash
+```fix
 /cs rails <mode> [...args] [flags]
 ```
 
@@ -174,7 +175,7 @@ Flags :
 
 Examples :
 
-```bash
+```fix
 /cs rails radius 7
 /cs rails radius 50 u
 /cs rails region
@@ -188,19 +189,21 @@ Examples :
 
 ### address
 
-```bash
+```fix
 /cs address
 ```
 
 ![](images/address.png)
 
-Get the closest address
-
+Get the closest address, for example:
+```
+Avenue de la Gare TGV, La Jonxion, Meroux, Meroux-Moval, Belfort, Territoire-de-Belfort, Bourgogne-Franche-Comté, France métropolitaine, 90400, France
+```
 
 
 ### ign
 
-```bash
+```fix
 /cs ign
 ```
 

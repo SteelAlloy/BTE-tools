@@ -36,7 +36,7 @@ function teleport () {
   let pos
 
   if (argv[3]) {
-    pos = new Vector(x, Number.parseFloat(argv[3]), z)
+    pos = new Vector(x, Number.parseFloat(argv[3]) - 2, z)
   } else {
     pos = new Vector(x, player.getPosition().y, z)
 
