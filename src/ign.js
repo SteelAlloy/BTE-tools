@@ -132,10 +132,12 @@ function ign (selectedCoords) {
         const elevations = data.elevations
         for (let j = 0; j < group.length; j++) {
           if (elevations[j] > -99999) {
-            group[j].y = (elevations[j] + 0.5) | 0
+            group[j].y = elevations[j] | 0
+            const previousY = findGround(new Vector(group[j].x, group[j].y, group[j].z))
+            group[j].previousY = previousY
             elevationMap.push(group[j])
-            maxY = Math.max(maxY, elevations[j])
-            minY = Math.min(minY, elevations[j])
+            maxY = Math.max(maxY, elevations[j], previousY)
+            minY = Math.min(minY, elevations[j], previousY)
           } else {
             retries.push(group[j])
           }
@@ -156,9 +158,8 @@ function ign (selectedCoords) {
       while (elevationMap.length > 0) {
         const elevationNode = elevationMap.shift()
         if (elevationNode) {
-          const previousY = elevateGround(new Vector(elevationNode.x, elevationNode.y, elevationNode.z))
-          maxY = Math.max(maxY, previousY)
-          minY = Math.min(minY, previousY)
+          const newPos = new Vector(elevationNode.x, elevationNode.y, elevationNode.z)
+          elevateGround(elevationNode.previousY, newPos)
           success++
         }
       }
@@ -176,7 +177,7 @@ function ign (selectedCoords) {
   return { maxY, minY }
 }
 
-function elevateGround (pos) {
+function findGround (pos) {
   // look for current ground location
   let groundPos = pos
   while (!ignoredBlocks.includes(blocks.getBlock(groundPos.add(vectorUp)).id)) {
@@ -185,26 +186,29 @@ function elevateGround (pos) {
   while (ignoredBlocks.includes(blocks.getBlock(groundPos).id)) {
     groundPos = groundPos.add(vectorDown)
   }
-  const previousY = groundPos.y
+  return groundPos.y
+}
 
+function elevateGround (previousY, newPos) {
   // update ground height
-  const surface = blocks.getBlock(groundPos)
-  if (groundPos.y < pos.y) {
-    const underground = blocks.getBlock(groundPos.add(vectorDown))
+  let previousPos = new Vector(newPos.x, previousY, newPos.z)
+  const surface = blocks.getBlock(previousPos)
+  if (previousPos.y < newPos.y) {
+    const underground = blocks.getBlock(previousPos.add(vectorDown))
 
-    for (let y = groundPos.y; y < pos.y; y++) {
-      blocks.setBlock(groundPos, underground)
-      groundPos = groundPos.add(vectorUp)
+    for (let y = previousPos.y; y < newPos.y; y++) {
+      blocks.setBlock(previousPos, underground)
+      previousPos = previousPos.add(vectorUp)
     }
-    blocks.setBlock(pos, surface)
-  } else if (groundPos.y > pos.y) {
-    const replace = blocks.getBlock(pos) === water ? water : air
+    blocks.setBlock(newPos, surface)
+  } else if (previousPos.y > newPos.y) {
+    const replace = blocks.getBlock(newPos) === water ? water : air
 
-    for (let y = groundPos.y + 1; y > pos.y; y--) {
-      blocks.setBlock(groundPos, replace)
-      groundPos = groundPos.add(vectorDown)
+    for (let y = previousPos.y + 1; y > newPos.y; y--) {
+      blocks.setBlock(previousPos, replace)
+      previousPos = previousPos.add(vectorDown)
     }
-    blocks.setBlock(pos, surface)
+    blocks.setBlock(newPos, surface)
   }
 
   return previousY
@@ -253,14 +257,14 @@ function smooth ({ maxY, minY }) {
 
   try {
     region.expand(new Vector(2, 0, 2), new Vector(-2, 0, -2))
-  } catch {}
+  } catch { }
 
   const commands = new RegionCommands(WorldEdit.getInstance())
   commands.smooth(context.getPlayer(), context.remember(), region, 2, false)
 
   try {
     region.contract(new Vector(2, 0, 2), new Vector(-2, 0, -2))
-  } catch {}
+  } catch { }
 
   // update region
   world.learnChanges()
