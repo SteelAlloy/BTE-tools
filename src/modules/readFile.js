@@ -1,6 +1,6 @@
 /* global BufferedReader FileReader */
 
-function readFile (dir, filename, defaultExt, exts) {
+export function readFile (dir, filename, defaultExt, exts) {
   const file = context.getSafeOpenFile(dir, filename, defaultExt, exts)
 
   if (!file.exists()) {
@@ -22,11 +22,9 @@ function readFile (dir, filename, defaultExt, exts) {
   }
 }
 
-function getConfig () {
+export function getConfig () {
   const config = readFile('craftscripts', 'config', 'json', [])
   return config
     ? JSON.parse(config)
     : {}
 }
-
-module.exports = { readFile, getConfig }

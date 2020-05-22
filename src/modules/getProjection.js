@@ -917,11 +917,9 @@ class InvertableVectorField {
   }
 }
 
-function getProjection () { // eslint-disable-line no-unused-vars
+export default function getProjection () { // eslint-disable-line no-unused-vars
   const scale = 7318261.522857145
   const bteAirOcean = new ModifiedAirocean()
   const uprightProj = new GeographicProjection().orientProjection(bteAirOcean)
   return new ScaleProjection(uprightProj, scale, scale)
 }
-
-module.exports = getProjection
