@@ -38,7 +38,7 @@ function teleport () {
   if (argv[3]) {
     pos = new Vector(x, Number.parseFloat(argv[3]) - 2, z)
   } else {
-    pos = new Vector(x, player.getPosition().y, z)
+    pos = new Vector(x, player.getLocation().y, z)
 
     const blocks = context.remember()
 

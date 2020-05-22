@@ -17,6 +17,7 @@ module.exports = function (query, cb, options) {
     : 'https://overpass.kumi.systems/api/interpreter'
 
   const urltext = serverOverpass + '/api/interpreter?data=[out:json];' + query
+  let geojson
 
   try {
     player.print('§7§oDatabase query...')
@@ -30,11 +31,13 @@ module.exports = function (query, cb, options) {
     IOUtils.copy(is, writer, StandardCharsets.UTF_8)
     const data = writer.toString()
 
-    const geojson = osmtogeojson(JSON.parse(data), {
+    geojson = osmtogeojson(JSON.parse(data), {
       flatProperties: options.flatProperties || false
     })
-    cb(undefined, geojson)
   } catch (err) {
-    player.printError('Osm region download failed, no osm features will spawn, ' + err)
+    player.printError('Osm region download failed, no osm features will spawn')
+    cb(err)
+    return
   }
+  cb(undefined, geojson)
 }

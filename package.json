@@ -32,13 +32,16 @@
     "osmtogeojson": "^3.0.0-beta.4"
   },
   "standard": {
-    "globals": [
+    "global": [
+      "Packages",
       "importClass",
       "importPackage",
-      "Packages",
       "context",
       "player",
       "argv"
+    ],
+    "ignore": [
+      "**/types/"
     ]
   }
 }
