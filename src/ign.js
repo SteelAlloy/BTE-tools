@@ -1,10 +1,10 @@
-/* global WorldEdit Vector RegionCommands StringWriter URL Thread StandardCharsets IOUtils */
+/* global WorldEdit RegionCommands StringWriter URL Thread StandardCharsets IOUtils */
+import Vector from './types/com/sk89q/worldedit/Vector'
 const getProjection = require('./modules/getProjection')
 const { getConfig } = require('./modules/readFile')
 const { ignoredBlocks } = require('./modules/blocks')
 
 importClass(Packages.com.sk89q.worldedit.WorldEdit)
-importClass(Packages.com.sk89q.worldedit.Vector)
 importClass(Packages.com.sk89q.worldedit.command.RegionCommands)
 importClass(Packages.java.io.StringWriter)
 importClass(Packages.java.net.URL)

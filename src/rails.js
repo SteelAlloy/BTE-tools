@@ -1,7 +1,8 @@
 /* global importPackage Packages player context argv */
-const overpass = require('./modules/overpass')
-const getProjection = require('./modules/getProjection')
-const draw = require('./modules/drawGeoJSON')
+const { request, getRadius } = require('./modules/OSMcommand')
+const decode = require('./modules/decodePolygon')
+const { draw, findGround, insideRegion, naturalBlock, oneBlockAbove, setBlock, printBlocks } = require('./modules/drawLines')
+const { ignoredBlocks, allowedBlocks } = require('./modules/blocks')
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
@@ -15,50 +16,51 @@ Modes:
 Flags:
  • §lu§r§c Draw a block above`
 
-const radiusUsage = `<radius> [flags]
+const radiusUsage = `<radius> [block] [flags]
  • §o/cs rails radius 7
- • §o/cs rails radius 50 u
+ • §o/cs rails radius 50 stone u
 Flags:
  • §lu§r§c Draw a block above`
 
-const regionUsage = `[flags]
+const regionUsage = `[block] [flags]
  • §o/cs rails region
- • §o/cs rails region u
+ • §o/cs rails region stone u
 Flags:
  • §lu§r§c Draw a block above`
 
-const regionEdgeUsage = `[flags]
+const regionEdgeUsage = `[block] [flags]
  • §o/cs rails regionEdge
- • §o/cs rails regionEdge u
+ • §o/cs rails regionEdge stone u
 Flags:
  • §lu§r§c Draws a block above`
 
 const session = context.getSession()
+const blocks = context.remember()
 
-let radius, center, region
+let block, flags, radius, center, region, region_
 
 switch ('' + argv[1]) {
   case 'radius':
-    context.checkArgs(2, 3, radiusUsage)
+    context.checkArgs(2, 4, radiusUsage);
+    [block, flags] = argv.slice(3)
     radius = Number.parseFloat(argv[2])
-    center = { x: player.getPosition().x, z: player.getPosition().z }
-    request(radius, center, { up: argv[3] && ('' + argv[3]).includes('u') })
-    break
-
-  case 'region':
-    context.checkArgs(1, 2, regionUsage)
-    region = session.getRegionSelector(player.getWorld()).getRegion()
-    radius = getRadius()
-    center = region.center
-    request(radius, center, { up: argv[2] && ('' + argv[2]).includes('u') })
+    center = player.getLocation()
     break
 
   case 'regionEdge':
-    context.checkArgs(1, 2, regionEdgeUsage)
-    region = session.getRegionSelector(player.getWorld()).getRegion()
-    radius = getRadius()
+    context.checkArgs(1, 3, regionEdgeUsage)
+    region = session.getRegionSelector(player.getWorld()).getRegion();
+    [block, flags] = argv.slice(2)
+    radius = getRadius(region)
     center = region.center
-    request(radius, center, { region, up: argv[2] && ('' + argv[2]).includes('u') })
+    break
+
+  case 'region':
+    context.checkArgs(1, 3, regionUsage)
+    region_ = session.getRegionSelector(player.getWorld()).getRegion();
+    [block, flags] = argv.slice(2)
+    radius = getRadius(region_)
+    center = region_.center
     break
 
   default:
@@ -69,70 +71,29 @@ switch ('' + argv[1]) {
     break
 }
 
-function request (radius, center, options) {
-  player.print('§7Please wait...')
-  const points = transformPoints(getPoints(radius, center))
-  const s = findS(points)
-  const n = findN(points)
+const up = flags && ('' + flags).includes('u')
+block = block || 'iron_block'
+const options = { region, block, up }
 
-  const query = `(way[railway~"^.*$"](${s.join(',')},${n.join(',')});>;);out;`
+request(radius, center, (s, n) => {
+  return `(way[railway~"^.*$"](${s.join(',')},${n.join(',')});>;);out;`
+}, rails)
 
-  overpass(query, (err, data) => {
-    if (err) throw err
-    draw(data, 'iron_block', options)
+function rails (data) {
+  const lines = decode(data)
+  const insideRegion_ = insideRegion(options)
+  const findGround_ = findGround(ignoredBlocks, blocks)
+  const naturalBlock_ = naturalBlock(allowedBlocks, blocks)
+  const oneBlockAbove_ = oneBlockAbove(options)
+  const setBlock_ = setBlock(blocks, context, block)
+  draw(lines, (pos) => {
+    if (insideRegion_(pos)) {
+      pos = findGround_(pos)
+      if (naturalBlock_(pos)) {
+        pos = oneBlockAbove_(pos)
+        setBlock_(pos)
+      }
+    }
   })
-}
-
-function getRadius () {
-  const x = Math.abs(region.pos1.x - region.pos2.x)
-  const z = Math.abs(region.pos1.z - region.pos2.z)
-  return Math.sqrt(x * x + z * z) / 2
-}
-
-function getPoints (radius, center) {
-  const diag = Math.sqrt(2) / 2 * radius
-  return [
-    [center.x + radius, center.z],
-    [center.x - radius, center.z],
-    [center.x, center.z - radius],
-    [center.x, center.z + radius],
-    [center.x + diag, center.z + diag],
-    [center.x - diag, center.z - diag],
-    [center.x + diag, center.z - diag],
-    [center.x - diag, center.z + diag]
-  ]
-}
-
-function transformPoints (points) {
-  const projection = getProjection()
-  for (let i = 0; i < points.length; i++) {
-    points[i] = projection.toGeo(...points[i])
-  }
-  return points
-}
-
-function findS (points) {
-  let s = [0, 0]
-  let min = Number.MAX_VALUE
-  for (let i = 0; i < points.length; i++) {
-    const norm = points[i][0] + points[i][1]
-    if (norm < min) {
-      s = points[i]
-      min = norm
-    }
-  }
-  return [s[1], s[0]]
-}
-
-function findN (points) {
-  let s = [0, 0]
-  let max = Number.MIN_VALUE
-  for (let i = 0; i < points.length; i++) {
-    const norm = points[i][0] + points[i][1]
-    if (norm > max) {
-      s = points[i]
-      max = norm
-    }
-  }
-  return [s[1], s[0]]
+  printBlocks()
 }

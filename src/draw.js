@@ -1,8 +1,9 @@
-/* global importPackage Packages context player argv BufferedReader FileReader */
-const draw = require('./modules/drawGeoJSON')
+/* global importPackage Packages player context argv */
+const decode = require('./modules/decodePolygon')
+const { draw, findGround, naturalBlock, oneBlockAbove, setBlock, printBlocks } = require('./modules/drawLines')
+const { ignoredBlocks, allowedBlocks } = require('./modules/blocks')
+const { readFile } = require('./modules/readFile')
 
-importPackage(Packages.java.io)
-importPackage(Packages.java.awt)
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
@@ -15,33 +16,30 @@ Flags:
 
 context.checkArgs(2, 3, usage)
 
-const options = {}
-if (argv[3]) {
-  argv[3] = '' + argv[3]
-  options.up = argv[3].includes('u')
-}
+const blocks = context.remember()
+
+const [block, flags] = argv.slice(2)
+
+const up = flags && ('' + flags).includes('u')
+const options = { block, up }
 
 player.print('§7Please wait...')
-draw(readFile(), argv[2], options)
 
-function readFile () {
-  const file = context.getSafeOpenFile('drawings', argv[1], 'geojson', ['json', 'geojson'])
+const file = readFile('drawings', argv[1], 'geojson', ['json', 'geojson'])
+drawRaw(JSON.parse(file))
 
-  if (!file.exists()) {
-    player.printError("Specified file doesn't exist.")
-  } else {
-    var buffer = new BufferedReader(new FileReader(file))
-    var bufStr = ''
-    var line = ''
-
-    do {
-      bufStr = bufStr + line
-      bufStr = bufStr + '\n'
-      line = buffer.readLine()
-    } while (line)
-
-    buffer.close()
-
-    return JSON.parse(bufStr)
-  }
+function drawRaw (data) {
+  const lines = decode(data)
+  const findGround_ = findGround(ignoredBlocks, blocks)
+  const naturalBlock_ = naturalBlock(allowedBlocks, blocks)
+  const oneBlockAbove_ = oneBlockAbove(options)
+  const setBlock_ = setBlock(blocks, context, block)
+  draw(lines, (pos) => {
+    pos = findGround_(pos)
+    if (naturalBlock_(pos)) {
+      pos = oneBlockAbove_(pos)
+      setBlock_(pos)
+    }
+  })
+  printBlocks()
 }

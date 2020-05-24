@@ -10,7 +10,7 @@ context.checkArgs(0, 0, '/cs address')
 
 player.print('§7§oGetting closest address...')
 
-const { x, z } = player.getPosition()
+const { x, z } = player.getLocation()
 const projection = getProjection()
 const [lon, lat] = projection.toGeo(x, z)
 
