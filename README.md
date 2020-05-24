@@ -34,6 +34,7 @@
   - [rails](#rails)
   - [address](#address)
   - [ign](#ign)
+  - [hedges](#hedges)
 - [Find a railroad name](#find-a-railroad-name)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -217,6 +218,32 @@ Flags :
 
 ![](images/ign-.png)
 
+### hedges
+
+```fix
+/cs hedge <mode> [...args] [block] [height]
+```
+
+Traces all railroads in an area
+
+Modes:
+ - **radius** Select hedges in a radius `<radius> [block] [height]`
+ - **region** Select hedges in a region `[block] [height]`
+ - **regionEdge** Select hedges in a region and draw only in the defined region `[block] [height]`
+
+
+Examples :
+
+```fix
+/cs hedges radius 7
+/cs hedges radius 50 cobblestone 3
+/cs hedges region
+/cs hedges region cobblestone 3
+/cs hedges regionEdge
+/cs hedges regionEdge cobblestone 3
+```
+
+![](images/hedges-.png)
 
 
 ## Find a railroad name
