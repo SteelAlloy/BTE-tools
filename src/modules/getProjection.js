@@ -8,6 +8,8 @@ class GeographicProjection {
     this.Orientation = {
       none: 1, upright: 2, swapped: 3
     }
+    this.EARTH_CIRCUMFERENCE = 40075017
+    this.EARTH_POLAR_CIRCUMFERENCE = 40008000
   }
 
   orientProjection (base) {
@@ -17,11 +19,28 @@ class GeographicProjection {
     return new UprightOrientation(base)
   }
 
+  toGeo (x, y) {
+    return [x, y]
+  }
+
+  fromGeo (lon, lat) {
+    return [lon, lat]
+  }
+
   upright () {
     return this.fromGeo(0, 90)[1] <= this.fromGeo(0, -90)[1]
   }
-}
 
+  vector (x, y, north, east) {
+    const geo = this.toGeo(x, y)
+
+    // TODO: east may be slightly off because earth not a sphere
+    const off = this.fromGeo(geo[0] + east * 360.0 / (Math.cos(geo[1] * Math.PI / 180.0) * this.EARTH_CIRCUMFERENCE),
+      geo[1] + north * 360.0 / this.EARTH_POLAR_CIRCUMFERENCE)
+
+    return [off[0] - x, off[1] - y]
+  }
+}
 class ProjectionTransform extends GeographicProjection {
   constructor (input) {
     super()
