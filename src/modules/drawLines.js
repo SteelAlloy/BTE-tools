@@ -1,3 +1,5 @@
+/* global Vector */
+
 importClass(Packages.com.sk89q.worldedit.Vector)
 
 const vectorUp = Vector.UNIT_Y
