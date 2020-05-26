@@ -16,7 +16,11 @@ const toDegrees = 180 / Math.PI
 
 const mercatorAngle = Math.asin(vector.x) * toDegrees
 
-const angle = mercatorAngle + projection.toGeo(pos.x, pos.z)[0] - 4
+const parisMeridian = 2.337222
+
+const angle = mercatorAngle + (projection.toGeo(pos.x, pos.z)[0] - parisMeridian) * 0.8
 
 player.print(mercatorAngle)
+player.print(projection.toGeo(pos.x, pos.z)[0])
+player.print(projection.toGeo(pos.x, pos.z)[0] - parisMeridian)
 player.print(angle)

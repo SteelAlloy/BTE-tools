@@ -1,5 +1,5 @@
 /* global importPackage Packages context player argv BufferedReader FileReader */
-const draw = require('./modules/drawGeoJSON')
+import draw from './modules/drawGeoJSON'
 
 importPackage(Packages.java.io)
 importPackage(Packages.java.awt)

@@ -1,8 +1,8 @@
 /* global importPackage Packages player context argv */
-const { request, getRadius } = require('./modules/OSMcommand')
-const decode = require('./modules/decodePolygon')
-const { draw, findGround, insideRegion, setWall, printBlocks } = require('./modules/drawLines')
-const { ignoredBlocks } = require('./modules/blocks')
+import { request, getRadius } from './modules/OSMcommand'
+import decode from './modules/decodePolygon'
+import { draw, findGround, insideRegion, setWall, printBlocks } from './modules/drawLines'
+import { ignoredBlocks } from './modules/blocks'
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
