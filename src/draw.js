@@ -1,4 +1,8 @@
 /* global importPackage Packages player context argv */
+const DOMParser = require('xmldom').DOMParser
+const DOMImplementation = require('xmldom').DOMImplementation /* eslint-disable-line no-unused-vars */
+const toGeoJSON = require('togeojson')
+
 const decode = require('./modules/decodePolygon')
 const { draw, findGround, naturalBlock, oneBlockAbove, setBlock, printBlocks } = require('./modules/drawLines')
 const { ignoredBlocks, allowedBlocks } = require('./modules/blocks')
@@ -28,14 +32,25 @@ player.print('§7Please wait...')
 process(argv[1])
 
 function process (filename) {
-  const file = context.getSafeOpenFile('drawings', filename, 'geojson', ['json', 'geojson'])
+  const file = context.getSafeOpenFile('drawings', filename, 'geojson', ['json', 'geojson', 'kml'])
   const data = readFile(file)
 
   if (!file.exists()) {
     player.printError(`No such file or directory: ${file}`)
     return
   }
-  drawRaw(JSON.parse(data))
+  let drawing = data
+
+  const path = file.toString()
+  if (path.lastIndexOf('.kml') === -1) {
+    drawing = JSON.parse(data)
+    player.print('§7Imported GeoJSON...')
+  } else {
+    const dom = new DOMParser().parseFromString(data, 'text/xml')
+    drawing = toGeoJSON.kml(dom)
+    player.print('§7Imported KML...')
+  }
+  drawRaw(drawing)
 }
 
 function drawRaw (data) {

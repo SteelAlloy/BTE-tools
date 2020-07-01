@@ -1188,6 +1188,16 @@ braces@^2.3.1, braces@^2.3.2:
     split-string "^3.0.2"
     to-regex "^3.0.1"
 
+brfs@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/brfs/-/brfs-2.0.2.tgz#44237878fa82aa479ce4f5fe2c1796ec69f07845"
+  integrity sha512-IrFjVtwu4eTJZyu8w/V2gxU7iLTtcHih67sgEdzrhjLBMHp2uYefUBfdM4k2UvcuWMgV7PQDZHSLeNWnLFKWVQ==
+  dependencies:
+    quote-stream "^1.0.1"
+    resolve "^1.1.5"
+    static-module "^3.0.2"
+    through2 "^2.0.0"
+
 brorand@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/brorand/-/brorand-1.1.0.tgz#12c25efe40a45e3c323eb8675a0a0ce57b22371f"
@@ -5584,6 +5594,10 @@ to-through@^2.0.0:
   dependencies:
     through2 "^2.0.3"
 
+togeojson@joestringer/togeojson#v0.17.0:
+  version "0.17.0"
+  resolved "https://codeload.github.com/joestringer/togeojson/tar.gz/d20a81af2e35168df2f5f80bb65b9a09cf289d0e"
+
 transform-ast@^2.4.2, transform-ast@^2.4.3:
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/transform-ast/-/transform-ast-2.4.4.tgz#bebf494e2e73f024746f76348bc86a5992851d00"
@@ -5953,6 +5967,10 @@ write@1.0.3:
   integrity sha512-/lg70HAjtkUgWPVZhZcm+T4hkL8Zbtp1nFNOn3lRrxnlv50SRBv7cR7RqR+GMsd3hUXy9hWBo4CHTbFTcOYwig==
   dependencies:
     mkdirp "^0.5.1"
+
+xmldom@xmldom/xmldom#8f02868cae42ee2b8329130ffe989c000162ea66:
+  version "0.4.0-dev"
+  resolved "https://codeload.github.com/xmldom/xmldom/tar.gz/8f02868cae42ee2b8329130ffe989c000162ea66"
 
 xmldom@~0.1.16:
   version "0.1.31"

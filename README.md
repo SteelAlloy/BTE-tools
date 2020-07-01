@@ -142,7 +142,7 @@ Flags :
 
 Setup :
  - Create a `drawings` folder inside `/config/worldedit`.
- - Get a geoJSON file of valid tracings / OR
+ - Get a geoJSON/KML file of valid tracings / OR
  - Choose one of the following links:
    - [Rails - bounding box](http://overpass-turbo.eu/s/TwW) (Select the desired region using the map)
    - [Rails - name](http://overpass-turbo.eu/s/TwY) (Replace with a specific railroad name) [(find a railroad name)](#%f0%9f%94%8d-find-a-railroad-name)
