@@ -25,8 +25,18 @@ const options = { block, up }
 
 player.print('§7Please wait...')
 
-const file = readFile('drawings', argv[1], 'geojson', ['json', 'geojson'])
-drawRaw(JSON.parse(file))
+process(argv[1])
+
+function process (filename) {
+  const file = context.getSafeOpenFile('drawings', filename, 'geojson', ['json', 'geojson'])
+  const data = readFile(file)
+
+  if (!file.exists()) {
+    player.printError(`No such file or directory: ${file}`)
+    return
+  }
+  drawRaw(JSON.parse(data))
+}
 
 function drawRaw (data) {
   const lines = decode(data)

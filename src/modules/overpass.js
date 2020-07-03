@@ -10,7 +10,8 @@ importPackage(Packages.org.apache.commons.io)
 module.exports = function (query, cb, options) {
   options = options || {}
 
-  const cfg = readFile('../', 'terra121', 'cfg', [])
+  const file = context.getSafeOpenFile('../', 'terra121', 'cfg', [])
+  const cfg = readFile(file)
 
   const serverOverpass = cfg
     ? cfg.match(new RegExp('overpass_interpreter=(.*)\\n'))[1]
