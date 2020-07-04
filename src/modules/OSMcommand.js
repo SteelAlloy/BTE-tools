@@ -61,7 +61,7 @@ function findS (points) {
 function findN (points) {
   // Find maximum point (north)
   let s = [0, 0]
-  let max = Number.MIN_VALUE
+  let max = Number.NEGATIVE_INFINITY
   for (let i = 0; i < points.length; i++) {
     const norm = points[i][0] + points[i][1]
     if (norm > max) {
