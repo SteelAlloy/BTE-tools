@@ -142,7 +142,8 @@ function ign (selectedCoords) {
       allThreads.push(requestAsync(query, (data) => {
         const elevations = data.elevations
         for (let j = 0; j < group.length; j++) {
-          if (elevations[j] > -99999) {
+          // process data only if it make sense (some places like Guyana can have more than a billion meters of altitude according to the API)
+          if (elevations[j] > -15000 && elevations[j] < 10000) {
             group[j].y = elevations[j] | 0
             const previousY = findGround(new Vector(group[j].x, group[j].y, group[j].z))
             group[j].previousY = previousY
