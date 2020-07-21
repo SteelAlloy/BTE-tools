@@ -221,7 +221,7 @@ Flags :
 ### hedges
 
 ```fix
-/cs hedge <mode> [...args] [block] [height]
+/cs hedges <mode> [...args] [block] [height]
 ```
 
 Traces all railroads in an area
