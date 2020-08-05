@@ -1,9 +1,9 @@
-/* global WorldEdit RegionCommands StringWriter URL Thread StandardCharsets IOUtils */
-importClass(Packages.com.sk89q.worldedit.Vector)
-
+/* global WorldEdit RegionCommands StringWriter URL Thread StandardCharsets IOUtils Vector */
 import getProjection from './modules/getProjection'
 import { getConfig } from './modules/readFile'
 import { ignoredBlocks } from './modules/blocks'
+
+importClass(Packages.com.sk89q.worldedit.Vector)
 
 importClass(Packages.com.sk89q.worldedit.WorldEdit)
 importClass(Packages.com.sk89q.worldedit.command.RegionCommands)

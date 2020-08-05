@@ -1,5 +1,5 @@
 /* global importPackage Packages player context argv */
-import { DOMParser, DOMImplementation } from 'xmldom'
+import { DOMParser, DOMImplementation } from 'xmldom' /* eslint-disable-line no-unused-vars */
 import toGeoJSON from 'togeojson'
 
 import decode from './modules/decodePolygon'
