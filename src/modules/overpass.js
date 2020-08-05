@@ -1,13 +1,13 @@
 /* global StringWriter IOUtils StandardCharsets */
-const osmtogeojson = require('osmtogeojson')
-const { readFile } = require('./readFile')
+import osmtogeojson from 'osmtogeojson'
+import { readFile } from './readFile'
 
 importPackage(Packages.java.io)
 importPackage(Packages.java.net)
 importPackage(Packages.java.nio.charset)
 importPackage(Packages.org.apache.commons.io)
 
-module.exports = function (query, cb, options) {
+export default function overpass (query, cb, options) {
   options = options || {}
 
   const file = context.getSafeOpenFile('../', 'terra121', 'cfg', [])

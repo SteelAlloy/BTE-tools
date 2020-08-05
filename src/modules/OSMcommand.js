@@ -1,7 +1,7 @@
-const overpass = require('./overpass')
-const getProjection = require('./getProjection')
+import overpass from './overpass'
+import getProjection from './getProjection'
 
-function request (radius, center, getQuery, draw) {
+export function request (radius, center, getQuery, draw) {
   player.print('§7Please wait...')
   const points = transformPoints(getPoints(radius, center))
   const s = findS(points)
@@ -14,7 +14,7 @@ function request (radius, center, getQuery, draw) {
   })
 }
 
-function getRadius (region) {
+export function getRadius (region) {
   const x = Math.abs(region.pos1.x - region.pos2.x)
   const z = Math.abs(region.pos1.z - region.pos2.z)
   return Math.sqrt(x * x + z * z) / 2
@@ -71,5 +71,3 @@ function findN (points) {
   }
   return [s[1], s[0]]
 }
-
-module.exports = { request, getRadius }

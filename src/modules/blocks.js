@@ -1,6 +1,6 @@
 /* global context */
 
-const ignoredBlocks = [
+export const ignoredBlocks = [
   context.getBlock('air').id,
   context.getBlock('tallgrass').id,
   context.getBlock('sapling').id,
@@ -23,7 +23,7 @@ const ignoredBlocks = [
   context.getBlock('double_plant').id
 ]
 
-const allowedBlocks = [
+export const allowedBlocks = [
   context.getBlock('grass').id,
   context.getBlock('dirt').id,
   context.getBlock('stone').id,
@@ -34,5 +34,3 @@ const allowedBlocks = [
   context.getBlock('water').id,
   context.getBlock('lava').id
 ]
-
-module.exports = { ignoredBlocks, allowedBlocks }

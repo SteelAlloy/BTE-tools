@@ -1,7 +1,8 @@
-const getProjection = require('./getProjection')
+import getProjection from './getProjection'
 
 const DataError = new Error('Incorrect data format')
-module.exports = function decode (data) {
+
+export default function decode (data) {
   const geometry = getGeometry(data)
   return getLines(geometry)
 }

@@ -20,11 +20,9 @@ function readFile (file) {
   }
 }
 
-function getConfig () {
+export function getConfig () {
   const config = readFile('craftscripts', 'config', 'json', [])
   return config
     ? JSON.parse(config)
     : {}
 }
-
-module.exports = { readFile, getConfig }

@@ -6,7 +6,7 @@ const vectorUp = Vector.UNIT_Y
 const vectorDown = Vector.UNIT_Y.multiply(-1)
 let changedBlocks = 0
 
-function draw (lines, setBlock) {
+export function draw (lines, setBlock) {
   const y = player.getLocation().y
   for (let i = 0; i < lines.length; i++) {
     const [x1, z1, x2, z2] = lines[i]
@@ -33,7 +33,7 @@ function drawLine (x1, y1, z1, x2, y2, z2, setBlock) {
   }
 }
 
-function findGround (ignoredBlocks, blocks) {
+export function findGround (ignoredBlocks, blocks) {
   return (pos) => {
     while (!ignoredBlocks.includes(blocks.getBlock(pos.add(vectorUp)).id)) {
       pos = pos.add(vectorUp)
@@ -45,7 +45,7 @@ function findGround (ignoredBlocks, blocks) {
   }
 }
 
-function insideRegion (options) {
+export function insideRegion (options) {
   if (options.region) {
     const y = options.region.center.y
     return (pos) => options.region.contains(new Vector(pos.x, y, pos.z))
@@ -53,18 +53,18 @@ function insideRegion (options) {
   return (pos) => true
 }
 
-function naturalBlock (allowedBlocks, blocks) {
+export function naturalBlock (allowedBlocks, blocks) {
   return (pos) => allowedBlocks.includes(blocks.getBlock(pos).id)
 }
 
-function oneBlockAbove (options) {
+export function oneBlockAbove (options) {
   if (options.up) {
     return (pos) => pos.add(vectorUp)
   }
   return (pos) => pos
 }
 
-function setWall (options, blocks, context, block) {
+export function setWall (options, blocks, context, block) {
   block = context.getBlock(block)
   if (options.height) {
     const height = Number.parseInt(options.height)
@@ -79,7 +79,7 @@ function setWall (options, blocks, context, block) {
   return (pos) => blocks.setBlock(pos, block)
 }
 
-function setBlock (blocks, context, block) {
+export function setBlock (blocks, context, block) {
   block = context.getBlock(block)
   return (pos) => {
     blocks.setBlock(pos, block)
@@ -87,8 +87,6 @@ function setBlock (blocks, context, block) {
   }
 }
 
-function printBlocks () {
+export function printBlocks () {
   player.print(`Operation completed (${changedBlocks} blocks affected).`)
 }
-
-module.exports = { draw, findGround, insideRegion, naturalBlock, oneBlockAbove, setWall, setBlock, printBlocks }

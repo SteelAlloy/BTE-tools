@@ -1,1 +1,1 @@
-require('./list')
+import './list'

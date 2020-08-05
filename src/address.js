@@ -1,5 +1,5 @@
 /* global importPackage Packages player context StringWriter IOUtils StandardCharsets */
-const getProjection = require('./modules/getProjection')
+import getProjection from './modules/getProjection'
 
 importPackage(Packages.java.io)
 importPackage(Packages.java.net)

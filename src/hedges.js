@@ -1,8 +1,8 @@
 /* global importPackage Packages player context argv */
-const { request, getRadius } = require('./modules/OSMcommand')
-const decode = require('./modules/decodePolygon')
-const { draw, findGround, insideRegion, setWall, printBlocks } = require('./modules/drawLines')
-const { ignoredBlocks } = require('./modules/blocks')
+import { request, getRadius } from './modules/OSMcommand'
+import decode from './modules/decodePolygon'
+import { draw, findGround, insideRegion, setWall, printBlocks } from './modules/drawLines'
+import { ignoredBlocks } from './modules/blocks'
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
@@ -12,19 +12,27 @@ const usage = `<mode> [...args] [block] [height]
 Modes:
  • §lradius§r§c Select hedges in a radius
  • §lregion§r§c Select hedges in a region
- • §lregionEdge§r§c Select hedges in a region and draw only in the defined region`
+ • §lregionEdge§r§c Select hedges in a region and draw only in the defined region
+Flags:
+ • §lu§r§c Draw a block above`
 
-const radiusUsage = `<radius> [block] [height]
+const radiusUsage = `<radius> [flags]
  • §o/cs hedges radius 7
- • §o/cs hedges radius 50 cobblestone 3`
+ • §o/cs hedges radius 50 u
+Flags:
+ • §lu§r§c Draw a block above`
 
-const regionUsage = `[block] [height]
+const regionUsage = `[flags]
  • §o/cs hedges region
- • §o/cs hedges region cobblestone 3`
+ • §o/cs hedges region u
+Flags:
+ • §lu§r§c Draw a block above`
 
-const regionEdgeUsage = `[block] [height]
+const regionEdgeUsage = `[flags]
  • §o/cs hedges regionEdge
- • §o/cs hedges regionEdge cobblestone 3`
+ • §o/cs hedges regionEdge u
+Flags:
+ • §lu§r§c Draws a block above`
 
 const session = context.getSession()
 const blocks = context.remember()

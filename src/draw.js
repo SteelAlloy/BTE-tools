@@ -1,12 +1,11 @@
 /* global importPackage Packages player context argv */
-const DOMParser = require('xmldom').DOMParser
-const DOMImplementation = require('xmldom').DOMImplementation /* eslint-disable-line no-unused-vars */
-const toGeoJSON = require('togeojson')
+import { DOMParser, DOMImplementation } from 'xmldom' /* eslint-disable-line no-unused-vars */
+import toGeoJSON from 'togeojson'
 
-const decode = require('./modules/decodePolygon')
-const { draw, findGround, naturalBlock, oneBlockAbove, setBlock, printBlocks } = require('./modules/drawLines')
-const { ignoredBlocks, allowedBlocks } = require('./modules/blocks')
-const { readFile } = require('./modules/readFile')
+import decode from './modules/decodePolygon'
+import { draw, findGround, naturalBlock, oneBlockAbove, setBlock, printBlocks } from './modules/drawLines'
+import { ignoredBlocks, allowedBlocks } from './modules/blocks'
+import { readFile } from './modules/readFile'
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
