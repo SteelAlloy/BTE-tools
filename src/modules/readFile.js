@@ -1,8 +1,6 @@
 /* global BufferedReader FileReader */
 
-export function readFile (dir, filename, defaultExt, exts) {
-  const file = context.getSafeOpenFile(dir, filename, defaultExt, exts)
-
+function readFile (file) {
   if (!file.exists()) {
     return undefined
   } else {

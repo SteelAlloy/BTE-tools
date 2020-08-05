@@ -34,6 +34,7 @@
   - [rails](#rails)
   - [address](#address)
   - [ign](#ign)
+  - [hedges](#hedges)
 - [Find a railroad name](#find-a-railroad-name)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -141,7 +142,7 @@ Flags :
 
 Setup :
  - Create a `drawings` folder inside `/config/worldedit`.
- - Get a geoJSON file of valid tracings / OR
+ - Get a geoJSON/KML file of valid tracings / OR
  - Choose one of the following links:
    - [Rails - bounding box](http://overpass-turbo.eu/s/TwW) (Select the desired region using the map)
    - [Rails - name](http://overpass-turbo.eu/s/TwY) (Replace with a specific railroad name) [(find a railroad name)](#%f0%9f%94%8d-find-a-railroad-name)
@@ -217,6 +218,32 @@ Flags :
 
 ![](images/ign-.png)
 
+### hedges
+
+```fix
+/cs hedges <mode> [...args] [block] [height]
+```
+
+Traces all railroads in an area
+
+Modes:
+ - **radius** Select hedges in a radius `<radius> [block] [height]`
+ - **region** Select hedges in a region `[block] [height]`
+ - **regionEdge** Select hedges in a region and draw only in the defined region `[block] [height]`
+
+
+Examples :
+
+```fix
+/cs hedges radius 7
+/cs hedges radius 50 cobblestone 3
+/cs hedges region
+/cs hedges region cobblestone 3
+/cs hedges regionEdge
+/cs hedges regionEdge cobblestone 3
+```
+
+![](images/hedges-.png)
 
 
 ## Find a railroad name

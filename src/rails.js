@@ -16,21 +16,21 @@ Modes:
 Flags:
  • §lu§r§c Draw a block above`
 
-const radiusUsage = `<radius> [flags]
+const radiusUsage = `<radius> [block] [flags]
  • §o/cs rails radius 7
- • §o/cs rails radius 50 u
+ • §o/cs rails radius 50 stone u
 Flags:
  • §lu§r§c Draw a block above`
 
-const regionUsage = `[flags]
+const regionUsage = `[block] [flags]
  • §o/cs rails region
- • §o/cs rails region u
+ • §o/cs rails region stone u
 Flags:
  • §lu§r§c Draw a block above`
 
-const regionEdgeUsage = `[flags]
+const regionEdgeUsage = `[block] [flags]
  • §o/cs rails regionEdge
- • §o/cs rails regionEdge u
+ • §o/cs rails regionEdge stone u
 Flags:
  • §lu§r§c Draws a block above`
 

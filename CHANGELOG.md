@@ -13,6 +13,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
+## [1.4.0] - 2020-05-24
+
+### Added
+
+- `hedges` command: traces hedges around farmland
+
+### Changed
+
+- `rails` syntax
+  - now takes block option.
+
 ## [1.3.1] - 2020-05-20
 
 ### Added

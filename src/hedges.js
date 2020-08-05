@@ -8,7 +8,7 @@ importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
 
-const usage = `<mode> [...args] [flags]
+const usage = `<mode> [...args] [block] [height]
 Modes:
  • §lradius§r§c Select hedges in a radius
  • §lregion§r§c Select hedges in a region
@@ -74,7 +74,7 @@ switch ('' + argv[1]) {
     break
 }
 
-block = block || 'leaves'
+block = block || 'leaves:4'
 height = height || 2
 const options = { region, block, height }
 
