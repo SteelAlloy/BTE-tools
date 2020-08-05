@@ -1,5 +1,5 @@
 /* global WorldEdit RegionCommands StringWriter URL Thread StandardCharsets IOUtils */
-import Vector from './types/com/sk89q/worldedit/Vector'
+importClass(Packages.com.sk89q.worldedit.Vector)
 
 import getProjection from './modules/getProjection'
 import { getConfig } from './modules/readFile'

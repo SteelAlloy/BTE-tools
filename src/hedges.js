@@ -10,27 +10,27 @@ importPackage(Packages.com.sk89q.worldedit.blocks)
 
 const usage = `<mode> [...args] [flags]
 Modes:
- • §lradius§r§c Select rails in a radius
- • §lregion§r§c Select rails in a region
- • §lregionEdge§r§c Select rails in a region and draw only in the defined region
+ • §lradius§r§c Select hedges in a radius
+ • §lregion§r§c Select hedges in a region
+ • §lregionEdge§r§c Select hedges in a region and draw only in the defined region
 Flags:
  • §lu§r§c Draw a block above`
 
 const radiusUsage = `<radius> [flags]
- • §o/cs rails radius 7
- • §o/cs rails radius 50 u
+ • §o/cs hedges radius 7
+ • §o/cs hedges radius 50 u
 Flags:
  • §lu§r§c Draw a block above`
 
 const regionUsage = `[flags]
- • §o/cs rails region
- • §o/cs rails region u
+ • §o/cs hedges region
+ • §o/cs hedges region u
 Flags:
  • §lu§r§c Draw a block above`
 
 const regionEdgeUsage = `[flags]
- • §o/cs rails regionEdge
- • §o/cs rails regionEdge u
+ • §o/cs hedges regionEdge
+ • §o/cs hedges regionEdge u
 Flags:
  • §lu§r§c Draws a block above`
 
@@ -80,9 +80,9 @@ const options = { region, block, height }
 
 request(radius, center, (s, n) => {
   return `(way[landuse~"farmland"](${s.join(',')},${n.join(',')});>;);out;`
-}, rails)
+}, hedges)
 
-function rails (data) {
+function hedges (data) {
   const lines = decode(data)
   const insideRegion_ = insideRegion(options)
   const findGround_ = findGround(ignoredBlocks, blocks)
