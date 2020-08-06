@@ -33,40 +33,42 @@ function drawLine (x1, y1, z1, x2, y2, z2, setBlock) {
   }
 }
 
-export function findGround (options, context) {
-  const blocks = context.remember()
-  return (pos) => {
-    while (!options.ignoredBlocks.includes(blocks.getBlock(pos.add(vectorUp)).id)) {
-      pos = pos.add(vectorUp)
+export function findGround (options) {
+  if (options.onGround) {
+    const blocks = context.remember()
+    if (!options.ignoreTrees) {
+      options.ignoredBlocks = [context.getBlock('air').id]
     }
-    while (options.ignoredBlocks.includes(blocks.getBlock(pos).id)) {
-      pos = pos.add(vectorDown)
+    return (pos) => {
+      while (!options.ignoredBlocks.includes(blocks.getBlock(pos.add(vectorUp)).id)) {
+        pos = pos.add(vectorUp)
+      }
+      while (options.ignoredBlocks.includes(blocks.getBlock(pos).id)) {
+        pos = pos.add(vectorDown)
+      }
+      return pos
     }
-    return pos
-  }
-}
-
-export function insideRegion (options) {
-  if (options.region) {
-    const y = options.region.center.y
-    return (pos) => options.region.contains(new Vector(pos.x, y, pos.z))
-  }
-  return (pos) => true
-}
-
-export function naturalBlock (options, context) {
-  const blocks = context.remember()
-  return (pos) => options.allowedBlocks.includes(blocks.getBlock(pos).id)
-}
-
-export function oneBlockAbove (options) {
-  if (options.up) {
-    return (pos) => pos.add(vectorUp)
   }
   return (pos) => pos
 }
 
-export function setWall (options, context) {
+export function naturalBlock (options) {
+  if (options.ignoreBuildings) {
+    const blocks = context.remember()
+    return (pos) => options.allowedBlocks.includes(blocks.getBlock(pos).id)
+  }
+  return (pos) => pos
+}
+
+export function setOffset (options) {
+  if (options.offset) {
+    const up = vectorUp.multiply(options.offset)
+    return (pos) => pos.add(up)
+  }
+  return (pos) => pos
+}
+
+export function setWall (options) {
   const blocks = context.remember()
   const block = context.getBlock(options.block)
   if (options.height) {
@@ -79,10 +81,13 @@ export function setWall (options, context) {
       }
     }
   }
-  return (pos) => blocks.setBlock(pos, block)
+  return (pos) => {
+    blocks.setBlock(pos, block)
+    changedBlocks++
+  }
 }
 
-export function setBlock (options, context) {
+export function setBlock (options) {
   const blocks = context.remember()
   const block = context.getBlock(options.block)
   return (pos) => {

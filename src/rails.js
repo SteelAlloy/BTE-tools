@@ -25,6 +25,9 @@ const options = {
   regex: '^.*$',
   radius: getRadius(region),
   center: region.center,
+  onGround: true,
+  ignoreBuildings: true,
+  ignoreTrees: true,
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[1] || '{}')
