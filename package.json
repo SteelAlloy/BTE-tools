@@ -19,7 +19,7 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
-    "@babel/register": "^7.9.0",
+    "@babel/register": "^7.10.5",
     "babelify": "^10.0.0",
     "brfs": "^2.0.2",
     "dotenv": "^8.2.0",
