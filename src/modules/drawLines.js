@@ -33,12 +33,13 @@ function drawLine (x1, y1, z1, x2, y2, z2, setBlock) {
   }
 }
 
-export function findGround (ignoredBlocks, blocks) {
+export function findGround (options, context) {
+  const blocks = context.remember()
   return (pos) => {
-    while (!ignoredBlocks.includes(blocks.getBlock(pos.add(vectorUp)).id)) {
+    while (!options.ignoredBlocks.includes(blocks.getBlock(pos.add(vectorUp)).id)) {
       pos = pos.add(vectorUp)
     }
-    while (ignoredBlocks.includes(blocks.getBlock(pos).id)) {
+    while (options.ignoredBlocks.includes(blocks.getBlock(pos).id)) {
       pos = pos.add(vectorDown)
     }
     return pos
@@ -53,8 +54,9 @@ export function insideRegion (options) {
   return (pos) => true
 }
 
-export function naturalBlock (allowedBlocks, blocks) {
-  return (pos) => allowedBlocks.includes(blocks.getBlock(pos).id)
+export function naturalBlock (options, context) {
+  const blocks = context.remember()
+  return (pos) => options.allowedBlocks.includes(blocks.getBlock(pos).id)
 }
 
 export function oneBlockAbove (options) {
@@ -64,8 +66,9 @@ export function oneBlockAbove (options) {
   return (pos) => pos
 }
 
-export function setWall (options, blocks, context, block) {
-  block = context.getBlock(block)
+export function setWall (options, context) {
+  const blocks = context.remember()
+  const block = context.getBlock(options.block)
   if (options.height) {
     const height = Number.parseInt(options.height)
     return (pos) => {
@@ -79,8 +82,9 @@ export function setWall (options, blocks, context, block) {
   return (pos) => blocks.setBlock(pos, block)
 }
 
-export function setBlock (blocks, context, block) {
-  block = context.getBlock(block)
+export function setBlock (options, context) {
+  const blocks = context.remember()
+  const block = context.getBlock(options.block)
   return (pos) => {
     blocks.setBlock(pos, block)
     changedBlocks++

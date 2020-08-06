@@ -1,30 +1,25 @@
 /* global importPackage Packages player context argv */
 import { rails } from './modules/rails'
 import { ignoredBlocks, allowedBlocks } from './modules/blocks'
-import { getRadius } from './modules/OSMcommand'
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
 
-const session = context.getSession()
-
-const usage = `[block] [flags]
- • §o/cs rails region
- • §o/cs rails region stone u
+const usage = `<radius> [block] [flags]
+• §o/cs rails radius 7
+• §o/cs rails radius 50 stone u
 Flags:
- • §lu§r§c Draw a block above`
+• §lu§r§c Draw a block above`
 
-context.checkArgs(0, 1, usage)
-
-const region = session.getRegionSelector(player.getWorld()).getRegion()
+context.checkArgs(1, 2, usage)
 
 const options = {
   block: 'iron_block',
   offset: 0,
   regex: '^.*$',
-  radius: getRadius(region),
-  center: region.center,
+  radius: Number.parseFloat(argv[2]),
+  center: player.getLocation(),
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[1] || '{}')
