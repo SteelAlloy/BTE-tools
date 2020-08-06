@@ -763,6 +763,16 @@
     debug "^3.2.6"
     escope "^3.6.0"
 
+"@goto-bus-stop/envify@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@goto-bus-stop/envify/-/envify-5.0.0.tgz#db7db712f00901d9f71f852ed13dbb3db0909b1a"
+  integrity sha512-xAnxuDWmwQxO8CgVuPTxKuNsKDfwyXXTyAabG4sNoK59H/ZMC7BHxTA/4ehtinsxbcH7/9L65F5VhyNdQfUyqA==
+  dependencies:
+    acorn-node "^2.0.1"
+    dash-ast "^2.0.1"
+    multisplice "^1.0.0"
+    through2 "^2.0.5"
+
 "@mapbox/geojson-area@0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@mapbox/geojson-area/-/geojson-area-0.2.2.tgz#18d7814aa36bf23fbbcc379f8e26a22927debf10"
@@ -823,6 +833,15 @@ acorn-node@^1.2.0, acorn-node@^1.3.0, acorn-node@^1.5.2, acorn-node@^1.6.1, acor
   version "1.8.2"
   resolved "https://registry.yarnpkg.com/acorn-node/-/acorn-node-1.8.2.tgz#114c95d64539e53dede23de8b9d96df7c7ae2af8"
   integrity sha512-8mt+fslDufLYntIoPAaIMUe/lrbrehIiwmR3t2k9LljIzoigEPF27eLk2hy8zSGzmR/ogr7zbRKINMo1u0yh5A==
+  dependencies:
+    acorn "^7.0.0"
+    acorn-walk "^7.0.0"
+    xtend "^4.0.2"
+
+acorn-node@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/acorn-node/-/acorn-node-2.0.1.tgz#4a93ba32335950da9250175c654721f20f3375a7"
+  integrity sha512-VLR5sHqjk+8c5hrKeP2fWaIHb8eewsoxnZ8r2qpwRHXMHuC7KyOPflnOx9dLssVQUurzJ7rO0OzIFjHcndafWw==
   dependencies:
     acorn "^7.0.0"
     acorn-walk "^7.0.0"
@@ -1657,15 +1676,10 @@ combine-source-map@^0.8.0, combine-source-map@~0.8.0:
     lodash.memoize "~3.0.3"
     source-map "~0.5.3"
 
-commander@^2.19.0:
+commander@^2.19.0, commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
-
-commander@~2.17.1:
-  version "2.17.1"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
-  integrity sha512-wPMUt6FnH2yzG95SA6mzjQOEKUU3aLaDEmzs1ti+1E9h+CsrZghRlqEM/EJ4KscsQVG8uNN4uVreUeT8+drlgg==
 
 common-shakeify@^0.6.0:
   version "0.6.2"
@@ -1842,6 +1856,11 @@ dash-ast@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dash-ast/-/dash-ast-1.0.0.tgz#12029ba5fb2f8aa6f0a861795b23c1b4b6c27d37"
   integrity sha512-Vy4dx7gquTeMcQR/hDkYLGUnwVil6vk4FOOct+djUnHOUWt+zJPJAaRIXaAFkPXtJjvlY7o3rfRu0/3hpnwoUA==
+
+dash-ast@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/dash-ast/-/dash-ast-2.0.1.tgz#8d0fd2e601c59bf874cc22877ee7dd889f54dee8"
+  integrity sha512-5TXltWJGc+RdnabUGzhRae1TRq6m4gr+3K2wQX0is5/F2yS6MJXJvLyI3ErAnsAXuJoGqvfVD5icRgim07DrxQ==
 
 debug-log@^1.0.0:
   version "1.0.1"
@@ -3803,16 +3822,16 @@ mimic-fn@^2.1.0:
   resolved "https://registry.yarnpkg.com/mimic-fn/-/mimic-fn-2.1.0.tgz#7ed2c2ccccaf84d3ffcb7a69b57711fc2083401b"
   integrity sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg==
 
-minify-stream@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/minify-stream/-/minify-stream-1.2.1.tgz#e65336ead34bd8e62109f35f268f87bb8b1e3eb8"
-  integrity sha512-C6CESrYf8sncwbvS5rAb2kjKmWDswoZxoTN2agmAGKygdC/VqB1kDwpv19ZRMFvd7assj9lNgZcBGhh6PVByrg==
+minify-stream@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/minify-stream/-/minify-stream-2.0.1.tgz#4f7009c951aec7fdbc95f2e0de82bf3d7a16209f"
+  integrity sha512-DAaWEQKgVHG7SbOmQxwzJZuErKCGdaPFehKyM/Dezo8FrNKsXMmUtsUMa1n7cjftAGp/CH/mzh8kjWTW7MTzMg==
   dependencies:
     concat-stream "^2.0.0"
     convert-source-map "^1.5.0"
     duplexify "^4.1.1"
     from2-string "^1.1.0"
-    terser "3.16.1"
+    terser "^4.7.0"
     xtend "^4.0.1"
 
 minimalistic-assert@^1.0.0, minimalistic-assert@^1.0.1:
@@ -5091,7 +5110,7 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
-source-map-support@^0.5.16, source-map-support@~0.5.10, source-map-support@~0.5.9:
+source-map-support@^0.5.16, source-map-support@~0.5.10, source-map-support@~0.5.12:
   version "0.5.19"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
   integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
@@ -5435,15 +5454,6 @@ table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-terser@3.16.1:
-  version "3.16.1"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-3.16.1.tgz#5b0dd4fa1ffd0b0b43c2493b2c364fd179160493"
-  integrity sha512-JDJjgleBROeek2iBcSNzOHLKsB/MdDf+E/BOAJ0Tk9r7p9/fVobfv7LMJ/g/k3v9SXdmjZnIlFd5nfn/Rt0Xow==
-  dependencies:
-    commander "~2.17.1"
-    source-map "~0.6.1"
-    source-map-support "~0.5.9"
-
 terser@^3.7.5:
   version "3.17.0"
   resolved "https://registry.yarnpkg.com/terser/-/terser-3.17.0.tgz#f88ffbeda0deb5637f9d24b0da66f4e15ab10cb2"
@@ -5452,6 +5462,15 @@ terser@^3.7.5:
     commander "^2.19.0"
     source-map "~0.6.1"
     source-map-support "~0.5.10"
+
+terser@^4.7.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/terser/-/terser-4.8.0.tgz#63056343d7c70bb29f3af665865a46fe03a0df17"
+  integrity sha512-EAPipTNeWsb/3wLPeup1tVPaXfIaU68xMnVdPafIL1TV05OhASArYyIfFvnvJCNrR2NIOvDVNNTFRa+Re2MWyw==
+  dependencies:
+    commander "^2.20.0"
+    source-map "~0.6.1"
+    source-map-support "~0.5.12"
 
 text-table@^0.2.0:
   version "0.2.0"
@@ -5466,7 +5485,7 @@ through2-filter@^3.0.0:
     through2 "~2.0.0"
     xtend "~4.0.0"
 
-through2@^2.0.0, through2@^2.0.3, through2@~2.0.0:
+through2@^2.0.0, through2@^2.0.3, through2@^2.0.5, through2@~2.0.0:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.5.tgz#01c1e39eb31d07cb7d03a96a70823260b23132cd"
   integrity sha512-/mrRod8xqpA+IHSLyGCQ2s8SPHiCDEeQJSep1jqLYeEUClOFG2Qsh+4FU6G9VeqpZnGW/Su8LQGc4YKni5rYSQ==
@@ -5516,17 +5535,18 @@ tiny-osmpbf@^0.1.0:
     pbf "^3.0.4"
     tiny-inflate "^1.0.2"
 
-tinyify@^2.5.2:
-  version "2.5.2"
-  resolved "https://registry.yarnpkg.com/tinyify/-/tinyify-2.5.2.tgz#355824496d06c49833d4c4ab566509b7b794a25c"
-  integrity sha512-vFQ3nClAXbIw1nlJ9G9GNcS8CCS9Fb73MIj9JrsIvCZoQ0axfB7Hp3BcHsSnjPmazsZmt7GC6tPuMbvm+KHSYw==
+tinyify@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/tinyify/-/tinyify-3.0.0.tgz#99d5f805191558c6d85dacabe634d617da5509e6"
+  integrity sha512-RtjVjC1xwwxt8AMVfxEmo+FzRJB6p5sAOtFaJj8vMrkWShtArsM4dLVRWhx2Vc07Me3NWgmP7pi9UPm/a2XNNA==
   dependencies:
+    "@goto-bus-stop/envify" "^5.0.0"
     acorn-node "^1.8.2"
     browser-pack-flat "^3.0.9"
     bundle-collapser "^1.3.0"
     common-shakeify "^0.6.0"
     dash-ast "^1.0.0"
-    minify-stream "^1.2.1"
+    minify-stream "^2.0.1"
     multisplice "^1.0.0"
     through2 "^3.0.1"
     uglifyify "^5.0.0"
