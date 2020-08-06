@@ -28,5 +28,6 @@ const options = {
 options.ignoredBlocks = options.ignoredBlocks.map((id) => context.getBlock(id).id)
 
 elevation(options,
-  (lons, lats) => `http://wxs.ign.fr/${process.env.IGN_API_KEY}/alti/rest/elevation.json?lon=${lons}&lat=${lats}&zonly=true`,
-  (data) => data.elevations)
+  (lons, lats) => `https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=${lons}&lat=${lats}&outtype=JSON`,
+  (data) => [data.elevation],
+  1)
