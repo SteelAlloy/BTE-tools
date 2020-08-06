@@ -33,7 +33,7 @@ const plugin = [
 function bundle (file) {
   return src(file)
     .pipe(bro({ transform, plugin }))
-    .pipe(dest('craftscripts/'))
+    .pipe(dest(process.env.CRAFTSCRIPTS_DIRECTORY || 'craftscripts/'))
 }
 
 task('copyData', cb => copyData().then(cb))

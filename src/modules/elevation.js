@@ -1,7 +1,6 @@
 /* global WorldEdit RegionCommands StringWriter URL Thread StandardCharsets IOUtils Vector */
-import getProjection from './modules/getProjection'
-import { getConfig } from './modules/readFile'
-import { ignoredBlocks } from './modules/blocks'
+import getProjection from './getProjection'
+import { getConfig } from './readFile'
 
 importClass(Packages.com.sk89q.worldedit.Vector)
 
@@ -12,22 +11,6 @@ importClass(Packages.java.net.URL)
 importClass(Packages.java.lang.Thread)
 importClass(Packages.java.nio.charset.StandardCharsets)
 importClass(Packages.org.apache.commons.io.IOUtils)
-
-const usage = `[flags]
-Flags:
- • §lw§r§c Keeps water
- • §ls§r§c Removes smoothing step`
-
-context.checkArgs(0, 1, usage)
-
-const options = {
-  smooth: true
-}
-if (argv[1]) {
-  argv[1] = '' + argv[1]
-  options.water = argv[1].includes('w')
-  options.smooth = !argv[1].includes('s')
-}
 
 const config = getConfig()
 
@@ -43,26 +26,23 @@ const lava = context.getBlock('lava')
 const vectorUp = Vector.UNIT_Y
 const vectorDown = Vector.UNIT_Y.multiply(-1)
 
-if (!options.water) {
-  if (ignoredBlocks.indexOf(water.id) < 0) {
-    ignoredBlocks.push(water.id)
+export function elevation (options, getQuery, getElevations, maxSimultaneous) {
+  if (!options.ignoreWater) {
+    if (options.ignoredBlocks.indexOf(water.id) < 0) {
+      options.ignoredBlocks.push(water.id)
+    }
+    if (options.ignoredBlocks.indexOf(lava.id) < 0) {
+      options.ignoredBlocks.push(lava.id)
+    }
   }
-  if (ignoredBlocks.indexOf(lava.id) < 0) {
-    ignoredBlocks.push(lava.id)
-  }
-}
 
-// Run
-run()
-
-function run () {
   const selection = getSelection()
-  const blockLimit = config.ignBlockLimit
+  const blockLimit = config.elevationBlockLimit
   if (blockLimit && blockLimit > 0 && selection.length > blockLimit) {
     player.printError(`Please select an area of less than ${blockLimit} blocks`)
     return
   }
-  const terrain = ign(selection)
+  const terrain = fixElevation(selection, options, getQuery, getElevations, maxSimultaneous)
   if (options.smooth) {
     smooth(terrain)
   }
@@ -83,6 +63,8 @@ function getSelection () {
     }
     uniqueCoords[x][z] = true
   }
+
+  // for of
 
   // Get as list
   const projection = getProjection()
@@ -106,7 +88,7 @@ function getLat (coord) {
   return coord.lat
 }
 
-function ign (selectedCoords) {
+function fixElevation (selectedCoords, options, getQuery, getElevations, maxSimultaneous) {
   let retries = [] // store coords that failed once, to retry fetching them once after
 
   let onRetryNeeded = () => {
@@ -124,7 +106,7 @@ function ign (selectedCoords) {
     }
 
     // retry once with smaller groups
-    runReqs(retrying, 50)
+    runReqs(retrying, maxSimultaneous || 50)
   }
 
   const elevationMap = []
@@ -138,15 +120,15 @@ function ign (selectedCoords) {
       const group = allCoords.slice(i, i + maxSimultaneous).filter(a => a)
       const lons = group.map(getLon).join('|')
       const lats = group.map(getLat).join('|')
-      const query = `http://wxs.ign.fr/${process.env.IGN_API_KEY}/alti/rest/elevation.json?lon=${lons}&lat=${lats}&zonly=true`
+      const query = getQuery(lons, lats)
 
       allThreads.push(requestAsync(query, (data) => {
-        const elevations = data.elevations
+        const elevations = getElevations(data)
         for (let j = 0; j < group.length; j++) {
           // process data only if it make sense (some places like Guyana can have more than a billion meters of altitude according to the API)
           if (elevations[j] > -15000 && elevations[j] < 10000) {
             group[j].y = elevations[j] | 0
-            const previousY = findGround(new Vector(group[j].x, group[j].y, group[j].z))
+            const previousY = findGround(new Vector(group[j].x, group[j].y, group[j].z), options)
             group[j].previousY = previousY
             elevationMap.push(group[j])
             maxY = Math.max(maxY, elevations[j], previousY)
@@ -183,20 +165,20 @@ function ign (selectedCoords) {
     }
   }
 
-  runReqs(selectedCoords, 150)
+  runReqs(selectedCoords, maxSimultaneous || 150)
 
   player.print(`Elevated ${success}/${selectedCoords.length} blocs successfully.`)
 
   return { maxY, minY }
 }
 
-function findGround (pos) {
+function findGround (pos, options) {
   // look for current ground location
   let groundPos = pos
-  while (!ignoredBlocks.includes(blocks.getBlock(groundPos.add(vectorUp)).id)) {
+  while (!options.ignoredBlocks.includes(blocks.getBlock(groundPos.add(vectorUp)).id)) {
     groundPos = groundPos.add(vectorUp)
   }
-  while (ignoredBlocks.includes(blocks.getBlock(groundPos).id)) {
+  while (options.ignoredBlocks.includes(blocks.getBlock(groundPos).id)) {
     groundPos = groundPos.add(vectorDown)
   }
   return groundPos.y

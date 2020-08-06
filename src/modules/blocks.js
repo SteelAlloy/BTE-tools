@@ -1,26 +1,26 @@
 /* global context */
 
 export const ignoredBlocks = [
-  context.getBlock('air').id,
-  context.getBlock('tallgrass').id,
-  context.getBlock('sapling').id,
-  context.getBlock('log').id,
-  context.getBlock('log2').id,
-  context.getBlock('leaves').id,
-  context.getBlock('leaves2').id,
-  context.getBlock('deadbush').id,
-  context.getBlock('red_flower').id,
-  context.getBlock('yellow_flower').id,
-  context.getBlock('red_mushroom').id,
-  context.getBlock('brown_mushroom').id,
-  context.getBlock('vine').id,
-  context.getBlock('waterlily').id,
-  context.getBlock('cactus').id,
-  context.getBlock('reeds').id,
-  context.getBlock('pumpkin').id,
-  context.getBlock('melon_block').id,
-  context.getBlock('snow_layer').id,
-  context.getBlock('double_plant').id
+  'air',
+  'tallgrass',
+  'sapling',
+  'log',
+  'log2',
+  'leaves',
+  'leaves2',
+  'deadbush',
+  'red_flower',
+  'yellow_flower',
+  'red_mushroom',
+  'brown_mushroom',
+  'vine',
+  'waterlily',
+  'cactus',
+  'reeds',
+  'pumpkin',
+  'melon_block',
+  'snow_layer',
+  'double_plant'
 ]
 
 export const allowedBlocks = [

@@ -21,7 +21,8 @@ function readFile (file) {
 }
 
 export function getConfig () {
-  const config = readFile('craftscripts', 'config', 'json', [])
+  const file = context.getSafeOpenFile('craftscripts', 'config', 'json', [])
+  const config = readFile(file)
   return config
     ? JSON.parse(config)
     : {}
