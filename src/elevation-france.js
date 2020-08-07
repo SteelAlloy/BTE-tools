@@ -10,7 +10,7 @@ importClass(Packages.java.net.URL)
 importClass(Packages.java.lang.Thread)
 importClass(Packages.java.nio.charset.StandardCharsets)
 importClass(Packages.org.apache.commons.io.IOUtils)
-
+Hello world
 const usage = `[flags]
 Flags:
  • §lw§r§c Keeps water
