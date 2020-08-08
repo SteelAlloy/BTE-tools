@@ -14,12 +14,6 @@ export function request (radius, center, getQuery, draw) {
   })
 }
 
-export function getRadius (region) {
-  const x = Math.abs(region.pos1.x - region.pos2.x)
-  const z = Math.abs(region.pos1.z - region.pos2.z)
-  return Math.sqrt(x * x + z * z) / 2
-}
-
 function getPoints (radius, center) {
   // Returns 8 points on a circle centered on the region
   const diag = Math.sqrt(2) / 2 * radius

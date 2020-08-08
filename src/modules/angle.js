@@ -1,6 +1,8 @@
 /* global Vector2D */
 
-import getProjection from './modules/getProjection'
+/* UNSTABLE COMMAND */
+
+import getProjection from './getProjection'
 
 importClass(Packages.com.sk89q.worldedit.Vector2D)
 

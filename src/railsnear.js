@@ -1,16 +1,11 @@
-/* global importPackage Packages player context argv */
+import { railsnear as usage } from './modules/usage'
 import { rails } from './modules/rails'
 import { ignoredBlocks, allowedBlocks } from './modules/blocks'
+import { transformIDs } from './modules/utils'
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
 importPackage(Packages.com.sk89q.worldedit.blocks)
-
-const usage = `<radius> [block] [flags]
-• §o/cs rails radius 7
-• §o/cs rails radius 50 stone u
-Flags:
-• §lu§r§c Draw a block above`
 
 context.checkArgs(1, 2, usage)
 
@@ -27,8 +22,7 @@ const options = {
   allowedBlocks,
   ...JSON.parse(argv[2] || '{}')
 }
-
-options.ignoredBlocks = options.ignoredBlocks.map((id) => context.getBlock(id).id)
-options.allowedBlocks = options.allowedBlocks.map((id) => context.getBlock(id).id)
+transformIDs(options, 'ignoredBlocks')
+transformIDs(options, 'allowedBlocks')
 
 rails(options)
