@@ -6,7 +6,7 @@ const vectorUp = Vector.UNIT_Y
 const vectorDown = Vector.UNIT_Y.multiply(-1)
 let changedBlocks = 0
 
-function draw (lines, setBlock) {
+export function draw (lines, setBlock) {
   const y = player.getLocation().y
   for (let i = 0; i < lines.length; i++) {
     const [x1, z1, x2, z2] = lines[i]
@@ -33,62 +33,69 @@ function drawLine (x1, y1, z1, x2, y2, z2, setBlock) {
   }
 }
 
-function findGround (ignoredBlocks, blocks) {
-  return (pos) => {
-    while (!ignoredBlocks.includes(blocks.getBlock(pos.add(vectorUp)).id)) {
-      pos = pos.add(vectorUp)
+export function findGround (options) {
+  if (options.onGround) {
+    const blocks = context.remember()
+    if (!options.ignoreVegetation) {
+      options.ignoredBlocks = [context.getBlock('air').id]
     }
-    while (ignoredBlocks.includes(blocks.getBlock(pos).id)) {
-      pos = pos.add(vectorDown)
+    return (pos) => {
+      while (!options.ignoredBlocks.includes(blocks.getBlock(pos.add(vectorUp)).id)) {
+        pos = pos.add(vectorUp)
+      }
+      while (options.ignoredBlocks.includes(blocks.getBlock(pos).id)) {
+        pos = pos.add(vectorDown)
+      }
+      return pos
     }
-    return pos
-  }
-}
-
-function insideRegion (options) {
-  if (options.region) {
-    const y = options.region.center.y
-    return (pos) => options.region.contains(new Vector(pos.x, y, pos.z))
-  }
-  return (pos) => true
-}
-
-function naturalBlock (allowedBlocks, blocks) {
-  return (pos) => allowedBlocks.includes(blocks.getBlock(pos).id)
-}
-
-function oneBlockAbove (options) {
-  if (options.up) {
-    return (pos) => pos.add(vectorUp)
   }
   return (pos) => pos
 }
 
-function setWall (options, blocks, context, block) {
-  block = context.getBlock(block)
+export function ignoreBuildings (options) {
+  if (options.ignoreBuildings) {
+    const blocks = context.remember()
+    return (pos) => options.allowedBlocks.includes(blocks.getBlock(pos).id)
+  }
+  return (pos) => true
+}
+
+export function setOffset (options) {
+  if (options.offset) {
+    const up = vectorUp.multiply(options.offset)
+    return (pos) => pos.add(up)
+  }
+  return (pos) => pos
+}
+
+export function setWall (options) {
+  const blocks = context.remember()
+  const block = context.getBlock(options.block)
   if (options.height) {
     const height = Number.parseInt(options.height)
     return (pos) => {
       for (let i = 0; i < height; i++) {
-        pos = pos.add(vectorUp)
         blocks.setBlock(pos, block)
+        pos = pos.add(vectorUp)
         changedBlocks++
       }
     }
   }
-  return (pos) => blocks.setBlock(pos, block)
-}
-
-function setBlock (blocks, context, block) {
-  block = context.getBlock(block)
   return (pos) => {
     blocks.setBlock(pos, block)
     changedBlocks++
   }
 }
 
-function printBlocks () {
-  player.print(`Operation completed (${changedBlocks} blocks affected).`)
+export function setBlock (options) {
+  const blocks = context.remember()
+  const block = context.getBlock(options.block)
+  return (pos) => {
+    blocks.setBlock(pos, block)
+    changedBlocks++
+  }
 }
 
-module.exports = { draw, findGround, insideRegion, naturalBlock, oneBlockAbove, setWall, setBlock, printBlocks }
+export function printBlocks () {
+  player.print(`Operation completed (${changedBlocks} blocks affected).`)
+}

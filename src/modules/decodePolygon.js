@@ -1,7 +1,8 @@
-const getProjection = require('./getProjection')
+import getProjection from './getProjection'
 
 const DataError = new Error('Incorrect data format')
-module.exports = function decode (data) {
+
+export default function decode (data) {
   const geometry = getGeometry(data)
   return getLines(geometry)
 }
@@ -13,23 +14,18 @@ function getGeometry (data) {
 
   // Extract shapes
   const geometry = []
-  let lines = 0
   for (let i = 0; i < data.features.length; i++) {
     if (data.features[i].geometry.type === 'Polygon') {
       const shapes = data.features[i].geometry.coordinates
       for (let j = 0; j < shapes.length; j++) {
         const coordinates = shapes[j]
         geometry.push(coordinates)
-        lines += coordinates.length
       }
     } else if (data.features[i].geometry.type === 'LineString') {
       const coordinates = data.features[i].geometry.coordinates
       geometry.push(coordinates)
-      lines += coordinates.length
     }
   }
-
-  player.print(`§7${lines} lines to draw`)
 
   return geometry
 }
@@ -47,6 +43,8 @@ function getLines (geometry) {
       lines.push([x1, z1, x2, z2])
     }
   }
+
+  player.print(`§7${lines.length} lines to draw`)
 
   return lines
 }
