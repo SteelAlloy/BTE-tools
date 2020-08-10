@@ -13,6 +13,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
+## [Unreleased]
+
+### Added
+
+- `/cs gis_jp` command, to get better elevation data in Japan.
+
+- `draw` command:
+  - Keyhole markup language (.kml) support.
+- `rails` command:
+  - `regex` option (allow you to select rail type)
+
+- Every command that places blocks:
+  - `height` option.
+  - `onGround` option.
+  - `offset` option.
+  - `ignoreBuildings` option.
+  - `ignoreVegetation` option.
+  - `ignoredBlocks` & `allowedBlocks` options.
+
+### Changed
+
+- `/cs ign` is now `/cs gis_fr`
+- The syntax of all commands has been changed. Options are now in the form of a JSON object, offering much more flexibility.
+- `/cs rails <mode>` command and `/cs hedges <mode>` have been split into different commands: `rails`, `railsnear`, `hedges`, `hedgesnear`.
+
+### Removed
+
+- `list` command. Use `/cs help` instead.
+
+### Fixed
+
+- OSM commands for the western hemisphere.
+- Corrupted values in elevation commands.
+
+### Security 
+
+- Updated Node modules.
+
 ## [1.4.0] - 2020-05-24
 
 ### Added

@@ -1,4 +1,4 @@
-/* global importPackage Packages player context argv Vector */
+/* global Vector */
 import getProjection from './modules/getProjection'
 
 importPackage(Packages.com.sk89q.worldedit)

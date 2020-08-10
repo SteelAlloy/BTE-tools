@@ -1,4 +1,4 @@
-/* global importPackage Packages player context StringWriter IOUtils StandardCharsets */
+/* global StringWriter IOUtils StandardCharsets */
 import getProjection from './modules/getProjection'
 
 importPackage(Packages.java.io)
