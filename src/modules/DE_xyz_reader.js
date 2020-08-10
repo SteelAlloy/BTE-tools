@@ -2,12 +2,14 @@
 
 // getRegioSelection if too high break
 // get Pos1 xy Pos2 xy coordinates, convert -->  UTM
-var EPos1 = 346000 // get from Selection !test value!
-var EPos2 = 5646000 // get from Selection !test value!
-var NPos1 = 344000 // get from Selection !test value!
-var NPos2 = 5644000 // get from Selection !test value!
+var EPos1 = 346 // get from Selection !test value! 346000.toString().substr(0, 2)
+var NPos1 = 5646 // get from Selection !test value! 5646000.toString().substr(0, 3)
+var EPos2 = 344 // get from Selection !test value! 344000.toString().substr(0, 2)
+var NPos2 = 5644 // get from Selection !test value! 5644000.toString().substr(0, 3)
 var Edif = EPos1 - EPos2 // for example 4
+console.log(Edif)
 var Ndif = NPos1 - NPos2
+console.log(Ndif)
 var TilE = []
 var TilN = []
 var TileNumbers = [] // List of Tiles that will be loaded
@@ -36,11 +38,14 @@ if (Ndif > 0) {
 } else {
   TilN.push(NPos1)
 }
-let i = 0
-let x = 0
-for (i in TilN) {
-  for (x in TilE) {
-    TileNumbers.push(UtmGridNr + TilN[i].toString().substr(0, 2) + '_' + TilE[x].toString().substr(0, 3))
+
+console.log(TilN)
+console.log(TilE)
+var i
+var x
+for (i of TilN) {
+  for (x of TilE) {
+    TileNumbers.push(UtmGridNr.toString() + TilN[i] + '_' + TilE[x])
   }
 }
 
