@@ -13,23 +13,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
-## [Unreleased]
+## [2.0.0] - 2020-08-10
 
 ### Added
 
+- `/cs osm` and `/cs osmnear` to run any overpass query in an area and plot the path
 - `/cs gis_jp` command, to get better elevation data in Japan.
 
-- `draw` command:
+- `/cs draw` command:
   - Keyhole markup language (.kml) support.
-- `rails` command:
+- `/cs rails` command:
   - `regex` option (allow you to select rail type)
 
 - Every command that places blocks:
-  - `height` option.
-  - `onGround` option.
-  - `offset` option.
-  - `ignoreBuildings` option.
-  - `ignoreVegetation` option.
+  - `height` option to set wall height.
+  - `onGround` option to draw on the ground or not.
+  - `offset` option to set ground offset.
+  - `ignoreBuildings` option to ignore existing buildings.
+  - `ignoreVegetation` option to ignore vegetation.
   - `ignoredBlocks` & `allowedBlocks` options.
 
 ### Changed
@@ -46,6 +47,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - OSM commands for the western hemisphere.
 - Corrupted values in elevation commands.
+- `undefined` values in some commands
 
 ### Security 
 

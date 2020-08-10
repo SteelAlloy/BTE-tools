@@ -39,6 +39,7 @@
   - [gis](#gis)
   - [hedges](#hedges)
   - [hedgesnear](#hedgesnear)
+- [Default allowed & ignored allowedBlocks](#default-allowed--ignored-allowedblocks)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -176,8 +177,6 @@ Examples :
 /cs rails [options]
 ```
 
-![](images/rails.png)
-
 Traces all railroads in an area
 
 Default options:
@@ -191,8 +190,8 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
-  "ignoredBlocks": ["see documentation"],
-  "allowedBlocks": ["see documentation"]
+  "ignoredBlocks": ["see below"],
+  "allowedBlocks": ["see below"]
 }
 ```
 
@@ -224,8 +223,8 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
-  "ignoredBlocks": ["see documentation"],
-  "allowedBlocks": ["see documentation"]
+  "ignoredBlocks": ["see below"],
+  "allowedBlocks": ["see below"]
 }
 ```
 
@@ -242,7 +241,7 @@ Examples :
 /cs osm <query> [options]
 ```
 
-Run an overpass query in an area and trace the path in an area
+Run an overpass query in an area and trace the path
 
 Default options:
 
@@ -254,8 +253,8 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
-  "ignoredBlocks": ["see documentation"],
-  "allowedBlocks": ["see documentation"]
+  "ignoredBlocks": ["see below"],
+  "allowedBlocks": ["see below"]
 }
 ```
 
@@ -265,8 +264,6 @@ Examples :
 /cs osm way[highway~"^.*$"]
 /cs osm way[railway~"(subway|tram)"] {"block":"stone"}
 ```
-
-![](images/rails-.png)
 
 ### osmnear
 
@@ -286,16 +283,16 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
-  "ignoredBlocks": ["see documentation"],
-  "allowedBlocks": ["see documentation"]
+  "ignoredBlocks": ["see below"],
+  "allowedBlocks": ["see below"]
 }
 ```
 
 Examples :
 
 ```sh
-/cs osm way[highway~"^.*$"] 7
-/cs osm way[railway~"(subway|tram)"] 50 {"block":"stone"}
+/cs osmnear way[highway~"^.*$"] 7
+/cs osmnear way[railway~"(subway|tram)"] 50 {"block":"stone"}
 ```
 
 
@@ -329,7 +326,7 @@ Default options:
 {
   "smooth": true,
   "ignoreWater": false,
-  "ignoredBlocks": ["see documentation"],
+  "ignoredBlocks": ["see below"],
 }
 ```
 
@@ -359,8 +356,8 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
-  "ignoredBlocks": ["see documentation"],
-  "allowedBlocks": ["see documentation"]
+  "ignoredBlocks": ["see below"],
+  "allowedBlocks": ["see below"]
 }
 ```
 
@@ -390,8 +387,8 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
-  "ignoredBlocks": ["see documentation"],
-  "allowedBlocks": ["see documentation"]
+  "ignoredBlocks": ["see below"],
+  "allowedBlocks": ["see below"]
 }
 ```
 
@@ -403,6 +400,50 @@ Examples :
 ```
 
 ![](images/hedges-.png)
+
+## Default allowed & ignored allowedBlocks
+
+The blocks ignored by default are used to not draw a path on the vegetation.
+```js
+[
+  'air',
+  'tallgrass',
+  'sapling',
+  'log',
+  'log2',
+  'leaves',
+  'leaves2',
+  'deadbush',
+  'red_flower',
+  'yellow_flower',
+  'red_mushroom',
+  'brown_mushroom',
+  'vine',
+  'waterlily',
+  'cactus',
+  'reeds',
+  'pumpkin',
+  'melon_block',
+  'snow_layer',
+  'double_plant'
+]
+```
+
+The blocks allowed by default are used to not draw a path on existing buildings.
+```js
+[
+  'air',
+  'grass',
+  'dirt',
+  'stone',
+  'sand',
+  'grass_path',
+  'concrete',
+  'gravel',
+  'water',
+  'lava'
+]
+```
 
 
 ## Roadmap

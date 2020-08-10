@@ -9,8 +9,8 @@ ${example} • help : Display all available commands.
 ${example} • tpll : Classic tpll command that also accepts degrees minutes seconds
 ${example} • draw : Trace any imported shape of an OpenStreetMap query - railroads, roads, etc.
 ${example} • address : Get the closest address
-${example} • osm : Run an overpass query in an area and trace the path in an area
-${example} • osmnear : Run an overpass query in an area and trace the path around the player
+${example} • osm : Run an overpass query and trace the path in an area
+${example} • osmnear : Run an overpass query and trace the path around the player
 ${example} • rails : Trace all railroads in an area 
 ${example} • railsnear : Trace all railroads around the player
 ${example} • hedges : Trace all hedges in an area 
