@@ -19,9 +19,9 @@ export const gis_fr = /* eslint-disable-line camelcase */
 ${example}/cs gis_fr
 ${example}/cs gis_fr {"smooth":false,"ignoreWater":true}
 Default options: ${object}{
-${object}"smooth": ${boolean}true${object},
-${object}"ignoreWater": ${boolean}false${object},
-${object}"ignoredBlocks": [${string}"see documentation"${object}],
+  ${object}"smooth": ${boolean}true${object},
+  ${object}"ignoreWater": ${boolean}false${object},
+  ${object}"ignoredBlocks": [${string}"see documentation"${object}],
 ${object}}
 `
 export const gis_jp = /* eslint-disable-line camelcase */
@@ -29,9 +29,9 @@ export const gis_jp = /* eslint-disable-line camelcase */
 ${example}/cs gis_jp
 ${example}/cs gis_jp {"smooth":false,"ignoreWater":true}
 Default options: ${object}{
-${object}"smooth": ${boolean}true${object},
-${object}"ignoreWater": ${boolean}false${object},
-${object}"ignoredBlocks": [${string}"see documentation"${object}],
+  ${object}"smooth": ${boolean}true${object},
+  ${object}"ignoreWater": ${boolean}false${object},
+  ${object}"ignoredBlocks": [${string}"see documentation"${object}],
 ${object}}
 `
 
@@ -39,29 +39,60 @@ export const hedges = `${command}/cs hedges ${optional}[options]
 ${example}/cs hedges
 ${example}/cs hedges {"block":"stone","height":5}
 Default options: ${object}{
-${object}"block": ${string}"leaves:4"${object},
-${object}"height": ${number}2${object},
-${object}"offset": ${number}1${object},
-${object}"onGround": ${boolean}true${object},
-${object}"ignoreBuildings": ${boolean}true${object},
-${object}"ignoreVegetation": ${boolean}true${object},
-${object}"ignoredBlocks": [${string}"see documentation"${object}],
-${object}"allowedBlocks": [${string}"see documentation"${object}]
+  ${object}"block": ${string}"leaves:4"${object},
+  ${object}"height": ${number}2${object},
+  ${object}"offset": ${number}1${object},
+  ${object}"onGround": ${boolean}true${object},
+  ${object}"ignoreBuildings": ${boolean}true${object},
+  ${object}"ignoreVegetation": ${boolean}true${object},
+  ${object}"ignoredBlocks": [${string}"see documentation"${object}],
+  ${object}"allowedBlocks": [${string}"see documentation"${object}]
 ${object}}
 `
 
-export const hedgesnear = `${command}/cs hedgesnear ${optional}[options] 
+export const hedgesnear = `${command}/cs hedgesnear ${required}<radius> ${optional}[options] 
 ${example}/cs hedgesnear 7
 ${example}/cs hedgesnear 50 {"block":"stone","height":5}
 Default options: ${object}{
-${object}"block": ${string}"leaves:4"${object},
-${object}"height": ${number}2${object},
-${object}"offset": ${number}1${object},
-${object}"onGround": ${boolean}true${object},
-${object}"ignoreBuildings": ${boolean}true${object},
-${object}"ignoreVegetation": ${boolean}true${object},
-${object}"ignoredBlocks": [${string}"see documentation"${object}],
-${object}"allowedBlocks": [${string}"see documentation"${object}]
+  ${object}"block": ${string}"leaves:4"${object},
+  ${object}"height": ${number}2${object},
+  ${object}"offset": ${number}1${object},
+  ${object}"onGround": ${boolean}true${object},
+  ${object}"ignoreBuildings": ${boolean}true${object},
+  ${object}"ignoreVegetation": ${boolean}true${object},
+  ${object}"ignoredBlocks": [${string}"see documentation"${object}],
+  ${object}"allowedBlocks": [${string}"see documentation"${object}]
+${object}}
+`
+
+export const osm = `${command}/cs osm ${required}<query> ${optional}[options] 
+  ${example}/cs osm way[highway~"^.*$"]
+  ${example}/cs osm way[railway~"^.*$"] {"block":"stone","offset":5}
+Default options: ${object}{
+  ${object}"block": ${string}"diamond_block"${object},
+  ${object}"offset": ${number}0${object},
+  ${object}"height": ${number}1${object},
+  ${object}"onGround": ${boolean}true${object},
+  ${object}"ignoreBuildings": ${boolean}true${object},
+  ${object}"ignoreVegetation": ${boolean}true${object},
+  ${object}"ignoredBlocks": [${string}"see documentation"${object}],
+  ${object}"allowedBlocks": [${string}"see documentation"${object}]
+${object}}
+`
+
+export const osmnear = `${command}/cs osmnear ${required}<query> <radius> ${optional}[options] 
+  ${example}/cs osmnear way[highway~"^.*$"] 7
+  ${example}/cs osmnear way[railway~"^.*$"] 50 {"block":"stone","offset":5}
+Default options: ${object}{
+  ${object}"block": ${string}"diamond_block"${object},
+  ${object}"offset": ${number}0${object},
+  ${object}"height": ${number}1${object},
+  ${object}"regex": ${string}"^.*$"${object},
+  ${object}"onGround": ${boolean}true${object},
+  ${object}"ignoreBuildings": ${boolean}true${object},
+  ${object}"ignoreVegetation": ${boolean}true${object},
+  ${object}"ignoredBlocks": [${string}"see documentation"${object}],
+  ${object}"allowedBlocks": [${string}"see documentation"${object}]
 ${object}}
 `
 

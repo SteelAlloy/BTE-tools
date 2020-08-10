@@ -5,14 +5,16 @@ const bte = require('../package.json')
 const arg = argv[1]
 
 const help = `${command}/cs help ${optional}[command]
-${example} • help : Lists all available commands.
+${example} • help : Display all available commands.
 ${example} • tpll : Classic tpll command that also accepts degrees minutes seconds
-${example} • draw : Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
+${example} • draw : Trace any imported shape of an OpenStreetMap query - railroads, roads, etc.
 ${example} • address : Get the closest address
-${example} • rails : Traces all railroads in an area 
-${example} • railsnear : Traces all railroads around the player
-${example} • hedges : Traces all hedges in an area 
-${example} • hedgesnear : Traces all hedges around the player
+${example} • osm : Run an overpass query in an area and trace the path in an area
+${example} • osmnear : Run an overpass query in an area and trace the path around the player
+${example} • rails : Trace all railroads in an area 
+${example} • railsnear : Trace all railroads around the player
+${example} • hedges : Trace all hedges in an area 
+${example} • hedgesnear : Trace all hedges around the player
 ${example} • gis_fr : Get better elevation data in France
 ${example} • gis_jp : Get better elevation data in Japan
 

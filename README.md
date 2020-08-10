@@ -28,14 +28,17 @@
   - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
-  - [list / help](#list--help)
+  - [help](#help)
   - [tpll](#tpll)
   - [draw](#draw)
   - [rails](#rails)
+  - [railsnear](#railsnear)
+  - [osm](#osm)
+  - [osmnear](#osmnear)
   - [address](#address)
-  - [ign](#ign)
+  - [gis](#gis)
   - [hedges](#hedges)
-- [Find a railroad name](#find-a-railroad-name)
+  - [hedgesnear](#hedgesnear)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -81,23 +84,23 @@ Open the zip file, go to `/lib` and move `rhino-1.7.12.jar` (or newer) to your `
 
 🚀 These are WorldEdit scripts, if blocks are modified you have access to `//undo`.
 
-- **list** : Lists all available commands.
+- **help** : Lists all available commands.
 - **tpll** : Classic tpll command that also accepts `degrees minutes seconds`
 - **draw** : Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 - **rails** : Traces all railroads in an area
+- **railsnear** : Traces all railroads around the player
 - **address** : Get the closest address
-- **ign** : Get better elevation data (only works in France)
+- **hedges** : Traces all hedges in an area 
+- **hedges** : Traces all hedges around the player
+- **gis_fr** : Get better elevation data in France
+- **gis_jp** : Get better elevation data in Japan
 
 Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
-The first execution of a command will take longer than the others because the script has to be compiled.
 
+### help
 
-
-### list / help
-
-```fix
-/cs list
+```sh
 /cs help
 ```
 
@@ -109,7 +112,7 @@ Lists all available commands.
 
 ### tpll
 
-```fix
+```sh
 /cs tpll <latitude> <longitude> [altitude]
 ```
 
@@ -121,7 +124,7 @@ You don't need to remove the comma if there is one when you copy the coordinates
 
 Examples :
 
-```fix
+```
 /cs tpll 47.58523 6.89725
 /cs tpll 47.58523, 6.89725, 370
 /cs tpll 47°35'6.32"N 6°53'50.06"E
@@ -132,13 +135,24 @@ Examples :
 
 ### draw
 
-```
-/cs draw <file> <block> [options]
+```sh
+/cs draw <file> [block] [options]
 ```
 Traces any imported shape of an OpenStreetMap query - railroads, roads, etc.
 
-Flags :
- - **u** (up): Draws a block above
+Default options:
+```json
+{
+  "block": "gold_block",
+  "height": 1,
+  "offset": 0,
+  "onGround": true,
+  "ignoreBuildings": true,
+  "ignoreVegetation": true,
+  "ignoredBlocks": ["see below"],
+  "allowedBlocks": ["see below"]
+}
+```
 
 Setup :
  - Create a `drawings` folder inside `/config/worldedit`.
@@ -151,46 +165,143 @@ Setup :
 
 Examples :
 
-```fix
+```sh
 /cs draw rails1 iron_block
-/cs draw file3 stone u
+/cs draw file3 stone {"height":5,"onGround":false}
 ```
 
 ### rails
 
-```fix
-/cs rails <mode> [...args] [flags]
+```sh
+/cs rails [options]
 ```
 
 ![](images/rails.png)
 
 Traces all railroads in an area
 
-Modes:
- - **radius** Select rails in a radius `<radius> [flags]`
- - **region** Select rails in a region `[flags]`
- - **regionEdge** Select rails in a region and draw only in the defined region `[flags]`
+Default options:
 
-Flags :
- - **u** (up): Draws a block above
+```json
+{
+  "block": "iron_block",
+  "offset": 0,
+  "height": 1,
+  "regex": "^.*$",
+  "onGround": true,
+  "ignoreBuildings": true,
+  "ignoreVegetation": true,
+  "ignoredBlocks": ["see documentation"],
+  "allowedBlocks": ["see documentation"]
+}
+```
 
 Examples :
 
-```fix
-/cs rails radius 7
-/cs rails radius 50 u
-/cs rails region
-/cs rails region u
-/cs rails regionEdge
-/cs rails regionEdge u
+```sh
+/cs rails
+/cs rails {"regex":"(subway|tram)"}
 ```
 
 ![](images/rails-.png)
 
+### railsnear
+
+```sh
+/cs railsnear <radius> [options]
+```
+
+Traces all railroads around the player
+
+Default options:
+
+```json
+{
+  "block": "iron_block",
+  "offset": 0,
+  "height": 1,
+  "regex": "^.*$",
+  "onGround": true,
+  "ignoreBuildings": true,
+  "ignoreVegetation": true,
+  "ignoredBlocks": ["see documentation"],
+  "allowedBlocks": ["see documentation"]
+}
+```
+
+Examples :
+
+```sh
+/cs railsnear 7
+/cs railsnear 50 {"regex":"(subway|tram)"}
+```
+
+### osm
+
+```sh
+/cs osm <query> [options]
+```
+
+Run an overpass query in an area and trace the path in an area
+
+Default options:
+
+```json
+{
+  "block": "diamond_block",
+  "offset": 0,
+  "height": 1,
+  "onGround": true,
+  "ignoreBuildings": true,
+  "ignoreVegetation": true,
+  "ignoredBlocks": ["see documentation"],
+  "allowedBlocks": ["see documentation"]
+}
+```
+
+Examples :
+
+```sh
+/cs osm way[highway~"^.*$"]
+/cs osm way[railway~"(subway|tram)"] {"block":"stone"}
+```
+
+![](images/rails-.png)
+
+### osmnear
+
+```sh
+/cs osmnear <query> <radius> [options]
+```
+
+Run an overpass query in an area and trace the path around the player
+
+Default options:
+
+```json
+{
+  "block": "diamond_block",
+  "offset": 0,
+  "height": 1,
+  "onGround": true,
+  "ignoreBuildings": true,
+  "ignoreVegetation": true,
+  "ignoredBlocks": ["see documentation"],
+  "allowedBlocks": ["see documentation"]
+}
+```
+
+Examples :
+
+```sh
+/cs osm way[highway~"^.*$"] 7
+/cs osm way[railway~"(subway|tram)"] 50 {"block":"stone"}
+```
+
 
 ### address
 
-```fix
+```sh
 /cs address
 ```
 
@@ -202,64 +313,96 @@ Avenue de la Gare TGV, La Jonxion, Meroux, Meroux-Moval, Belfort, Territoire-de-
 ```
 
 
-### ign
+### gis
 
-```fix
-/cs ign
+```sh
+/cs gis_fr [options]
+/cs gis_jp [options]
 ```
 
 ![](images/ign.png)
 
-Get better elevation data (only works in France)
-If you get weird lines, just select a slightly different area.
+Get better elevation data in France & Japan
 
-Flags :
- - **w** (water): Keeps water
+Default options:
+```json
+{
+  "smooth": true,
+  "ignoreWater": false,
+  "ignoredBlocks": ["see documentation"],
+}
+```
+
+Examples:
+
+```sh
+/cs gis_fr
+/cs gis_jp {"smooth":false,"ignoreWater":true}
+```
 
 ![](images/ign-.png)
 
 ### hedges
 
-```fix
-/cs hedges <mode> [...args] [block] [height]
+```sh
+/cs hedges [options]
 ```
 
-Traces all railroads in an area
+Traces all hedges in an area
 
-Modes:
- - **radius** Select hedges in a radius `<radius> [block] [height]`
- - **region** Select hedges in a region `[block] [height]`
- - **regionEdge** Select hedges in a region and draw only in the defined region `[block] [height]`
-
+Default options:
+```json
+{
+  "block": "leaves:4",
+  "height": 2,
+  "offset": 1,
+  "onGround": true,
+  "ignoreBuildings": true,
+  "ignoreVegetation": true,
+  "ignoredBlocks": ["see documentation"],
+  "allowedBlocks": ["see documentation"]
+}
+```
 
 Examples :
 
-```fix
-/cs hedges radius 7
-/cs hedges radius 50 cobblestone 3
-/cs hedges region
-/cs hedges region cobblestone 3
-/cs hedges regionEdge
-/cs hedges regionEdge cobblestone 3
+```sh
+/cs hedges
+/cs hedges {"block":"stone","height":3}
 ```
 
 ![](images/hedges-.png)
 
+### hedgesnear
 
-## Find a railroad name
+```sh
+/cs hedgesnear <radius> [options]
+```
 
-🔍 To find a railway name, right click near the rails and click on `Query features`
+Traces all hedges around the player
 
-![](images/rails1.png)
+Default options:
+```json
+{
+  "block": "leaves:4",
+  "height": 2,
+  "offset": 1,
+  "onGround": true,
+  "ignoreBuildings": true,
+  "ignoreVegetation": true,
+  "ignoredBlocks": ["see documentation"],
+  "allowedBlocks": ["see documentation"]
+}
+```
 
-Then, click on the desired rail
+Examples :
 
-![](images/rails2.png)
+```sh
+/cs hedgesnear 7
+/cs hedgesnear 50 {"block":"stone","height":3}
+```
 
-And finally, get the name.
-
-![](images/rails3.png)
-
+![](images/hedges-.png)
 
 
 ## Roadmap
