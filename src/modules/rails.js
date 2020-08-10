@@ -1,6 +1,6 @@
 import { request } from './OSMcommand'
 import decode from './decodePolygon'
-import { draw, findGround, ignoreBuildings, setOffset, setBlock, printBlocks } from './drawLines'
+import { draw, findGround, ignoreBuildings, setOffset, setWall, printBlocks } from './drawLines'
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
@@ -16,12 +16,12 @@ export function rails (options) {
     const findGround_ = findGround(options)
     const ignoreBuildings_ = ignoreBuildings(options)
     const setOffset_ = setOffset(options)
-    const setBlock_ = setBlock(options)
+    const setWall_ = setWall(options)
     draw(lines, (pos) => {
       pos = findGround_(pos)
       if (ignoreBuildings_(pos)) {
         pos = setOffset_(pos)
-        setBlock_(pos)
+        setWall_(pos)
       }
     })
     printBlocks()

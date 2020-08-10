@@ -1,4 +1,4 @@
-import { elevationFrance as usage } from './modules/usage'
+import { gis_fr as usage } from './modules/usage'
 import { elevation } from './modules/elevation'
 import { ignoredBlocks } from './modules/blocks'
 import { transformIDs } from './modules/utils'

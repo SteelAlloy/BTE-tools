@@ -14,18 +14,20 @@ Default options: ${object}{
   ${object}"allowedBlocks": [${string}"see documentation"${object}]
   ${object}}
 `
-export const elevationFrance = `${command}/cs elevationFrance ${optional}[options] 
-${example}/cs elevationFrance
-${example}/cs elevationFrance {"smooth":false,"ignoreWater":true}
+export const gis_fr = /* eslint-disable-line camelcase */
+`${command}/cs gis_fr ${optional}[options] 
+${example}/cs gis_fr
+${example}/cs gis_fr {"smooth":false,"ignoreWater":true}
 Default options: ${object}{
 ${object}"smooth": ${boolean}true${object},
 ${object}"ignoreWater": ${boolean}false${object},
 ${object}"ignoredBlocks": [${string}"see documentation"${object}],
 ${object}}
 `
-export const elevationJapan = `${command}/cs elevationJapan ${optional}[options] 
-${example}/cs elevationJapan
-${example}/cs elevationJapan {"smooth":false,"ignoreWater":true}
+export const gis_jp = /* eslint-disable-line camelcase */
+`${command}/cs gis_jp ${optional}[options] 
+${example}/cs gis_jp
+${example}/cs gis_jp {"smooth":false,"ignoreWater":true}
 Default options: ${object}{
 ${object}"smooth": ${boolean}true${object},
 ${object}"ignoreWater": ${boolean}false${object},
@@ -39,7 +41,7 @@ ${example}/cs hedges {"block":"stone","height":5}
 Default options: ${object}{
 ${object}"block": ${string}"leaves:4"${object},
 ${object}"height": ${number}2${object},
-${object}"offset": ${number}0${object},
+${object}"offset": ${number}1${object},
 ${object}"onGround": ${boolean}true${object},
 ${object}"ignoreBuildings": ${boolean}true${object},
 ${object}"ignoreVegetation": ${boolean}true${object},
@@ -54,7 +56,7 @@ ${example}/cs hedgesnear 50 {"block":"stone","height":5}
 Default options: ${object}{
 ${object}"block": ${string}"leaves:4"${object},
 ${object}"height": ${number}2${object},
-${object}"offset": ${number}0${object},
+${object}"offset": ${number}1${object},
 ${object}"onGround": ${boolean}true${object},
 ${object}"ignoreBuildings": ${boolean}true${object},
 ${object}"ignoreVegetation": ${boolean}true${object},
@@ -69,6 +71,7 @@ export const rails = `${command}/cs rails ${optional}[options]
 Default options: ${object}{
   ${object}"block": ${string}"iron_block"${object},
   ${object}"offset": ${number}0${object},
+  ${object}"height": ${number}1${object},
   ${object}"regex": ${string}"^.*$"${object},
   ${object}"onGround": ${boolean}true${object},
   ${object}"ignoreBuildings": ${boolean}true${object},
@@ -84,6 +87,7 @@ export const railsnear = `${command}/cs railsnear ${required}<radius> ${required
 Default options: ${object}{
   ${object}"block": ${string}"iron_block"${object},
   ${object}"offset": ${number}0${object},
+  ${object}"height": ${number}1${object},
   ${object}"regex": ${string}"^.*$"${object},
   ${object}"onGround": ${boolean}true${object},
   ${object}"ignoreBuildings": ${boolean}true${object},

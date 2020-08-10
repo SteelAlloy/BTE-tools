@@ -17,15 +17,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Keyhole markup language (.kml) support.
-- Rails type regex.
-- `height` option.
-- `onGround` option.
-- Select ignored and allowed blocks.
+- `/cs gis_jp` command, to get better elevation data in Japan.
+
+- `draw` command:
+  - Keyhole markup language (.kml) support.
+- `rails` command:
+  - `regex` option (allow you to select rail type)
+
+- Every command that places blocks:
+  - `height` option.
+  - `onGround` option.
+  - `offset` option.
+  - `ignoreBuildings` option.
+  - `ignoreVegetation` option.
+  - `ignoredBlocks` & `allowedBlocks` options.
 
 ### Changed
 
+- `/cs ign` is now `/cs gis_fr`
 - The syntax of all commands has been changed. Options are now in the form of a JSON object, offering much more flexibility.
+- `/cs rails <mode>` command and `/cs hedges <mode>` have been split into different commands: `rails`, `railsnear`, `hedges`, `hedgesnear`.
 
 ### Removed
 

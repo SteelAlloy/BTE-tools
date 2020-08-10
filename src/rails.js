@@ -13,6 +13,7 @@ const region = getRegion()
 
 const options = {
   block: 'iron_block',
+  height: 1,
   offset: 0,
   regex: '^.*$',
   radius: getRadius(region),

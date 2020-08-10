@@ -13,8 +13,8 @@ ${example} • rails : Traces all railroads in an area
 ${example} • railsnear : Traces all railroads around the player
 ${example} • hedges : Traces all hedges in an area 
 ${example} • hedgesnear : Traces all hedges around the player
-${example} • elevationFrance : Get better elevation data in France
-${example} • elevationJapan : Get better elevation data in Japan
+${example} • gis_fr : Get better elevation data in France
+${example} • gis_jp : Get better elevation data in Japan
 
 ${white}BTE-tools ${green}${bold}v${bte.version}
 ${white}Request features & report issues : ${yellow}${underline}${bte.bugs.url}

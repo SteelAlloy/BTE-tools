@@ -14,19 +14,16 @@ function getGeometry (data) {
 
   // Extract shapes
   const geometry = []
-  let lines = 0
   for (let i = 0; i < data.features.length; i++) {
     if (data.features[i].geometry.type === 'Polygon') {
       const shapes = data.features[i].geometry.coordinates
       for (let j = 0; j < shapes.length; j++) {
         const coordinates = shapes[j]
         geometry.push(coordinates)
-        lines += coordinates.length
       }
     } else if (data.features[i].geometry.type === 'LineString') {
       const coordinates = data.features[i].geometry.coordinates
       geometry.push(coordinates)
-      lines += coordinates.length
     }
   }
 
