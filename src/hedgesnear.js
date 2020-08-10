@@ -12,11 +12,12 @@ context.checkArgs(1, 2, usage)
 const options = {
   block: 'leaves:4',
   height: 2,
+  offset: 1,
   radius: Number.parseFloat(argv[1]),
   center: player.getLocation(),
   onGround: true,
   ignoreBuildings: true,
-  ignoreTrees: true,
+  ignoreVegetation: true,
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[2] || '{}')

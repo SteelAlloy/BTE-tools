@@ -1,6 +1,6 @@
 import { request } from './OSMcommand'
 import decode from './decodePolygon'
-import { draw, findGround, naturalBlock, setWall, printBlocks } from './drawLines'
+import { draw, findGround, ignoreBuildings, setWall, printBlocks } from './drawLines'
 
 importPackage(Packages.com.sk89q.worldedit)
 importPackage(Packages.com.sk89q.worldedit.math)
@@ -14,10 +14,10 @@ export function hedges (options) {
   function callback (data) {
     const lines = decode(data)
     const findGround_ = findGround(options)
-    const naturalBlock_ = naturalBlock(options)
+    const ignoreBuildings_ = ignoreBuildings(options)
     const setWall_ = setWall(options)
     draw(lines, (pos) => {
-      if (naturalBlock_(pos)) {
+      if (ignoreBuildings_(pos)) {
         pos = findGround_(pos)
         setWall_(pos)
       }

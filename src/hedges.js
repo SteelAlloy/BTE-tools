@@ -14,12 +14,12 @@ const region = getRegion()
 const options = {
   block: 'leaves:4',
   height: 2,
-  offset: 0,
+  offset: 1,
   radius: getRadius(region),
   center: region.center,
   onGround: true,
   ignoreBuildings: true,
-  ignoreTrees: true,
+  ignoreVegetation: true,
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[1] || '{}')

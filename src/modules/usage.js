@@ -9,7 +9,7 @@ Default options: ${object}{
   ${object}"offset": ${number}0${object},
   ${object}"onGround": ${boolean}true${object},
   ${object}"ignoreBuildings": ${boolean}true${object},
-  ${object}"ignoreTrees": ${boolean}true${object},
+  ${object}"ignoreVegetation": ${boolean}true${object},
   ${object}"ignoredBlocks": [${string}"see documentation"${object}],
   ${object}"allowedBlocks": [${string}"see documentation"${object}]
   ${object}}
@@ -42,7 +42,7 @@ ${object}"height": ${number}2${object},
 ${object}"offset": ${number}0${object},
 ${object}"onGround": ${boolean}true${object},
 ${object}"ignoreBuildings": ${boolean}true${object},
-${object}"ignoreTrees": ${boolean}true${object},
+${object}"ignoreVegetation": ${boolean}true${object},
 ${object}"ignoredBlocks": [${string}"see documentation"${object}],
 ${object}"allowedBlocks": [${string}"see documentation"${object}]
 ${object}}
@@ -57,7 +57,7 @@ ${object}"height": ${number}2${object},
 ${object}"offset": ${number}0${object},
 ${object}"onGround": ${boolean}true${object},
 ${object}"ignoreBuildings": ${boolean}true${object},
-${object}"ignoreTrees": ${boolean}true${object},
+${object}"ignoreVegetation": ${boolean}true${object},
 ${object}"ignoredBlocks": [${string}"see documentation"${object}],
 ${object}"allowedBlocks": [${string}"see documentation"${object}]
 ${object}}
@@ -72,7 +72,7 @@ Default options: ${object}{
   ${object}"regex": ${string}"^.*$"${object},
   ${object}"onGround": ${boolean}true${object},
   ${object}"ignoreBuildings": ${boolean}true${object},
-  ${object}"ignoreTrees": ${boolean}true${object},
+  ${object}"ignoreVegetation": ${boolean}true${object},
   ${object}"ignoredBlocks": [${string}"see documentation"${object}],
   ${object}"allowedBlocks": [${string}"see documentation"${object}]
 ${object}}
@@ -87,7 +87,7 @@ Default options: ${object}{
   ${object}"regex": ${string}"^.*$"${object},
   ${object}"onGround": ${boolean}true${object},
   ${object}"ignoreBuildings": ${boolean}true${object},
-  ${object}"ignoreTrees": ${boolean}true${object},
+  ${object}"ignoreVegetation": ${boolean}true${object},
   ${object}"ignoredBlocks": [${string}"see documentation"${object}],
   ${object}"allowedBlocks": [${string}"see documentation"${object}]
 ${object}}

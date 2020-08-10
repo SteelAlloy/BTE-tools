@@ -1,7 +1,7 @@
 import overpass from './overpass'
 import getProjection from './getProjection'
 
-export function request (radius, center, getQuery, draw) {
+export function request (radius, center, getQuery, callback) {
   player.print('§7Please wait...')
   const points = transformPoints(getPoints(radius, center))
   const s = findS(points)
@@ -10,7 +10,7 @@ export function request (radius, center, getQuery, draw) {
 
   overpass(query, (err, data) => {
     if (err) throw err
-    draw(data)
+    callback(data)
   })
 }
 

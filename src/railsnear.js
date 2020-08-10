@@ -17,11 +17,12 @@ const options = {
   center: player.getLocation(),
   onGround: true,
   ignoreBuildings: true,
-  ignoreTrees: true,
+  ignoreVegetation: true,
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[2] || '{}')
 }
+
 transformIDs(options, 'ignoredBlocks')
 transformIDs(options, 'allowedBlocks')
 

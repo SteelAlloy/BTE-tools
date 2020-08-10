@@ -30,8 +30,6 @@ function getGeometry (data) {
     }
   }
 
-  player.print(`§7${lines} lines to draw`)
-
   return geometry
 }
 
@@ -48,6 +46,8 @@ function getLines (geometry) {
       lines.push([x1, z1, x2, z2])
     }
   }
+
+  player.print(`§7${lines.length} lines to draw`)
 
   return lines
 }

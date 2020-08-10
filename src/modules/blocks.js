@@ -22,6 +22,7 @@ export const ignoredBlocks = [
 ]
 
 export const allowedBlocks = [
+  'air',
   'grass',
   'dirt',
   'stone',

@@ -11,5 +11,8 @@ export function getRegion () {
 }
 
 export function transformIDs (options, field) {
+  if (field === 'ignoredBlocks' && !options[field].includes('air')) {
+    options[field].push('air')
+  }
   options[field] = options[field].map((id) => context.getBlock(id).id)
 }

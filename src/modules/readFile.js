@@ -1,6 +1,6 @@
 /* global BufferedReader FileReader */
 
-function readFile (file) {
+export function readFile (file) {
   if (!file.exists()) {
     return undefined
   } else {

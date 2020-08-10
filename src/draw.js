@@ -3,7 +3,7 @@ import toGeoJSON from 'togeojson'
 
 import { draw as usage } from './modules/usage'
 import decode from './modules/decodePolygon'
-import { draw, findGround, naturalBlock, setOffset, setWall, printBlocks } from './modules/drawLines'
+import { draw, findGround, ignoreBuildings, setOffset, setWall, printBlocks } from './modules/drawLines'
 import { ignoredBlocks, allowedBlocks } from './modules/blocks'
 import { readFile } from './modules/readFile'
 import { transformIDs } from './modules/utils'
@@ -20,7 +20,7 @@ const options = {
   height: 1,
   onGround: true,
   ignoreBuildings: true,
-  ignoreTrees: true,
+  ignoreVegetation: true,
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[3] || '{}')
@@ -58,15 +58,16 @@ function process (options) {
 function drawRaw (data, options) {
   const lines = decode(data)
   const findGround_ = findGround(options)
-  const naturalBlock_ = naturalBlock(options)
+  const ignoreBuildings_ = ignoreBuildings(options)
   const setOffset_ = setOffset(options)
   const setWall_ = setWall(options)
   draw(lines, (pos) => {
     pos = findGround_(pos)
-    if (naturalBlock_(pos)) {
+    if (ignoreBuildings_(pos)) {
       pos = setOffset_(pos)
       setWall_(pos)
     }
+    player.print(pos)
   })
   printBlocks()
 }

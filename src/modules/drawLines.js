@@ -36,7 +36,7 @@ function drawLine (x1, y1, z1, x2, y2, z2, setBlock) {
 export function findGround (options) {
   if (options.onGround) {
     const blocks = context.remember()
-    if (!options.ignoreTrees) {
+    if (!options.ignoreVegetation) {
       options.ignoredBlocks = [context.getBlock('air').id]
     }
     return (pos) => {
@@ -52,12 +52,12 @@ export function findGround (options) {
   return (pos) => pos
 }
 
-export function naturalBlock (options) {
+export function ignoreBuildings (options) {
   if (options.ignoreBuildings) {
     const blocks = context.remember()
     return (pos) => options.allowedBlocks.includes(blocks.getBlock(pos).id)
   }
-  return (pos) => pos
+  return (pos) => true
 }
 
 export function setOffset (options) {
@@ -75,8 +75,8 @@ export function setWall (options) {
     const height = Number.parseInt(options.height)
     return (pos) => {
       for (let i = 0; i < height; i++) {
-        pos = pos.add(vectorUp)
         blocks.setBlock(pos, block)
+        pos = pos.add(vectorUp)
         changedBlocks++
       }
     }

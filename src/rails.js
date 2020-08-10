@@ -19,7 +19,7 @@ const options = {
   center: region.center,
   onGround: true,
   ignoreBuildings: true,
-  ignoreTrees: true,
+  ignoreVegetation: true,
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[1] || '{}')
