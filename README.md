@@ -18,6 +18,18 @@
   </p>
 </p>
 
+> ℹ I'm looking for a maintainer. Contact me if interested
+
+<details>
+<summary>Details</summary>
+<p>
+You need a good knowledge of JavaScript, some experience with craftscript and an understanding of some parts of WorldEdit's Java code. 
+
+If you only have some knowledge of javascript it can be enough if you understand quickly.
+
+Contact me on Discord: Oganexon#2001
+</p></details>
+
 
 ## Table of Contents
 
