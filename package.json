@@ -1,6 +1,6 @@
 {
   "name": "bte-tools",
-  "version": "1.4.0",
+  "version": "2.0.0",
   "description": "Awesome tools and scripts to enhance your experience on the Build The Earth project!",
   "scripts": {
     "lint": "standard src/**/*.js --fix",
@@ -17,19 +17,22 @@
   },
   "homepage": "https://github.com/oganexon/BTE-tools#readme",
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/register": "^7.9.0",
+    "@babel/core": "^7.11.1",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
     "babelify": "^10.0.0",
+    "brfs": "^2.0.2",
     "dotenv": "^8.2.0",
     "glob": "^7.1.6",
     "gulp": "^4.0.2",
     "gulp-bro": "^2.0.0",
-    "standard": "^14.3.3",
-    "tinyify": "^2.5.2"
+    "standard": "^14.3.4",
+    "tinyify": "^3.0.0"
   },
   "dependencies": {
-    "osmtogeojson": "^3.0.0-beta.4"
+    "osmtogeojson": "^3.0.0-beta.4",
+    "togeojson": "joestringer/togeojson#v0.17.0",
+    "xmldom": "xmldom/xmldom#8f02868cae42ee2b8329130ffe989c000162ea66"
   },
   "standard": {
     "global": [

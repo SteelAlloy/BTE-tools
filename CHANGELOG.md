@@ -13,11 +13,51 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
+## [2.0.0] - 2020-08-10
+
+### Added
+
+- `/cs osm` and `/cs osmnear` to run any overpass query in an area and plot the path
+- `/cs gis_jp` command, to get better elevation data in Japan.
+
+- `/cs draw` command:
+  - Keyhole markup language (.kml) support.
+- `/cs rails` command:
+  - `regex` option (allow you to select rail type)
+
+- Every command that places blocks:
+  - `height` option to set wall height.
+  - `onGround` option to draw on the ground or not.
+  - `offset` option to set ground offset.
+  - `ignoreBuildings` option to ignore existing buildings.
+  - `ignoreVegetation` option to ignore vegetation.
+  - `ignoredBlocks` & `allowedBlocks` options.
+
+### Changed
+
+- `/cs ign` is now `/cs gis_fr`
+- The syntax of all commands has been changed. Options are now in the form of a JSON object, offering much more flexibility.
+- `/cs rails <mode>` command and `/cs hedges <mode>` have been split into different commands: `rails`, `railsnear`, `hedges`, `hedgesnear`.
+
+### Removed
+
+- `list` command. Use `/cs help` instead.
+
+### Fixed
+
+- OSM commands for the western hemisphere.
+- Corrupted values in elevation commands.
+- `undefined` values in some commands
+
+### Security 
+
+- Updated Node modules.
+
 ## [1.4.0] - 2020-05-24
 
 ### Added
 
-- `hedge` command: traces hedges around farmland
+- `hedges` command: traces hedges around farmland
 
 ### Changed
 
