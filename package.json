@@ -26,7 +26,7 @@
     "glob": "^7.1.6",
     "gulp": "^4.0.2",
     "gulp-bro": "^2.0.0",
-    "standard": "^14.3.4",
+    "standard": "^15.0.0",
     "tinyify": "^3.0.0"
   },
   "dependencies": {
