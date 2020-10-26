@@ -33,6 +33,14 @@ function drawLine (x1, y1, z1, x2, y2, z2, setBlock) {
   }
 }
 
+export function insideRegion (options) { 
+  if (options.region) { 
+    const y = options.region.center.y 
+    return (pos) => options.region.contains(new Vector(pos.x, y, pos.z)) 
+  } 
+  return (pos) => true 
+}
+
 export function findGround (options) {
   if (options.onGround) {
     const blocks = context.remember()

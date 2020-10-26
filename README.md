@@ -18,22 +18,11 @@
   </p>
 </p>
 
-> ℹ I'm looking for a maintainer. Contact me if interested
-
-<details>
-<summary>Details</summary>
-<p>
-You need a good knowledge of JavaScript, some experience with craftscript and an understanding of some parts of WorldEdit's Java code. 
-
-If you only have some knowledge of javascript it can be enough if you understand quickly.
-
-Contact me on Discord: Oganexon#2001
-</p></details>
-
 
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [🚩 Project status 🚩](#-project-status-)
 - [About The Project](#about-the-project)
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
@@ -57,7 +46,11 @@ Contact me on Discord: Oganexon#2001
 - [License](#license)
 - [Contact](#contact)
 
+## 🚩 Project status 🚩
 
+> 🚧**I'm looking for a maintainer. Contact me if interested**🚧
+> 
+> Feature requests are no longer accepted, only pull requests.
 
 ## About The Project
 
@@ -202,6 +195,7 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
+  "restrict": false,
   "ignoredBlocks": ["see below"],
   "allowedBlocks": ["see below"]
 }
@@ -235,6 +229,7 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
+  "restrict": false,
   "ignoredBlocks": ["see below"],
   "allowedBlocks": ["see below"]
 }
@@ -265,6 +260,7 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
+  "restrict": false,
   "ignoredBlocks": ["see below"],
   "allowedBlocks": ["see below"]
 }
@@ -295,6 +291,7 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
+  "restrict": false,
   "ignoredBlocks": ["see below"],
   "allowedBlocks": ["see below"]
 }
@@ -368,6 +365,7 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
+  "restrict": false,
   "ignoredBlocks": ["see below"],
   "allowedBlocks": ["see below"]
 }
@@ -399,6 +397,7 @@ Default options:
   "onGround": true,
   "ignoreBuildings": true,
   "ignoreVegetation": true,
+  "restrict": false,
   "ignoredBlocks": ["see below"],
   "allowedBlocks": ["see below"]
 }

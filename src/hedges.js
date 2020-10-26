@@ -20,6 +20,7 @@ const options = {
   onGround: true,
   ignoreBuildings: true,
   ignoreVegetation: true,
+  restrict: false,
   ignoredBlocks,
   allowedBlocks,
   ...JSON.parse(argv[1] || '{}')
