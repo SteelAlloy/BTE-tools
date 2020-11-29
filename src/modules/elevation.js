@@ -1,6 +1,7 @@
 /* global WorldEdit RegionCommands StringWriter URL Thread StandardCharsets IOUtils Vector */
 import getProjection from './getProjection'
 import { getConfig } from './readFile'
+import xmlToJson from './xmlToJson'
 
 importClass(Packages.com.sk89q.worldedit.Vector)
 
@@ -223,7 +224,12 @@ function requestAsync (url, onSuccess, onError) {
       c.addRequestProperty('User-Agent', 'BTE-tools')
       const writer = new StringWriter()
       IOUtils.copy(c.getInputStream(), writer, StandardCharsets.UTF_8)
-      out = JSON.parse(writer.toString())
+      var response = writer.toString()
+      if(response.startsWith('{')){
+        out = JSON.parse(response)
+      } else {
+        out = xmlToJson(response)
+      }
     } catch (err) {
       onError(('Request Error:\n' + (err.message || url)).split('http')[0])
       return

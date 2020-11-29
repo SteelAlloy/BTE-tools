@@ -34,6 +34,16 @@ Default options: ${object}{
   ${object}"ignoredBlocks": [${string}"see documentation"${object}],
 ${object}}
 `
+export const gis_no = /* eslint-disable-line camelcase */
+`${command}/cs gis_no ${optional}[options] 
+${example}/cs gis_no
+${example}/cs gis_no {"smooth":false,"ignoreWater":true}
+Default options: ${object}{
+  ${object}"smooth": ${boolean}true${object},
+  ${object}"ignoreWater": ${boolean}false${object},
+  ${object}"ignoredBlocks": [${string}"see documentation"${object}],
+${object}}
+`
 
 export const hedges = `${command}/cs hedges ${optional}[options] 
 ${example}/cs hedges
