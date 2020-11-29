@@ -100,7 +100,7 @@ Open the zip file, go to `/lib` and move `rhino-1.7.12.jar` (or newer) to your `
 - **hedges** : Traces all hedges around the player
 - **gis_fr** : Get better elevation data in France
 - **gis_jp** : Get better elevation data in Japan
-- **gis_no** : Get better eleavtion data in Norway
+- **gis_no** : Get better elevation data in Norway
 
 Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
@@ -330,7 +330,7 @@ Avenue de la Gare TGV, La Jonxion, Meroux, Meroux-Moval, Belfort, Territoire-de-
 
 ![](images/ign.png)
 
-Get better elevation data in France, Japan and Norway. For Norway, use as small work area.
+Get better elevation data in France, Japan, and Norway. For Norway, use a small work area.
 
 Default options:
 ```json
