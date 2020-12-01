@@ -224,8 +224,8 @@ function requestAsync (url, onSuccess, onError) {
       c.addRequestProperty('User-Agent', 'BTE-tools')
       const writer = new StringWriter()
       IOUtils.copy(c.getInputStream(), writer, StandardCharsets.UTF_8)
-      var response = writer.toString()
-      if(response.startsWith('{')){
+      const response = writer.toString()
+      if (response.startsWith('{')) {
         out = JSON.parse(response)
       } else {
         out = xmlToJson(response)

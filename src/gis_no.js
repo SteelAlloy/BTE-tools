@@ -26,4 +26,4 @@ transformIDs(options, 'ignoredBlocks')
 
 elevation(options,
   (lons, lats) => `https://wms.geonorge.no/skwms1/wps.elevation2?service=WPS&request=Execute&version=1.0.0&Identifier=elevation&DataInputs=lon%3D${lons}%40datatype%3Dfloat%3Blat%3D${lats}%40datatype%3Dfloat%3Bepsg%3D4326%40datatype%3Dinteger`,
-  (data) => [Number.parseFloat(data["wps:ExecuteResponse"]["wps:ProcessOutputs"]["wps:Output"].filter(em => em["ows:Identifier"] === "elevation")[0]["wps:Data"]["wps:LiteralData"])],1)
+  (data) => [Number.parseFloat(data['wps:ExecuteResponse']['wps:ProcessOutputs']['wps:Output'].filter(em => em['ows:Identifier'] === 'elevation')[0]['wps:Data']['wps:LiteralData'])], 1)
