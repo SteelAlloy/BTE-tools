@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
+## [2.1.0] - 2020-29-11
+
+### Added
+
+- `/cs gis_no` command, to get better elevation data for Norway
+
 ## [2.0.0] - 2020-08-10
 
 ### Added
