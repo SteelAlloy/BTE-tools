@@ -13,11 +13,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
-## [2.1.0] - 2020-29-11
+## [2.2.0] - 2020-12-01
 
 ### Added
 
-- `/cs gis_no` command, to get better elevation data for Norway
+- `/cs gis_no` command, to get better elevation data for Norway.
+
+## [2.1.0] - 2020-10-26
+
+### Added
+
+- `restrict`option in every osm related command.
+  - Will restrict the command to the selected region.
+
+### Security 
+
+- **BTE-tools is no longer maintained.**
 
 ## [2.0.0] - 2020-08-10
 
