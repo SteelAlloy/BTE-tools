@@ -1,6 +1,6 @@
 {
   "name": "bte-tools",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Awesome tools and scripts to enhance your experience on the Build The Earth project!",
   "scripts": {
     "lint": "standard src/**/*.js --fix",

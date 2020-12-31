@@ -18,7 +18,7 @@ const urltext = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=$
 
 const url = new URL(urltext)
 const c = url.openConnection()
-c.addRequestProperty('User-Agent', 'BTE-tools/1.0.2')
+c.addRequestProperty('User-Agent', 'BTE-tools')
 
 const is = c.getInputStream()
 

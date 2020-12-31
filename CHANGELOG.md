@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security -->
 
+## [2.3.0] - 2020-12-31
+
+### Added
+
+- `/cs goto` command, to TP the player to a precise place.
+
 ## [2.2.0] - 2020-12-01
 
 ### Added

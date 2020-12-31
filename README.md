@@ -40,7 +40,8 @@
   - [gis](#gis)
   - [hedges](#hedges)
   - [hedgesnear](#hedgesnear)
-- [Default allowed & ignored allowedBlocks](#default-allowed--ignored-allowedblocks)
+  - [goto](#goto)
+- [Default allowed & ignored blocks](#default-allowed--ignored-blocks)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
@@ -101,6 +102,7 @@ Open the zip file, go to `/lib` and move `rhino-1.7.12.jar` (or newer) to your `
 - **gis_fr** : Get better elevation data in France
 - **gis_jp** : Get better elevation data in Japan
 - **gis_no** : Get better elevation data in Norway
+- **goto** : TP the player to a precise place
 
 Do you need another function? Request it [here](https://github.com/oganexon/BTE-tools/issues).
 
@@ -415,7 +417,22 @@ Examples :
 
 ![](images/hedges-.png)
 
-## Default allowed & ignored allowedBlocks
+### goto
+
+```sh
+/cs goto <search query>
+```
+
+Examples :
+
+```sh
+/cs goto Paris
+/cs goto Abidjan
+/cs goto Area 51, USA
+/cs goto Machu Picchu, Peru
+```
+
+## Default allowed & ignored blocks
 
 The blocks ignored by default are used to not draw a path on the vegetation.
 ```js
