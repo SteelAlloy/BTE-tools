@@ -143,3 +143,9 @@ export const tpll = `${command}/cs tpll ${required}<latitude> <longitude> ${requ
   ${example}/cs tpll 47.58523, 6.89725 370
   ${example}/cs tpll 47°35'6.32"N 6°53'50.06"E
   ${example}/cs tpll 47°35'6.32"N, 6°53'50.06"E 370`
+
+export const goto = `${command}/cs goto ${required}<Search query>
+  ${example}/cs goto Paris
+  ${example}/cs goto Abidjan
+  ${example}/cs goto Area 51, USA
+  ${example}/cs goto Machu Picchu, Peru`
